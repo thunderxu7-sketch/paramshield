@@ -14,11 +14,11 @@
 
 ## Readiness matrix
 
-| Sponsor | Account access | Tool/SDK spike | Advanced feature | Current status |
-| --- | --- | --- | --- | --- |
-| The Graph | Pending wallet unlock in the event Chrome profile | Graph CLI version/build check pending | Studio deploy/query key will be required for deployment | Blocked on wallet unlock |
-| Chainlink CRE | Pending CLI login | CRE CLI install/version and minimal simulation pending | Confidential Workflows production access is private beta; local confidential simulation remains usable | Planned |
-| Privy | Pending developer login with the event account | SDK import and authenticated read pending | Manual approvals/key quorums may require an eligible plan; policy or scoped signer is the P0 fallback | Planned |
+| Sponsor       | Account access                                    | Tool/SDK spike                                         | Advanced feature                                                                                       | Current status           |
+| ------------- | ------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------ |
+| The Graph     | Pending wallet unlock in the event Chrome profile | Graph CLI version/build check pending                  | Studio deploy/query key will be required for deployment                                                | Blocked on wallet unlock |
+| Chainlink CRE | Pending CLI login                                 | CRE CLI install/version and minimal simulation pending | Confidential Workflows production access is private beta; local confidential simulation remains usable | Planned                  |
+| Privy         | Pending developer login with the event account    | SDK import and authenticated read pending              | Manual approvals/key quorums may require an eligible plan; policy or scoped signer is the P0 fallback  | Planned                  |
 
 ## Qualification contract
 
@@ -55,14 +55,14 @@ verified.
 Do not paste secrets, full tokens, private keys, account emails, or screenshots
 containing credentials into this file.
 
-| UTC time | Integration | Check | Sanitized result |
-| --- | --- | --- | --- |
-| 2026-09-04 | The Graph | Opened Subgraph Studio from the event Chrome profile | Dashboard reachable; wallet connection requires the installed wallet to be unlocked |
+| UTC time   | Integration | Check                                                | Sanitized result                                                                    |
+| ---------- | ----------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 2026-09-04 | The Graph   | Opened Subgraph Studio from the event Chrome profile | Dashboard reachable; wallet connection requires the installed wallet to be unlocked |
 
 ## Go/no-go gates
 
-- **2026-09-05:** install official CLIs/SDKs, verify account paths, and capture a
-  minimal sanitized success log for each integration.
+- **2026-09-05:** install official CLIs/SDKs, verify account paths, and capture
+  a minimal sanitized success log for each integration.
 - **2026-09-07:** a live Graph query must affect simulation input.
 - **2026-09-09:** a confidential CRE simulation must return a validated verdict.
 - **2026-09-10:** Privy must authorize a real Sepolia transaction.

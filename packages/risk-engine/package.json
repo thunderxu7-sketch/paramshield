@@ -1,0 +1,6 @@
+{
+  "name": "@paramshield/risk-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Deterministic position simulation and safe-parameter search (implementation milestone 2026-09-07)."
+}

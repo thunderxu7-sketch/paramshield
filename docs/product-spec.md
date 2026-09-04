@@ -7,9 +7,9 @@
 ## 1. Problem
 
 DeFi risk councils routinely change parameters such as liquidation thresholds,
-loan-to-value ratios, borrow caps, and oracle controls. The proposal, simulation,
-approval, and transaction payload often live in separate tools. Reviewers cannot
-easily prove that:
+loan-to-value ratios, borrow caps, and oracle controls. The proposal,
+simulation, approval, and transaction payload often live in separate tools.
+Reviewers cannot easily prove that:
 
 - the analysis used current onchain positions;
 - the exact calldata they approve was simulated;
@@ -44,18 +44,19 @@ of scope.
 
 The demo uses a small ETH-collateral/USDC-debt lending market on Sepolia.
 
-| Input | Value |
-| --- | --- |
-| Current liquidation threshold | 8,000 bps (80%) |
-| Unsafe proposal | 7,000 bps (70%) |
-| Stress scenario | ETH price decreases by 15%; debt price stays at $1 |
-| Private rule 1 | A single threshold decrease cannot exceed 300 bps |
-| Private rule 2 | A change cannot make a currently healthy position liquidatable |
-| Private rule 3 | Stressed liquidatable debt cannot exceed 2% of total market debt |
+| Input                         | Value                                                            |
+| ----------------------------- | ---------------------------------------------------------------- |
+| Current liquidation threshold | 8,000 bps (80%)                                                  |
+| Unsafe proposal               | 7,000 bps (70%)                                                  |
+| Stress scenario               | ETH price decreases by 15%; debt price stays at $1               |
+| Private rule 1                | A single threshold decrease cannot exceed 300 bps                |
+| Private rule 2                | A change cannot make a currently healthy position liquidatable   |
+| Private rule 3                | Stressed liquidatable debt cannot exceed 2% of total market debt |
 
 Expected flow:
 
-1. The Graph returns current positions, parameters, indexed block, and freshness.
+1. The Graph returns current positions, parameters, indexed block, and
+   freshness.
 2. The deterministic simulator shows that the 70% threshold creates new
    liquidations and violates at least one private rule.
 3. The CRE confidential handler returns `BLOCK` with rule identifiers but does

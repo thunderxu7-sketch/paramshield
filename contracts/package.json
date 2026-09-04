@@ -1,0 +1,11 @@
+{
+  "name": "@paramshield/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "lint": "forge fmt --check",
+    "test": "forge test",
+    "typecheck": "forge build"
+  }
+}

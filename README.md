@@ -2,10 +2,10 @@
 
 > Preflight risk checks for DeFi protocol parameter changes.
 
-ParamShield is a policy-bound execution layer for DeFi risk councils and protocol
-operators. Before a parameter change reaches production, it evaluates live
-positions, runs deterministic stress tests, applies confidential policy rules,
-and either blocks the transaction or routes a safer alternative through
+ParamShield is a policy-bound execution layer for DeFi risk councils and
+protocol operators. Before a parameter change reaches production, it evaluates
+live positions, runs deterministic stress tests, applies confidential policy
+rules, and either blocks the transaction or routes a safer alternative through
 controlled approval.
 
 ## Why it exists
@@ -29,18 +29,18 @@ ParamShield turns that review into one auditable pipeline:
 
 The reference market starts with an 80% liquidation threshold. An operator
 proposes lowering it to 70%. Live indexed positions show that the change would
-make healthy borrowers immediately liquidatable, and a 15% ETH price shock
-would exceed the market's private risk budget. ParamShield blocks the original
+make healthy borrowers immediately liquidatable, and a 15% ETH price shock would
+exceed the market's private risk budget. ParamShield blocks the original
 payload, computes the nearest safe threshold from the same live data, and lets
 the reviewed replacement execute on Sepolia.
 
 ## Sponsor integrations
 
-| Integration | Core responsibility |
-| --- | --- |
-| The Graph | Index positions, market parameters, and execution events; live query results feed the simulation. |
-| Chainlink CRE | Run the confidential policy boundary and return a structured `ALLOW`, `BLOCK`, or `ESCALATE` verdict. |
-| Privy | Own or control the execution wallet and enforce a real policy, signer, quorum, or intent-based approval. |
+| Integration   | Core responsibility                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| The Graph     | Index positions, market parameters, and execution events; live query results feed the simulation.        |
+| Chainlink CRE | Run the confidential policy boundary and return a structured `ALLOW`, `BLOCK`, or `ESCALATE` verdict.    |
+| Privy         | Own or control the execution wallet and enforce a real policy, signer, quorum, or intent-based approval. |
 
 Removing any of these integrations breaks the primary workflow; none is used as
 an ornamental login or badge.
@@ -70,7 +70,7 @@ docs/                     Product, architecture, security, and AI disclosure
 Prerequisites:
 
 - Node.js 20.19 or newer
-- pnpm 11
+- pnpm 10.34 or newer within the pnpm 10 release line
 - Foundry
 - CRE CLI 1.32 or newer for workflow simulation
 

@@ -14,10 +14,12 @@ cache/
 broadcast/
 
 # Local environment and secrets
-.env
-.env.local
-.env.*.local
+.env*
 !.env.example
+!.env.public
+*.pem
+*.key
+secrets.*.yaml
 
 # Logs and local tooling
 *.log
@@ -25,3 +27,7 @@ broadcast/
 .idea/
 .vscode/
 
+# Tool-local state
+.turbo/
+*.tsbuildinfo
+contracts/.forge-snapshots/

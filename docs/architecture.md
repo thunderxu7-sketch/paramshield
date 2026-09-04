@@ -41,8 +41,8 @@ flowchart LR
 ### Sepolia Subgraph
 
 Indexes market configuration, positions, execution lifecycle events, and
-evidence hashes. Every query result records indexed block and fetch time. The API
-applies a freshness policy before using it.
+evidence hashes. Every query result records indexed block and fetch time. The
+API applies a freshness policy before using it.
 
 ### Deterministic risk engine
 
@@ -125,20 +125,20 @@ flowchart TB
 
 ## Repository boundaries
 
-| Path | Responsibility | Must not contain |
-| --- | --- | --- |
-| `apps/web` | UI and server routes | wallet secrets, hidden policy rules |
-| `packages/shared` | canonical schemas and types | network calls |
-| `packages/risk-engine` | deterministic calculations | LLM calls or signing |
-| `packages/evidence` | canonical serialization and hashing | raw authorization secrets |
-| `subgraph` | event indexing | execution authority |
-| `workflows/chainlink-cre` | confidential policy evaluation | browser-only code |
-| `contracts` | final enforcement and state | unbounded dynamic policy text |
+| Path                      | Responsibility                      | Must not contain                    |
+| ------------------------- | ----------------------------------- | ----------------------------------- |
+| `apps/web`                | UI and server routes                | wallet secrets, hidden policy rules |
+| `packages/shared`         | canonical schemas and types         | network calls                       |
+| `packages/risk-engine`    | deterministic calculations          | LLM calls or signing                |
+| `packages/evidence`       | canonical serialization and hashing | raw authorization secrets           |
+| `subgraph`                | event indexing                      | execution authority                 |
+| `workflows/chainlink-cre` | confidential policy evaluation      | browser-only code                   |
+| `contracts`               | final enforcement and state         | unbounded dynamic policy text       |
 
 ## Failure behavior
 
 The system fails closed when live data is stale, a query fails, simulation is
 invalid, CRE times out or returns malformed output, a decision binding differs,
-approval is insufficient, transaction submission fails, or final state cannot
-be verified. The UI preserves the evidence collected up to failure and displays
+approval is insufficient, transaction submission fails, or final state cannot be
+verified. The UI preserves the evidence collected up to failure and displays
 which boundary stopped the flow.

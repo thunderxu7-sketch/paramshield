@@ -1,0 +1,9 @@
+.next
+coverage
+dist
+node_modules
+out
+cache
+broadcast
+pnpm-lock.yaml
+PLAN.md

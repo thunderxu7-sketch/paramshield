@@ -1,0 +1,6 @@
+{
+  "name": "@paramshield/evidence",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Canonical evidence serialization and hashing."
+}
