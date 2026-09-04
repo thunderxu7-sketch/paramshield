@@ -65,6 +65,7 @@ containing credentials into this file.
 | 2026-09-04T20:56Z | Privy         | Ran `pnpm spike:privy`                                        | Official Node SDK 0.34.0 imported successfully; authenticated read awaited credentials             |
 | 2026-09-05        | Privy         | Created a development app and stored its public app ID        | App ID is in a mode-0600 ignored file; no secret is committed or logged                            |
 | 2026-09-04T21:51Z | Privy         | Ran an authenticated `pnpm spike:privy` read                  | API credentials were accepted and the empty development-app user list was returned                 |
+| 2026-09-04T21:54Z | Privy         | Revoked the unused initial secret and repeated the SDK read   | Only the locally stored secret remains active; authenticated access still succeeds                 |
 
 ## Go/no-go gates
 
