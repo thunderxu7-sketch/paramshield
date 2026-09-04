@@ -21,8 +21,13 @@ async function main() {
     return;
   }
 
-  const privy = new PrivyClient({ appId, appSecret });
-  const wallets = await privy.wallets().list({ limit: 1 });
+  const privy = new PrivyClient({
+    appId,
+    appSecret,
+    maxRetries: 0,
+    timeout: 10_000,
+  });
+  const users = await privy.users().list({ limit: 1 });
 
   console.log(
     JSON.stringify(
@@ -30,8 +35,8 @@ async function main() {
         integration: "privy",
         sdkImport: "ok",
         authenticatedRead: "ok",
-        returnedWallets: wallets.data.length,
-        nextCursorPresent: Boolean(wallets.next_cursor),
+        returnedUsers: users.data.length,
+        nextCursorPresent: Boolean(users.next_cursor),
       },
       null,
       2,

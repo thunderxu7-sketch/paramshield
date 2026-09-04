@@ -14,11 +14,11 @@
 
 ## Readiness matrix
 
-| Sponsor       | Account access                                                    | Tool/SDK spike                                                  | Advanced feature                                                                                       | Current status                                   |
-| ------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| The Graph     | Event wallet connected and dashboard email verified               | Graph CLI 0.98.1 runs on Node 20.19.2                           | A Studio deployment and API key are deferred until the reference contracts emit data                   | Account and toolchain verified; live query next  |
-| Chainlink CRE | CLI authentication verified; deployment-access request is pending | CRE CLI 1.32.0 compiled and simulated the official TEE template | Confidential Workflows deployment remains gated; authenticated local confidential simulation is usable | Local confidential path verified                 |
-| Privy         | Developer account and ParamShield development app created         | `@privy-io/node` 0.34.0 imports successfully                    | Manual approvals/key quorums may require an eligible plan; policy or scoped signer is the P0 fallback  | App ready; authenticated SDK read pending secret |
+| Sponsor       | Account access                                                    | Tool/SDK spike                                                    | Advanced feature                                                                                       | Current status                                  |
+| ------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| The Graph     | Event wallet connected and dashboard email verified               | Graph CLI 0.98.1 runs on Node 20.19.2                             | A Studio deployment and API key are deferred until the reference contracts emit data                   | Account and toolchain verified; live query next |
+| Chainlink CRE | CLI authentication verified; deployment-access request is pending | CRE CLI 1.32.0 compiled and simulated the official TEE template   | Confidential Workflows deployment remains gated; authenticated local confidential simulation is usable | Local confidential path verified                |
+| Privy         | Developer account and ParamShield development app created         | `@privy-io/node` 0.34.0 completed an authenticated user-list read | Wallet control and policies are verified during T-401; scoped signer is the P0 fallback                | Account, app, and SDK authentication verified   |
 
 ## Qualification contract
 
@@ -47,8 +47,8 @@ implementation will use the strongest feature verified in this order:
 3. scoped signer with an enforceable policy; or
 4. a policy-bound server wallet.
 
-The exact choice will be recorded here after dashboard and plan access are
-verified.
+The exact choice will be recorded during T-401 after the development app's
+wallet-control capabilities are tested.
 
 ## Evidence log
 
@@ -60,10 +60,11 @@ containing credentials into this file.
 | 2026-09-04T20:56Z | The Graph     | Ran `pnpm spike:graph`                                        | Graph CLI 0.98.1 started successfully on Node 20.19.2                                              |
 | 2026-09-05        | The Graph     | Connected the event wallet and verified the dashboard email   | Authenticated dashboard is available; no API key or empty subgraph was created                     |
 | 2026-09-04T20:56Z | Chainlink CRE | Ran `pnpm spike:cre`                                          | Official CRE CLI 1.32.0 started successfully; authentication was pending                           |
-| 2026-09-05T05:40Z | Chainlink CRE | Authenticated, tested, and simulated the official TEE starter | Nine tests passed; simulation returned a redacted verdict and confirmed secret delivery in the TEE |
-| 2026-09-05T05:40Z | Chainlink CRE | Checked deployment access and Sepolia support                 | Sepolia is supported; the private-beta deployment request is pending review                        |
+| 2026-09-04T21:40Z | Chainlink CRE | Authenticated, tested, and simulated the official TEE starter | Nine tests passed; simulation returned a redacted verdict and confirmed secret delivery in the TEE |
+| 2026-09-04T21:40Z | Chainlink CRE | Checked deployment access and Sepolia support                 | Sepolia is supported; the private-beta deployment request is pending review                        |
 | 2026-09-04T20:56Z | Privy         | Ran `pnpm spike:privy`                                        | Official Node SDK 0.34.0 imported successfully; authenticated read awaited credentials             |
 | 2026-09-05        | Privy         | Created a development app and stored its public app ID        | App ID is in a mode-0600 ignored file; no secret is committed or logged                            |
+| 2026-09-04T21:51Z | Privy         | Ran an authenticated `pnpm spike:privy` read                  | API credentials were accepted and the empty development-app user list was returned                 |
 
 ## Go/no-go gates
 
