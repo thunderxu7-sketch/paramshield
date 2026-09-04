@@ -14,6 +14,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "turbo run lint",
+    "spike:cre": "bash scripts/spikes/cre-cli.sh",
+    "spike:graph": "pnpm --dir subgraph spike:cli",
+    "spike:privy": "pnpm --dir apps/web spike:privy",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build"

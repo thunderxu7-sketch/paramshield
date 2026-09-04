@@ -2,6 +2,8 @@ packages:
   - apps/*
   - packages/*
   - contracts
+  - subgraph
+  - workflows/*
 
 onlyBuiltDependencies:
   - esbuild

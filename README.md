@@ -84,6 +84,20 @@ Copy `.env.example` to `.env.local` only when an integration requires local
 credentials. Never commit deploy keys, authorization keys, wallet keys, or
 service secrets.
 
+Toolchain smoke checks are deliberately separate from CI because authenticated
+checks require local credentials:
+
+```bash
+pnpm spike:graph
+pnpm spike:cre
+pnpm spike:privy
+```
+
+The Privy spike performs an authenticated wallet-list read only when
+`NEXT_PUBLIC_PRIVY_APP_ID` and `PRIVY_APP_SECRET` are present in the
+environment; otherwise it verifies the official SDK import and reports the
+missing setup.
+
 ## Design documents
 
 - [Product specification](docs/product-spec.md)
