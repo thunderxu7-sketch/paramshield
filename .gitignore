@@ -1,0 +1,27 @@
+# Local planning artifacts
+/PLAN.md
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build and test output
+.next/
+out/
+dist/
+coverage/
+cache/
+broadcast/
+
+# Local environment and secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs and local tooling
+*.log
+.DS_Store
+.idea/
+.vscode/
+
