@@ -30,9 +30,13 @@ contract ReferenceLendingMarket {
         uint256 debtAmount;
     }
 
+    // forge-lint: disable-next-line(screaming-snake-case-immutable)
     IERC20Like public immutable collateralToken;
+    // forge-lint: disable-next-line(screaming-snake-case-immutable)
     IERC20Like public immutable debtToken;
+    // forge-lint: disable-next-line(screaming-snake-case-immutable)
     uint256 public immutable collateralScale;
+    // forge-lint: disable-next-line(screaming-snake-case-immutable)
     uint256 public immutable debtScale;
 
     address public owner;
@@ -68,7 +72,7 @@ contract ReferenceLendingMarket {
     event CollateralWithdrawn(address indexed account, uint256 amount);
 
     modifier onlyOwner() {
-        if (msg.sender != owner) revert NotOwner();
+        _checkOwner();
         _;
     }
 
@@ -294,5 +298,9 @@ contract ReferenceLendingMarket {
 
     function _validatePrice(uint256 priceUsdE18) internal pure {
         if (priceUsdE18 == 0) revert InvalidPrice();
+    }
+
+    function _checkOwner() private view {
+        if (msg.sender != owner) revert NotOwner();
     }
 }

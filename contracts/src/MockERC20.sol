@@ -10,6 +10,7 @@ contract MockERC20 {
 
     string public name;
     string public symbol;
+    // forge-lint: disable-next-line(screaming-snake-case-immutable)
     uint8 public immutable decimals;
     uint256 public totalSupply;
     address public owner;
@@ -22,7 +23,7 @@ contract MockERC20 {
     event Transfer(address indexed from, address indexed to, uint256 amount);
 
     modifier onlyOwner() {
-        if (msg.sender != owner) revert NotOwner();
+        _checkOwner();
         _;
     }
 
@@ -89,5 +90,9 @@ contract MockERC20 {
         }
 
         emit Transfer(from, to, amount);
+    }
+
+    function _checkOwner() private view {
+        if (msg.sender != owner) revert NotOwner();
     }
 }
