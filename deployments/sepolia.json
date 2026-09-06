@@ -1,0 +1,150 @@
+{
+  "project": "ParamShield",
+  "network": {
+    "name": "Sepolia",
+    "chainId": 11155111,
+    "explorerUrl": "https://sepolia.etherscan.io"
+  },
+  "deployment": {
+    "deployedAt": "2026-09-06T08:00:24Z",
+    "deployer": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+    "transactionHash": "0x2980cde482191ac8481e1a65f2a14cfa46ccc9003b72255a7096f17737bfd2be",
+    "transactionUrl": "https://sepolia.etherscan.io/tx/0x2980cde482191ac8481e1a65f2a14cfa46ccc9003b72255a7096f17737bfd2be",
+    "blockNumber": 11645965,
+    "blockHash": "0xf0b40ba6a99fb43d4fda3be7fb15782c4c69b5fce970557a56a925128891c476",
+    "gasUsed": "4152488",
+    "effectiveGasPriceWei": "1080780232",
+    "transactionFeeWei": "4487926944017216",
+    "transactionFeeEth": "0.004487926944017216",
+    "transactionValueWei": "0",
+    "bootstrapInitcodeBytes": 16465,
+    "bootstrapInitcodeKeccak256": "0xb9de8f347b3f9c012ad7198995b7540d52c867d3411ceca058c72e08d98a1473"
+  },
+  "contracts": {
+    "bootstrap": {
+      "name": "ParamShieldBootstrap",
+      "address": "0xDB2FDFfBa4FBbDc786E8F4823025e24A65D171A0",
+      "source": "contracts/src/ParamShieldBootstrap.sol",
+      "abi": "deployments/abi/ParamShieldBootstrap.json",
+      "codeSizeBytes": 435,
+      "explorerUrl": "https://sepolia.etherscan.io/address/0xDB2FDFfBa4FBbDc786E8F4823025e24A65D171A0",
+      "verification": {
+        "sourcifyMatch": "exact_match",
+        "sourcifyJobId": "afc6dfec-2eb9-4747-ac17-cbb1bc3f9d40",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/afc6dfec-2eb9-4747-ac17-cbb1bc3f9d40",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0xDB2FDFfBa4FBbDc786E8F4823025e24A65D171A0"
+      }
+    },
+    "collateralToken": {
+      "name": "MockERC20",
+      "symbol": "mETH",
+      "address": "0x8689568A568f89CD50536a823C2905Aff427aCB4",
+      "source": "contracts/src/MockERC20.sol",
+      "abi": "deployments/abi/MockERC20.json",
+      "codeSizeBytes": 1962,
+      "explorerUrl": "https://sepolia.etherscan.io/address/0x8689568A568f89CD50536a823C2905Aff427aCB4",
+      "verification": {
+        "sourcifyMatch": "exact_match",
+        "sourcifyJobId": "4e354cc4-cd60-479c-9cc0-f70674f70826",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/4e354cc4-cd60-479c-9cc0-f70674f70826",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0x8689568A568f89CD50536a823C2905Aff427aCB4"
+      }
+    },
+    "debtToken": {
+      "name": "MockERC20",
+      "symbol": "mUSDC",
+      "address": "0x885c51aFb58fDd804656EcD45F944E22896acf66",
+      "source": "contracts/src/MockERC20.sol",
+      "abi": "deployments/abi/MockERC20.json",
+      "codeSizeBytes": 1962,
+      "explorerUrl": "https://sepolia.etherscan.io/address/0x885c51aFb58fDd804656EcD45F944E22896acf66",
+      "verification": {
+        "sourcifyMatch": "exact_match",
+        "sourcifyJobId": "c39bb1d9-3b61-4048-9f8b-cae699132c2e",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/c39bb1d9-3b61-4048-9f8b-cae699132c2e",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0x885c51aFb58fDd804656EcD45F944E22896acf66"
+      }
+    },
+    "market": {
+      "name": "ReferenceLendingMarket",
+      "address": "0xFabda359d272974F6561E907a4BB740b11A9fC26",
+      "source": "contracts/src/ReferenceLendingMarket.sol",
+      "abi": "deployments/abi/ReferenceLendingMarket.json",
+      "codeSizeBytes": 4811,
+      "explorerUrl": "https://sepolia.etherscan.io/address/0xFabda359d272974F6561E907a4BB740b11A9fC26",
+      "verification": {
+        "sourcifyMatch": "exact_match",
+        "sourcifyJobId": "9f805550-bf3c-4ec9-b7a8-9bff6c94dcbb",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/9f805550-bf3c-4ec9-b7a8-9bff6c94dcbb",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0xFabda359d272974F6561E907a4BB740b11A9fC26"
+      }
+    },
+    "executor": {
+      "name": "ParamShieldExecutor",
+      "address": "0xF5523BDB15d353ABCE276bF6ae02c1C7244381D2",
+      "source": "contracts/src/ParamShieldExecutor.sol",
+      "abi": "deployments/abi/ParamShieldExecutor.json",
+      "codeSizeBytes": 5230,
+      "explorerUrl": "https://sepolia.etherscan.io/address/0xF5523BDB15d353ABCE276bF6ae02c1C7244381D2",
+      "verification": {
+        "sourcifyMatch": "exact_match",
+        "sourcifyJobId": "6dff0381-3962-4c91-8dc0-e4b13f8e17ae",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/6dff0381-3962-4c91-8dc0-e4b13f8e17ae",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0xF5523BDB15d353ABCE276bF6ae02c1C7244381D2"
+      }
+    }
+  },
+  "initialState": {
+    "collateralPriceUsdE18": "2000000000000000000000",
+    "liquidationThresholdBps": 8000,
+    "totalCollateralWei": "55000000000000000000",
+    "totalDebtAtomic": "68300000000",
+    "marketDebtLiquidityAtomic": "931700000000",
+    "positions": [
+      {
+        "account": "0x0000000000000000000000000000000000001001",
+        "collateralWei": "10000000000000000000",
+        "debtAtomic": "12000000000",
+        "healthFactorE18": "1333333333333333333"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001002",
+        "collateralWei": "10000000000000000000",
+        "debtAtomic": "15000000000",
+        "healthFactorE18": "1066666666666666666"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001003",
+        "collateralWei": "10000000000000000000",
+        "debtAtomic": "13500000000",
+        "healthFactorE18": "1185185185185185185"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001004",
+        "collateralWei": "5000000000000000000",
+        "debtAtomic": "7800000000",
+        "healthFactorE18": "1025641025641025641"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001005",
+        "collateralWei": "20000000000000000000",
+        "debtAtomic": "20000000000",
+        "healthFactorE18": "1600000000000000000"
+      }
+    ]
+  },
+  "controlPlane": {
+    "marketOwner": "0xF5523BDB15d353ABCE276bF6ae02c1C7244381D2",
+    "executorAdmin": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+    "executorOperator": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+    "decisionAuthority": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+    "allowedTarget": "0xFabda359d272974F6561E907a4BB740b11A9fC26",
+    "allowedSelector": "0x4d5bcf96",
+    "allowedSignature": "setLiquidationThresholdBps(uint16)"
+  }
+}
