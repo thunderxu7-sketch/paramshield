@@ -1,144 +1,99 @@
 # ParamShield Architecture
 
-**Status:** Baseline architecture  
-**Date:** 2026-09-05
-
-## System context
+**Revision:** 2026-09-07. See
+[ADR 0001](decisions/0001-risk-and-execution-boundaries.md) and
+[implementation status](implementation-plan.md); this describes the target.
 
 ```mermaid
 flowchart LR
-    O[Protocol operator] --> W[Next.js operator console]
-    W --> A[Change intent API]
-    A --> G[The Graph: Sepolia Subgraph]
-    G --> R[Deterministic risk engine]
-    R --> C[Chainlink CRE confidential handler]
-    C --> D{ALLOW / BLOCK / ESCALATE}
-    D -->|BLOCK| B[Evidence bundle]
-    D -->|ALLOW or ESCALATE| P[Privy-controlled approval]
-    P --> E[ParamShieldExecutor]
-    E --> M[ReferenceLendingMarket on Sepolia]
-    M --> V[Receipt and state verification]
-    V --> B
-    B --> H[Evidence hash event]
+  U[One operator console] --> A[Validated intent API]
+  G[The Graph: pinned complete snapshot] --> A
+  A --> R[Public deterministic metrics]
+  A --> C[CRE handler: recompute + private policy + bounded search]
+  C --> V[Trusted relay validates run and bindings]
+  V --> D[Separate decision authority]
+  D --> E[Executor v2]
+  U --> P[Privy-controlled operator]
+  P --> E
+  E --> M[Versioned reference market]
+  M --> X[Receipt + pinned state verification]
+  X --> B[Final evidence bundle]
 ```
 
-## Components
+## Data and hash dependency order
 
-### Operator console
+1. Validate chain/addresses/calldata, nonce, expiry, market version, and
+   executor authorization epoch. Create `intentCore` without hashes of future
+   evidence.
+2. Query all Graph positions at one block/hash. Check indexing status, totals,
+   freshness, configuration, and manifest version. Corroborate against RPC at
+   that block; RPC does not replace the Graph input on failure.
+3. Run the four-cell deterministic simulation. Canonical public input and output
+   form `preflightHash` (the Solidity `evidenceHash` field).
+4. ABI-hash the exact intent plus preflight hash, executor, and operator into
+   `changeHash`. No receipt or decision is included in the preflight hash.
+5. Run the CRE confidential handler, reusing the pure risk engine to recompute
+   metrics and search candidates **inside** the handler with the secret policy.
+6. Validate a structured result bound to changeHash/preflightHash/expiry. Hash
+   this public decision into `decisionHash`; the separate authority records it.
+7. BLOCK/ESCALATE terminate this intent. A replacement repeats steps 1–6 with a
+   fresh nonce and independent decision; no mutation of the blocked evidence.
+8. Privy authorizes the exact allowlisted call. Executor checks ALLOW, domain,
+   nonce, expiry, market state version, and current authorization epoch.
+9. Verify receipt and block-pinned final market state. The final bundle
+   references preflight, decision, authorization, receipt, and final state. Its
+   later hash is not the preflight hash and is not automatically anchored
+   onchain.
 
-- Creates a supported change intent and renders decoded calldata.
-- Displays data provenance, simulation deltas, policy result, approval state,
-  receipt, final state, and downloadable evidence.
-- Never decides authorization locally.
+## Explicit trust modes
 
-### Change intent API
+**Selected P0: `cli-simulation-trusted-relay`.** A dedicated bounded runner
+invokes CRE CLI with fixed project/config paths, no arbitrary user command
+fragments, strict timeout/concurrency, and durable run/intent records. The relay
+accepts only its own completed run, validates schemas and exact bindings,
+corroborates snapshot state, and records the decision through an independent
+signer. CLI simulation does not run in hardware isolation. Use disposable demo
+policy values; never imply local logs are TEE-private. The executor trusts the
+relay authority, not a cryptographic CRE report verifier.
 
-- Normalizes the intent before hashing.
-- Validates chain, target, selector, parameter bounds, nonce, and expiry.
-- Coordinates Graph reads, deterministic simulation, CRE invocation, and
-  evidence assembly.
+**Future: network-attested.** Requires actual deployment access and verified
+report-to-contract authentication. `handlerInTee` output, DON public reporting,
+and any onchain settlement are separate boundaries. Do not call a hash or a
+human relay an attestation, and never silently fall back between trust modes.
 
-### Sepolia Subgraph
+## Roles and revocation
 
-Indexes market configuration, positions, execution lifecycle events, and
-evidence hashes. Every query result records indexed block and fetch time. The
-API applies a freshness policy before using it.
+Privy controls the operator; a distinct decision authority controls verdicts.
+Admin remains trusted governance. Role, allowlist, and admin changes advance an
+authorization epoch and invalidate earlier intents even if a role is later
+restored. Market position, price, parameter, and owner changes advance a state
+version. Executor checks it atomically before calling the target. Thus data
+changes during a wallet approval invalidate that approval even within its TTL.
 
-### Deterministic risk engine
+The September 6 deployed v1 lacks these v2 guards. Its manifest and ABIs remain
+historical artifacts. Local v2 source needs a reviewed new deployment and index
+configuration before claiming those guards on Sepolia.
 
-- Uses integer/fixed-point arithmetic for calculations that influence policy.
-- Computes current/proposed and normal/stressed matrices.
-- Searches for the nearest safe parameter without LLM participation.
-- Produces canonical output that can be hashed and replayed in tests.
+## Package boundaries
 
-### CRE confidential workflow
+| Component                 | Responsibility                                          | Excluded                                                   |
+| ------------------------- | ------------------------------------------------------- | ---------------------------------------------------------- |
+| `apps/web`                | Console, authenticated orchestration, grounded AI       | Private policy in client bundles; optimistic authorization |
+| `packages/shared`         | Strict public schemas, decimal-string transport         | Network or signing                                         |
+| `packages/risk-engine`    | Pure bigint metrics; pure policy/search reusable in TEE | LLM decisions, signing, network                            |
+| `packages/evidence`       | Canonical public payloads and ABI/hash verification     | Raw policy/authorization secrets; circular hashes          |
+| `subgraph`                | Amounts, config, events, versions and block provenance  | Execution authority; stale cached HF                       |
+| `workflows/chainlink-cre` | Secret loading, recomputation, private policy/search    | Public candidate trace                                     |
+| `contracts`               | Version/epoch/exact-call/replay enforcement             | Claims of verifying TEE without an actual verifier         |
 
-- Receives public intent and simulation summaries.
-- Fetches private risk thresholds within the confidential handler.
-- Returns only policy version, verdict, rule identifiers, recommendation, hash,
-  and expiry.
-- Does not emit private values in logs, reports, or calldata.
+A runtime AI explanation reads only public validated evidence. Every cited
+number must point to a real field. A failure cannot affect authorization.
 
-### Privy approval
+## Failure and repeatability
 
-- Controls the wallet that calls `ParamShieldExecutor`.
-- Uses the strongest verified feature available to the event account: policy,
-  scoped signer, key quorum, or manual intent review.
-- Keeps application credentials and authorization private keys server-side.
-
-### Contracts
-
-`ReferenceLendingMarket` provides a deterministic lending model and emits all
-state needed by the Subgraph. `ParamShieldExecutor` binds a signed/verified
-decision to the exact proposed call, enforces expiry and replay protection, and
-performs the allowlisted update. Evidence storage contains hashes or CIDs, never
-private policy material.
-
-## Canonical data flow
-
-1. Normalize intent fields and ABI-encode the proposed market call.
-2. Compute `changeHash = keccak256(canonicalIntent)`.
-3. Query Graph state, verify freshness, and hash the canonical snapshot.
-4. Run all four simulation cells and hash the result.
-5. Send only the declared public summary into CRE; fetch private values inside
-   the confidential boundary.
-6. Validate the returned verdict schema and bindings.
-7. For a rejected proposal, persist evidence and stop.
-8. For an allowed replacement, construct the exact calldata, request Privy
-   authorization, and call the executor.
-9. Wait for finality, read the market parameter, and finish the evidence bundle.
-
-## Trust boundaries
-
-```mermaid
-flowchart TB
-    subgraph Browser[Untrusted browser]
-      UI[Operator UI]
-    end
-    subgraph Service[Application trust boundary]
-      API[Intent and evidence API]
-      SIM[Deterministic simulator]
-    end
-    subgraph Confidential[CRE confidential boundary]
-      RULES[Private policy inputs]
-      TEE[Confidential handler]
-    end
-    subgraph Wallet[Privy authorization boundary]
-      POLICY[Wallet policy / signer / quorum]
-    end
-    subgraph Chain[Ethereum Sepolia]
-      EXEC[Executor]
-      MARKET[Reference market]
-    end
-    GRAPH[The Graph]
-
-    UI --> API
-    GRAPH --> API
-    API --> SIM
-    SIM --> TEE
-    RULES --> TEE
-    TEE --> API
-    API --> POLICY
-    POLICY --> EXEC
-    EXEC --> MARKET
-```
-
-## Repository boundaries
-
-| Path                      | Responsibility                      | Must not contain                    |
-| ------------------------- | ----------------------------------- | ----------------------------------- |
-| `apps/web`                | UI and server routes                | wallet secrets, hidden policy rules |
-| `packages/shared`         | canonical schemas and types         | network calls                       |
-| `packages/risk-engine`    | deterministic calculations          | LLM calls or signing                |
-| `packages/evidence`       | canonical serialization and hashing | raw authorization secrets           |
-| `subgraph`                | event indexing                      | execution authority                 |
-| `workflows/chainlink-cre` | confidential policy evaluation      | browser-only code                   |
-| `contracts`               | final enforcement and state         | unbounded dynamic policy text       |
-
-## Failure behavior
-
-The system fails closed when live data is stale, a query fails, simulation is
-invalid, CRE times out or returns malformed output, a decision binding differs,
-approval is insufficient, transaction submission fails, or final state cannot be
-verified. The UI preserves the evidence collected up to failure and displays
-which boundary stopped the flow.
+Malformed, incomplete, stale, reorged, timed-out, unauthorized, duplicate, or
+mismatched requests fail closed. Persist idempotency by intent/changeHash;
+recover transaction status before resubmitting. Show failures and existing
+evidence. After success LT is no longer 80%: reset through a freshly reviewed
+proposal or re-provision a fixture under an explicit runbook, never an
+unrestricted reset.

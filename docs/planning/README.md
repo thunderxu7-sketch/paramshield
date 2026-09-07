@@ -1,0 +1,54 @@
+# Planning and prompt artifacts
+
+This directory is a public, sanitized planning record. The local working
+`PLAN.md` stays ignored as requested; [its full public copy](PLAN.md) is
+committed here, not replaced with a short summary.
+[The execution checklist](../implementation-plan.md) and
+[accepted ADR](../decisions/0001-risk-and-execution-boundaries.md) govern the
+September 7 revision. Earlier committed specs remain available in git history.
+
+## Available material user directions (verbatim excerpts)
+
+These excerpts are from the visible project conversation, not a fabricated full
+transcript. Chinese directions are retained rather than silently translated.
+
+- “好的, 确定方向2, 评估一下现在的方案”
+- “一个 Demo Lending Market … The Graph 实时数据 … Chainlink Confidential
+  Workflow … 危险交易阻断 … Privy 审批与真实测试网交易 … Before/After 证据报告”
+  (Excerpted from the user's 13-item scope; the full list is below.)
+- “先列一个完整的计划, 加入到 ignore 中”
+- “review 一下当前的规划是否合理? 是否有需要完善的地方”
+- “好的, 按照你的建议依次执行” — authorizes the accepted September 7 revisions.
+
+### User's original feature list
+
+1. 一个 Demo Lending Market
+2. 一种参数修改
+3. 一种压力情景
+4. The Graph 实时数据
+5. Chainlink Confidential Workflow
+6. 危险交易阻断
+7. Privy 审批与真实测试网交易
+8. Before/After 证据报告
+9. 2–4 分钟 Demo 视频
+10. AI 自动解释风险
+11. 推荐安全参数
+12. 第二种风险场景
+13. 历史事故回放
+
+The revised scope promotes evidence-grounded AI to P0 and defers items 12–13.
+The ADR records the assistant's implementation direction approved by the user:
+incremental exposure, confidential bounded search, acyclic evidence, state/epoch
+checks, explicit simulated CRE/trusted-relay mode, early live sponsor controls,
+and freeze-before-video scheduling. Tests are generated against these
+invariants.
+
+## Completeness and redaction
+
+This is the available material prompt/spec/plan record, **not a claim that every
+historical model exchange has been exported**. Before submission, reconcile any
+additional actual prompts/plans used, including runtime model instructions and
+workflow configs, and commit them. Do not reconstruct missing messages as exact
+quotes. Redact credentials, account identifiers, personal browser context, and
+unrelated private projects; record redaction categories without publishing their
+values. No private pre-event project implementation is imported into this repo.

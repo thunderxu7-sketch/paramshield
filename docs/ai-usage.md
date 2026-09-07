@@ -1,52 +1,46 @@
 # AI Usage Disclosure
 
-**Status:** Living disclosure  
-**Date:** 2026-09-05
+**Updated:** 2026-09-07. Living factual disclosure, not a human-review
+certificate.
 
-ParamShield is being developed with AI-assisted planning and implementation.
-This file will be updated throughout the hackathon so reviewers can distinguish
-AI assistance from the product's runtime decision boundary.
+## Development assistance
 
-## Development-time use
+Codex assisted product review, specs/planning, architecture, implementation,
+tests, debugging, and integration investigation. AI-assisted areas include
+`docs/`, the monorepo/tooling configuration, `apps/web/`, `contracts/`,
+`packages/`, `subgraph/`, and `scripts/` as they are implemented in incremental
+commits. The public [planning/prompt record](planning/README.md) documents the
+available material directions; missing history is not invented.
 
-AI tools may assist with:
+Tests, official documentation, and live provider/chain checks are verification
+methods, not evidence that a human performed line-by-line code review. Human
+contributions visible in the project conversation include choosing the DeFi
+parameter-change direction, proposing/prioritizing scope, choosing the product
+and event identity, authorizing account setup/deployment actions, and approving
+the revised plan. Final substantive human review, interpretation of limitations,
+and real demo narration remain submission gates; do not mark them complete
+before they occur. Record any additional tools/models actually used, not
+guesses.
 
-- product and implementation planning;
-- drafting specifications, architecture notes, tests, and documentation;
-- code scaffolding and implementation suggestions;
-- debugging, refactoring, and code review; and
-- preparing evidence-grounded demo narration.
+## Runtime AI (P0, implementation tracked separately)
 
-All generated code and claims are reviewed against repository tests, official
-documentation, and live integration results. Commit history remains incremental
-so the implementation process is reviewable.
+Evidence-grounded risk Q&A explains deterministic results from **live Graph**
+snapshots. It cites existing evidence fields for every number and can identify
+affected indexed positions or compare reviewed results. It cannot change policy,
+calculate an executable replacement, fabricate missing data, approve, sign,
+send, or turn a failure into ALLOW. Missing model access is displayed honestly
+while the deterministic evidence remains usable. This is distinct from using AI
+to write the code and is required for our chosen Graph AI-use-case positioning.
 
-## Runtime use
+## Reuse and disclosure
 
-An optional P1 model may turn verified evidence into a concise explanation for
-risk council reviewers. Runtime model output is presentation-only.
+The reference market and project-specific implementation are developed during
+the event. External dependencies are recorded in lockfiles; any official starter
+used in a shipped workflow must have its source/license and modifications noted.
+The earlier official CRE template spike is a feasibility check, not yet a
+shipped ParamShield workflow. Do not import private pre-event project-specific
+code.
 
-It may summarize deterministic risk deltas, point reviewers to positions already
-present in the evidence bundle, and compare candidate values that have already
-passed deterministic simulation.
-
-It may not:
-
-- change policy rules or thresholds;
-- calculate or select an unverified executable value;
-- fabricate missing market data;
-- approve, sign, or send a transaction; or
-- convert an invalid, stale, timed-out, or blocked decision into an allowed one.
-
-## Verification boundary
-
-Every number cited by an AI explanation must reference a field in the canonical
-evidence bundle. The UI must remain usable when the model is unavailable. A
-model failure cannot weaken the default-deny execution path.
-
-## Planning artifacts
-
-The complete working plan remains local while it changes rapidly. Public specs,
-architecture decisions, prompts that materially affect the shipped system, and
-this disclosure will be committed before submission in accordance with the
-event's spec-driven development requirements.
+Keep the local plan ignored but publish all actual sanitized specs, prompts,
+planning artifacts, and runtime instructions before submission. The final video
+must use real human narration, not AI voice or sped-up narration.

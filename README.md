@@ -30,7 +30,7 @@ ParamShield turns that review into one auditable pipeline:
 The reference market starts with an 80% liquidation threshold. An operator
 proposes lowering it to 70%. Live indexed positions show that the change would
 make healthy borrowers immediately liquidatable, and a 15% ETH price shock would
-exceed the market's private risk budget. ParamShield blocks the original
+exceed the policy's incremental exposure budget. ParamShield blocks the original
 payload, computes the nearest safe threshold from the same live data, and lets
 the reviewed replacement execute on Sepolia.
 
@@ -47,9 +47,13 @@ an ornamental login or badge.
 
 ## Repository status
 
-This repository is being built from scratch during ETHOnline 2026. The current
-milestone establishes the specification, trust boundaries, toolchain, and
-integration feasibility before protocol code is added.
+This repository is being built from scratch during ETHOnline 2026. The reference
+market, seeded positions, and initial executor were deployed to Sepolia on
+September 6. The September 7 revision targets risk/evidence invariants and a
+**local v2** execution gate, not yet deployed. Live sponsor integrations, the
+console, and runtime AI have separate gates in the
+[implementation plan](docs/implementation-plan.md). Local tests do not prove a
+live integration is complete.
 
 ## Planned workspace
 
@@ -93,7 +97,7 @@ pnpm spike:cre
 pnpm spike:privy
 ```
 
-The Privy spike performs an authenticated wallet-list read only when
+The Privy spike performs an authenticated user-list read only when
 `NEXT_PUBLIC_PRIVY_APP_ID` and `PRIVY_APP_SECRET` are present in the
 environment; otherwise it verifies the official SDK import and reports the
 missing setup.
@@ -105,6 +109,9 @@ missing setup.
 - [Threat model](docs/threat-model.md)
 - [AI usage disclosure](docs/ai-usage.md)
 - [Sponsor readiness](docs/sponsor-readiness.md)
+- [Implementation plan](docs/implementation-plan.md)
+- [Accepted review decisions](docs/decisions/0001-risk-and-execution-boundaries.md)
+- [Planning and prompt artifacts](docs/planning/README.md)
 
 ## Safety principles
 

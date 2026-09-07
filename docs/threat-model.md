@@ -1,80 +1,79 @@
 # ParamShield Threat Model
 
-**Status:** Initial model; update when each integration lands  
-**Date:** 2026-09-05
+**Revision:** 2026-09-07. Reference-market demo only; no production deposits.
 
-## Assets
+## Assets and trust
 
-- Authority to change a protocol risk parameter.
-- Privy app credentials and authorization private keys.
-- Chainlink CRE secrets and confidential policy values.
-- The exact transaction calldata approved by reviewers.
-- Live position snapshots and risk calculation integrity.
-- Evidence bundles, hashes, receipts, and audit history.
+Assets: exact parameter intent, complete indexed snapshot, policy secrecy,
+authorization, replay/expiry state, and truthful evidence. Mock balances have no
+real economic value. The operator/browser is untrusted for risk decisions.
 
-## Trust assumptions
+Trust: selected P0 uses **CRE CLI simulation + trusted relay**, not remote TEE
+attestation. The relay can lie if compromised; the contract authenticates its
+address, not its policy computation. Distinct Privy operator and decision
+identities reduce accidental bypass but do not eliminate common-host risk.
+Governance admin is trusted and can reconfigure roles/allowlists. Production
+requires independent infrastructure/governance and a separately verified report
+path. Do not market the demo as admin-proof or audited lending infrastructure.
 
-- Ethereum Sepolia behaves as a public test network, not as a production safety
-  guarantee.
-- The Graph accurately reflects indexed chain events up to its declared block;
-  ParamShield is responsible for freshness checks.
-- CRE confidential execution provides the documented isolation and attestation
-  properties; workflow source code itself is not assumed confidential.
-- Privy enforces the configured owner, signer, quorum, and policy rules.
-- Browser input, RPC responses, GraphQL responses, and model output are
-  untrusted until validated.
+## Required invariants
 
-## Threats and controls
+1. No valid ALLOW and Privy control means no execution. BLOCK/ESCALATE cannot be
+   changed to ALLOW; a fresh reviewed intent is required.
+2. Intent hash binds executor, operator, chain, target, value, calldata, nonce,
+   preflightHash, expiry, market version, and authorization epoch.
+3. Every risk-relevant market mutation invalidates old approvals atomically.
+   Authorization changes also revoke pending intents, even after role
+   restoration.
+4. Graph pagination uses one block/hash; totals/count reconcile; stale data,
+   indexing errors and RPC disagreement fail closed, not a fixture fallback.
+5. The confidential handler recomputes risk from a complete validated snapshot,
+   not frontend summary numbers. Private policy evaluation/search stays there.
+6. Preflight and decision hashes exclude future receipts. Final-bundle integrity
+   is verified separately and never misrepresented as pre-execution anchoring.
+7. LLM output cannot alter constraints, calculate an executable value,
+   authorize, sign, send, or override failure. Numeric claims require evidence
+   references.
+8. Receipt success and matching block-pinned state are both required for
+   success. On ambiguous submission recover the existing transaction before
+   retrying.
 
-| Threat                                            | Impact                                 | Required control                                                                      | Verification                       |
-| ------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------- |
-| UI shows one value while calldata encodes another | Reviewer authorizes a hidden change    | Decode canonical calldata server-side; show decoded fields; bind hash to raw calldata | Round-trip and tamper tests        |
-| Reuse a valid verdict for another call            | Unauthorized parameter update          | Bind chain, target, calldata, nonce, evidence hash, and expiry                        | Contract replay/binding tests      |
-| Use stale Graph state                             | Decision ignores new risky positions   | Record indexed block/time and enforce freshness                                       | Stale-data integration test        |
-| Forge or mutate a Graph response                  | Incorrect risk result                  | Schema validation, canonical snapshot hash, endpoint metadata                         | Invalid-response tests             |
-| Manipulate rounding near health factor 1          | Missed liquidations                    | Fixed-point integer math and explicit rounding direction                              | Boundary/property tests            |
-| Leak private policy values                        | Reveals risk operations or credentials | Fetch inside confidential boundary; return rule IDs only; prohibit secret logging     | Log review and canary test         |
-| CRE unavailable or malformed                      | Policy bypass                          | No valid verdict means no executable state                                            | Timeout/malformed-output tests     |
-| Frontend bypasses approval                        | Unauthorized execution                 | Privy control plus executor-level authorization                                       | Direct-call revert test            |
-| Compromised scoped signer calls arbitrary target  | Wallet loss or unsafe calls            | Restrict target, selector, chain, value, and expiry in policy and executor            | Negative policy tests              |
-| Replayed or expired approval                      | Stale authorized change executes       | Nonces, expiries, and consumed-change storage                                         | Contract tests                     |
-| LLM invents evidence or safe values               | Unsafe recommendation                  | Treat LLM output as presentation only; deterministic engine owns numbers              | Prompt/adversarial tests           |
-| UI marks a dropped transaction successful         | False audit trail                      | Require receipt success and state readback                                            | Dropped/reverted transaction tests |
-| Evidence file is changed after execution          | Audit mismatch                         | Canonical serialization and onchain-bound hash                                        | Hash verification test             |
-| Seed data is presented as live                    | Misleads judges/users                  | Label source mode and block production claims                                         | E2E assertion                      |
+## Failure matrix
 
-## Security invariants
+| Attack/failure                            | Gate and test requirement                                                                  |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Forged, truncated or stale Graph data     | Block/hash/freshness checks, complete pagination, totals reconciliation, RPC corroboration |
+| Changed calldata/nonce/domain/evidence    | Strict encoding and hash parity; contract mismatch/replay tests                            |
+| State changes after approval              | Market version at propose and execute; test every mutation and another approved change     |
+| Authority/operator/allowlist rotated back | Authorization epoch; stale-epoch tests                                                     |
+| Malformed/late/foreign CRE result         | Owned runner, strict schema + exact run/intent bindings; no fabricated fallback            |
+| Operator self-approves                    | Distinct roles; separate secrets; unauthorized decision tests                              |
+| Secret leakage through outputs            | Explicit public schemas/allowlist, no full search trace or raw logs; safe errors           |
+| Repeated recommendation probing           | Service authentication and rate limits; acknowledge unavoidable inference leakage          |
+| Wallet policy bypass                      | Actual provider allow/deny evidence; exact target/chain/method restrictions                |
+| Duplicate submit/browser reload           | Durable idempotency and receipt recovery; E2E regression                                   |
+| Demo rerun changes baseline               | Reviewed reset or new fixture; three-run rehearsal                                         |
 
-1. No valid current decision means no execution.
-2. `BLOCK` can never reach the target contract.
-3. `ESCALATE` cannot use the ordinary approval threshold.
-4. A change decision is valid for one exact chain, target, calldata, nonce,
-   evidence hash, and expiry.
-5. The LLM cannot sign, submit, alter hard constraints, or produce an executable
-   parameter without deterministic re-validation.
-6. Secrets are never committed, sent to the browser, embedded in public build
-   output, emitted in events, or written to evidence.
-7. Execution success requires receipt success and matching onchain state.
+## Secrets and privacy
 
-## Secret inventory
+Graph deploy/query tokens, CRE credentials and policy, Privy app secret and
+authorization keys, and deployer keys stay in ignored mode-0600 local files or a
+server secret store. Never expose them in errors, logs, browser state, generated
+builds, evidence, git, or planning artifacts. `.env.example` lists names only.
 
-| Secret                          | Location                          | Rotation / containment                                      |
-| ------------------------------- | --------------------------------- | ----------------------------------------------------------- |
-| Graph deploy/query key          | server or deployment secret store | restrict endpoint/domain where possible; rotate on exposure |
-| CRE authentication/session      | local CRE config                  | never copy into repository or evidence                      |
-| CRE private thresholds          | Vault/secrets path                | expose only rule identifiers outside TEE                    |
-| Privy app secret                | server secret store               | server-only; rotate immediately on exposure                 |
-| Privy authorization private key | dedicated server secret           | public key only in dashboard/repository docs                |
-| Sepolia deployer key            | local/deployment secret store     | use a testnet-only low-value account                        |
+The public fixture policy is deliberately disclosed for reproducibility. Using
+these values as a demo secret exercises secret delivery but does not make them
+private. Real policy values must differ and remain external to source. CLI
+simulation is not a TEE and should not process real sensitive production input.
+Policy versions, verdicts, and recommendations themselves leak some information;
+no claim of zero knowledge or information-theoretic privacy is made.
 
-The repository ignores `.env*`, private key files, CRE secret YAML files, build
-broadcasts, and local planning material. The committed `.env.example` contains
-names and descriptions only.
+## Release gates
 
-## Review gates
-
-- Update this document after contract interfaces stabilize.
-- Add exact policy restrictions after Privy feature access is confirmed.
-- Add exact CRE confidentiality boundary after the workflow spike.
-- Run secret scanning before every public push and before submission.
-- Revisit residual risks before recording the demo.
+- Local v2 protections are **not** active at the recorded September 6 v1
+  addresses.
+- Test contract/unit/integration/browser paths separately; no empty-test pass.
+- Before public push, scan changed public files and staged diff for secrets.
+- Before demo, validate real Graph/CRE/Privy evidence and explorer/state parity.
+- Before submission, audit all actual specs/prompts/plans and AI/human
+  attribution.
