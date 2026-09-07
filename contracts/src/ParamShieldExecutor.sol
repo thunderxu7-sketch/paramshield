@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.30;
 
+interface IVersionedMarket {
+    function stateVersion() external view returns (uint256);
+}
+
 /// @notice Fail-closed execution gate for risk-reviewed protocol parameter changes.
 contract ParamShieldExecutor {
     error CallDataTooShort();
+    error RoleSeparationRequired();
+    error StaleMarketState();
+    error StaleAuthorizationEpoch();
     error DecisionAlreadyRecorded();
     error InvalidAddress();
     error InvalidChainId();
@@ -23,7 +30,7 @@ contract ParamShieldExecutor {
     error TargetCallFailed(bytes returnData);
 
     bytes32 public constant CHANGE_INTENT_TYPEHASH = keccak256(
-        "ChangeIntent(address executor,address operator,uint256 chainId,address target,uint256 value,bytes32 dataHash,uint256 nonce,bytes32 evidenceHash,uint64 expiresAt)"
+        "ChangeIntentV2(address executor,address operator,uint256 chainId,address target,uint256 value,bytes32 dataHash,uint256 nonce,bytes32 evidenceHash,uint256 expectedStateVersion,uint256 expectedAuthorizationEpoch,uint64 expiresAt)"
     );
     bytes4 public constant SET_LIQUIDATION_THRESHOLD_SELECTOR =
         bytes4(keccak256("setLiquidationThresholdBps(uint16)"));
@@ -52,6 +59,8 @@ contract ParamShieldExecutor {
         bytes data;
         uint256 nonce;
         bytes32 evidenceHash;
+        uint256 expectedStateVersion;
+        uint256 expectedAuthorizationEpoch;
         uint64 expiresAt;
     }
 
@@ -63,6 +72,8 @@ contract ParamShieldExecutor {
         bytes32 evidenceHash;
         bytes32 decisionHash;
         uint256 nonce;
+        uint256 expectedStateVersion;
+        uint256 expectedAuthorizationEpoch;
         uint64 expiresAt;
         ProposalState state;
     }
@@ -70,10 +81,16 @@ contract ParamShieldExecutor {
     address public admin;
     address public operator;
     address public decisionAuthority;
+    uint256 public authorizationEpoch = 1;
 
     mapping(bytes32 changeHash => Proposal proposal) public proposals;
     mapping(address proposer => mapping(uint256 nonce => bool used)) public nonceUsed;
     mapping(address target => mapping(bytes4 selector => bool allowed)) public allowedCalls;
+
+    event AuthorizationEpochUpdated(uint256 authorizationEpoch);
+    event ProposalPreconditions(
+        bytes32 indexed changeHash, uint256 expectedStateVersion, uint256 expectedAuthorizationEpoch
+    );
 
     event AllowedCallUpdated(address indexed target, bytes4 indexed selector, bool allowed);
     event DecisionAuthorityUpdated(
@@ -159,10 +176,15 @@ contract ParamShieldExecutor {
             evidenceHash: intent.evidenceHash,
             decisionHash: bytes32(0),
             nonce: intent.nonce,
+            expectedStateVersion: intent.expectedStateVersion,
+            expectedAuthorizationEpoch: intent.expectedAuthorizationEpoch,
             expiresAt: intent.expiresAt,
             state: ProposalState.PENDING
         });
 
+        emit ProposalPreconditions(
+            changeHash, intent.expectedStateVersion, intent.expectedAuthorizationEpoch
+        );
         emit ProposalCreated(
             changeHash,
             msg.sender,
@@ -183,6 +205,9 @@ contract ParamShieldExecutor {
         if (proposal.state == ProposalState.NONE) revert ProposalNotFound();
         if (proposal.state != ProposalState.PENDING) revert DecisionAlreadyRecorded();
         if (block.timestamp > proposal.expiresAt) revert ProposalExpired();
+        _checkPreconditions(
+            proposal.target, proposal.expectedStateVersion, proposal.expectedAuthorizationEpoch
+        );
         if (decision == Decision.NONE) revert InvalidDecision();
         if (decisionHash == bytes32(0)) revert InvalidEvidenceHash();
 
@@ -249,6 +274,8 @@ contract ParamShieldExecutor {
             keccak256(intent.data),
             intent.nonce,
             intent.evidenceHash,
+            intent.expectedStateVersion,
+            intent.expectedAuthorizationEpoch,
             intent.expiresAt
         );
         bytes32 changeHash;
@@ -261,6 +288,7 @@ contract ParamShieldExecutor {
     function setAllowedCall(address target, bytes4 selector, bool allowed) external onlyAdmin {
         if (target == address(0)) revert InvalidAddress();
         allowedCalls[target][selector] = allowed;
+        _advanceAuthorizationEpoch();
         emit AllowedCallUpdated(target, selector, allowed);
     }
 
@@ -268,6 +296,7 @@ contract ParamShieldExecutor {
         if (newOperator == address(0)) revert InvalidAddress();
         address previousOperator = operator;
         operator = newOperator;
+        _advanceAuthorizationEpoch();
         emit OperatorUpdated(previousOperator, newOperator);
     }
 
@@ -275,6 +304,7 @@ contract ParamShieldExecutor {
         if (newDecisionAuthority == address(0)) revert InvalidAddress();
         address previousDecisionAuthority = decisionAuthority;
         decisionAuthority = newDecisionAuthority;
+        _advanceAuthorizationEpoch();
         emit DecisionAuthorityUpdated(previousDecisionAuthority, newDecisionAuthority);
     }
 
@@ -282,6 +312,7 @@ contract ParamShieldExecutor {
         if (newAdmin == address(0)) revert InvalidAddress();
         address previousAdmin = admin;
         admin = newAdmin;
+        _advanceAuthorizationEpoch();
         emit OwnershipTransferred(previousAdmin, newAdmin);
     }
 
@@ -298,6 +329,28 @@ contract ParamShieldExecutor {
             selector := calldataload(data.offset)
         }
         if (!allowedCalls[intent.target][selector]) revert SelectorNotAllowed();
+        _checkPreconditions(
+            intent.target, intent.expectedStateVersion, intent.expectedAuthorizationEpoch
+        );
+    }
+
+    function _advanceAuthorizationEpoch() private {
+        ++authorizationEpoch;
+        emit AuthorizationEpochUpdated(authorizationEpoch);
+    }
+
+    function _checkPreconditions(
+        address target,
+        uint256 expectedStateVersion,
+        uint256 expectedAuthorizationEpoch
+    ) private view {
+        if (operator == decisionAuthority) {
+            revert RoleSeparationRequired();
+        }
+        if (expectedAuthorizationEpoch != authorizationEpoch) revert StaleAuthorizationEpoch();
+        if (expectedStateVersion != IVersionedMarket(target).stateVersion()) {
+            revert StaleMarketState();
+        }
     }
 
     function _checkAdmin() private view {

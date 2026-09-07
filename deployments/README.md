@@ -5,8 +5,19 @@ for its Phase 1 Sepolia deployment. The bootstrap constructor deploys the mock
 assets, the reference lending market, and the execution gate; seeds the
 canonical five positions; and then transfers market ownership to the gate.
 
-The canonical deployment record is `sepolia.json`. Contract interfaces used by
-the web app, indexer, and verification tooling are checked into `abi/`.
+The **September 6 v1** deployment record is `sepolia.json`; its historical ABIs
+are in `abi/`. Those files are deliberately not regenerated from local v2
+source. The deployed source revision is `7da5814`; `c4cfe8f` records the
+deployment.
+
+**September 7 v2 is LOCAL ONLY until a new deployment is reviewed.** It changes
+the intent ABI/typehash, adds market stateVersion and executor
+authorizationEpoch, and refuses operation while operator equals
+decisionAuthority. Bootstrap still initializes both roles to the deployer for
+provisioning, so they must be separated before any proposal can be made. No v1
+address has these v2 protections. A new deployment must use a new manifest/ABI
+directory and a versioned Graph endpoint; never point v2 execution code at the
+existing v1 manifest.
 
 ## Sepolia
 
@@ -27,7 +38,14 @@ Every contract is an exact creation/runtime match on Sourcify and is published
 with verified source on Blockscout. See `sepolia.json` for verification job IDs,
 deployment cost, code sizes, roles, and the complete seeded state.
 
-## Reproduce with Foundry
+## Reproduce the historical v1 deployment
+
+Use source revision `7da5814` to reproduce v1 bytecode. Current source builds v2
+and must not be represented as reproducing the addresses above. Review the new
+payload and role setup before broadcasting; the command below is not automatic
+authorization to deploy.
+
+### Foundry command
 
 ```bash
 cd contracts

@@ -8,6 +8,7 @@ interface Vm {
     function startPrank(address sender) external;
     function stopPrank() external;
     function warp(uint256 newTimestamp) external;
+    function etch(address target, bytes calldata code) external;
 }
 
 abstract contract TestBase {

@@ -117,6 +117,54 @@ contract ReferenceLendingMarketTest is TestBase {
         );
     }
 
+    function testAllRiskMutationsAdvanceStateVersionExactlyOnce() public {
+        assertEq(market.stateVersion(), 1, "initial version");
+        VM.startPrank(ALICE);
+        collateralToken.approve(address(market), 20 ether);
+        market.depositCollateral(10 ether);
+        assertEq(market.stateVersion(), 2, "deposit version");
+        market.borrow(10_000e6);
+        assertEq(market.stateVersion(), 3, "borrow version");
+        debtToken.approve(address(market), 1_000e6);
+        market.repay(1_000e6);
+        assertEq(market.stateVersion(), 4, "repay version");
+        market.withdrawCollateral(1 ether);
+        assertEq(market.stateVersion(), 5, "withdraw version");
+        VM.expectRevert(ReferenceLendingMarket.UnhealthyPosition.selector);
+        market.withdrawCollateral(8 ether);
+        assertEq(market.stateVersion(), 5, "revert advanced version");
+        VM.stopPrank();
+        _prefundAndSeedOne(DemoSeed.HEALTHY, 10 ether, 12_000e6);
+        assertEq(market.stateVersion(), 6, "seed version");
+        market.setLiquidationThresholdBps(7_942);
+        assertEq(market.stateVersion(), 7, "LT version");
+        market.setCollateralPriceUsdE18(1_900e18);
+        assertEq(market.stateVersion(), 8, "price version");
+        market.transferOwnership(ALICE);
+        assertEq(market.stateVersion(), 9, "ownership version");
+    }
+
+    function testCanonicalBoundaryMatchesTypeScriptRiskEngine() public {
+        collateralToken.mint(address(market), DemoSeed.totalCollateral());
+        for (uint256 i; i < DemoSeed.POSITION_COUNT; ++i) {
+            (address account, uint256 c, uint256 d) = DemoSeed.positionAt(i);
+            market.seedPosition(account, c, d);
+        }
+        assertEq(_liquidatableDebt(8_000, 1_700e18), 22_800e6, "baseline stress debt");
+        assertEq(_liquidatableDebt(7_000, 2_000e18), 22_800e6, "new normal debt");
+        assertEq(_liquidatableDebt(7_000, 1_700e18), 48_300e6, "proposed stress debt");
+        assertEq(_liquidatableDebt(7_800, 1_700e18), 36_300e6, "78 percent is not compliant");
+        assertEq(_liquidatableDebt(7_941, 1_700e18), 36_300e6, "lower boundary");
+        assertEq(_liquidatableDebt(7_942, 1_700e18), 22_800e6, "passing boundary");
+    }
+
+    function _liquidatableDebt(uint16 lt, uint256 price) private view returns (uint256 debt) {
+        for (uint256 i; i < DemoSeed.POSITION_COUNT; ++i) {
+            (address account,, uint256 d) = DemoSeed.positionAt(i);
+            if (market.previewHealthFactor(account, lt, price) < 1e18) debt += d;
+        }
+    }
+
     function _prefundAndSeedOne(address account, uint256 collateralAmount, uint256 debtAmount)
         private
     {

@@ -44,8 +44,11 @@ contract ReferenceLendingMarket {
     uint256 public collateralPriceUsdE18;
     uint256 public totalCollateral;
     uint256 public totalDebt;
+    uint256 public stateVersion = 1;
 
     mapping(address account => Position position) public positions;
+
+    event MarketStateUpdated(uint256 stateVersion);
 
     event CollateralDeposited(address indexed account, uint256 amount);
     event CollateralPriceUpdated(
@@ -101,6 +104,7 @@ contract ReferenceLendingMarket {
         owner = owner_;
 
         emit OwnershipTransferred(address(0), owner_);
+        emit MarketStateUpdated(stateVersion);
     }
 
     function depositCollateral(uint256 amount) external {
@@ -187,6 +191,7 @@ contract ReferenceLendingMarket {
         if (healthFactorE18 < WAD) revert UnhealthyPosition();
 
         _safeTransfer(debtToken, account, debtAmount);
+        _advanceStateVersion();
         emit PositionSeeded(account, collateralAmount, debtAmount, healthFactorE18);
         emit PositionUpdated(account, collateralAmount, debtAmount, healthFactorE18);
     }
@@ -196,6 +201,7 @@ contract ReferenceLendingMarket {
 
         uint16 previousThresholdBps = liquidationThresholdBps;
         liquidationThresholdBps = newThresholdBps;
+        _advanceStateVersion();
         emit LiquidationThresholdUpdated(previousThresholdBps, newThresholdBps, msg.sender);
     }
 
@@ -204,6 +210,7 @@ contract ReferenceLendingMarket {
 
         uint256 previousPriceUsdE18 = collateralPriceUsdE18;
         collateralPriceUsdE18 = newPriceUsdE18;
+        _advanceStateVersion();
         emit CollateralPriceUpdated(previousPriceUsdE18, newPriceUsdE18, msg.sender);
     }
 
@@ -212,6 +219,7 @@ contract ReferenceLendingMarket {
 
         address previousOwner = owner;
         owner = newOwner;
+        _advanceStateVersion();
         emit OwnershipTransferred(previousOwner, newOwner);
     }
 
@@ -262,7 +270,13 @@ contract ReferenceLendingMarket {
         return debtAmount * WAD / debtScale;
     }
 
+    function _advanceStateVersion() private {
+        ++stateVersion;
+        emit MarketStateUpdated(stateVersion);
+    }
+
     function _emitPosition(address account, Position memory position) internal {
+        _advanceStateVersion();
         emit PositionUpdated(
             account,
             position.collateralAmount,
