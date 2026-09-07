@@ -1,79 +1,66 @@
 # Sponsor Integration Readiness
 
-**Date:** 2026-09-05  
-**Purpose:** Record capability checks without storing credentials.
+**Updated:** 2026-09-07. Account, local build, live read, control proof, and
+final product integration are different gates. No credentials are included here.
 
-## Status vocabulary
+## Matrix
 
-- **Verified:** a real authenticated request or local official-tool simulation
-  succeeded and evidence is recorded.
-- **Available:** the account/dashboard or CLI is accessible, but the project has
-  not made an authenticated request yet.
-- **Blocked:** a specific user or provider action is required.
-- **Planned:** no live check has been completed.
+| Sponsor       | Verified evidence                                                                                                              | Still missing                                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| The Graph     | Prior account/email setup; CLI 0.98.1; v1 schema/mappings compile; pinned pagination/reconciliation client tests               | Studio session is logged out; wallet reconnect, authenticated deployment, live query and new-event proof        |
+| Chainlink CRE | Prior CLI 1.32.0 authentication and nine official-template tests/local simulation                                              | Product handler, trusted relay and bound live-input run; private-beta network access remains unverified/pending |
+| Privy         | Development app SDK authentication; real isolated policy-bound wallet; valid signature recovered; four provider policy denials | Final execution policy, distinct decision role, human-reviewed organization flow and real Sepolia broadcast     |
 
-## Readiness matrix
+## Exact partner positioning
 
-| Sponsor       | Account access                                                    | Tool/SDK spike                                                    | Advanced feature                                                                                       | Current status                                  |
-| ------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
-| The Graph     | Event wallet connected and dashboard email verified               | Graph CLI 0.98.1 runs on Node 20.19.2                             | A Studio deployment and API key are deferred until the reference contracts emit data                   | Account and toolchain verified; live query next |
-| Chainlink CRE | CLI authentication verified; deployment-access request is pending | CRE CLI 1.32.0 compiled and simulated the official TEE template   | Confidential Workflows deployment remains gated; authenticated local confidential simulation is usable | Local confidential path verified                |
-| Privy         | Developer account and ParamShield development app created         | `@privy-io/node` 0.34.0 completed an authenticated user-list read | Wallet control and policies are verified during T-401; scoped signer is the P0 fallback                | Account, app, and SDK authentication verified   |
+- **The Graph — Best AI Tooling or AI Use Case (From Scratch):** live Graph
+  positions feed deterministic decisions and grounded risk Q&A. A custom index
+  alone does not prove standardized/composable-product eligibility. Raw query
+  display or AI-assisted coding alone is not our runtime AI-use-case evidence.
+- **Chainlink — Best Confidential Workflow:** meaningful secret policy and
+  candidate evaluation in a registered confidential handler. Selected P0 is
+  reproducible **CLI simulation + trusted relay**, not real TEE attestation.
+  Product integration must go beyond the earlier isolated official starter.
+- **Privy — Best B2B financial product:** policy-bound operator plus separate
+  decision authority in a parameter-review workflow. Do not delay P0 for an
+  unverified advanced quorum, and do not call the sign-only spike a completed
+  organizational approval or onchain execution.
 
-## Qualification contract
+## Sanitized evidence log
 
-### The Graph
+| Time (UTC)     | Integration | Actual result                                                                                                                                                         |
+| -------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sep 4–5        | Graph       | Event wallet connected, email verified, CLI runs; no live subgraph created                                                                                            |
+| Sep 4 21:40    | CRE         | Official confidential starter: nine tests and CLI simulation; secret delivery exercised in simulation, **not hardware TEE**                                           |
+| Sep 4 21:51–54 | Privy       | SDK user-list authentication passed; unused initial app secret revoked                                                                                                |
+| Sep 7          | Graph       | v1 mappings/codegen/WASM build and pinned client tests pass; browser asks to reconnect wallet/accept service terms                                                    |
+| Sep 7 03:12    | Privy       | Isolated sign-only policy/wallet verified; wrong chain, target, nonzero value, and changed calldata argument all rejected by provider policy (HTTP 400); no broadcast |
 
-The final system must consume fresh Subgraph data in the calculation itself. A
-static fixture, RPC-only read, or decorative query panel does not qualify. The
-demo will expose indexed block, freshness, query hash, and one position change
-that alters the verdict.
+The actual Privy check is recorded in
+[the machine-readable evidence file](evidence/privy-control-spike-2026-09-07.json).
+It never stores raw signed transactions, keys, app IDs/secrets, or resource IDs.
+The control library uses decoded Ethereum calldata conditions, not an
+unsupported `ethereum_transaction.data` field. API policy-denial responses use
+HTTP 400 in this account; a mere HTTP error is not counted as a policy denial.
 
-### Chainlink CRE
+The test wallet is app-managed and intentionally has no market/executor role.
+Its proof policy restricts sign-only calls; final policy configuration and
+reviewer authorization must be implemented and verified independently.
 
-The final system must execute a confidential handler that uses at least one
-private policy input. The minimum evidence is a reproducible CLI simulation with
-redacted logs and structured output; deployment is pursued when account access
-permits it. A standard workflow without a real confidential boundary is not
-sufficient for the selected prize.
+## Next gates
 
-### Privy
+1. Reconnect Studio, deploy the index, query live state and corroborate at its
+   block.
+2. Run the actual CRE product handler and validate relay inputs/results.
+3. Review v2 deployment and distinct operational roles before changing Sepolia.
+4. Complete Privy-controlled real execution with receipt/state/evidence
+   matching.
+5. Add runtime grounded AI, repeat the demo, and publish all submission
+   artifacts.
 
-Privy must control execution rather than merely authenticate the UI. The P0
-implementation will use the strongest feature verified in this order:
-
-1. manual intent approval with a key quorum;
-2. key quorum or authorization-key owner;
-3. scoped signer with an enforceable policy; or
-4. a policy-bound server wallet.
-
-The exact choice will be recorded during T-401 after the development app's
-wallet-control capabilities are tested.
-
-## Evidence log
-
-Do not paste secrets, full tokens, private keys, account emails, or screenshots
-containing credentials into this file.
-
-| UTC time          | Integration   | Check                                                         | Sanitized result                                                                                   |
-| ----------------- | ------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| 2026-09-04T20:56Z | The Graph     | Ran `pnpm spike:graph`                                        | Graph CLI 0.98.1 started successfully on Node 20.19.2                                              |
-| 2026-09-05        | The Graph     | Connected the event wallet and verified the dashboard email   | Authenticated dashboard is available; no API key or empty subgraph was created                     |
-| 2026-09-04T20:56Z | Chainlink CRE | Ran `pnpm spike:cre`                                          | Official CRE CLI 1.32.0 started successfully; authentication was pending                           |
-| 2026-09-04T21:40Z | Chainlink CRE | Authenticated, tested, and simulated the official TEE starter | Nine tests passed; simulation returned a redacted verdict and confirmed secret delivery in the TEE |
-| 2026-09-04T21:40Z | Chainlink CRE | Checked deployment access and Sepolia support                 | Sepolia is supported; the private-beta deployment request is pending review                        |
-| 2026-09-04T20:56Z | Privy         | Ran `pnpm spike:privy`                                        | Official Node SDK 0.34.0 imported successfully; authenticated read awaited credentials             |
-| 2026-09-05        | Privy         | Created a development app and stored its public app ID        | App ID is in a mode-0600 ignored file; no secret is committed or logged                            |
-| 2026-09-04T21:51Z | Privy         | Ran an authenticated `pnpm spike:privy` read                  | API credentials were accepted and the empty development-app user list was returned                 |
-| 2026-09-04T21:54Z | Privy         | Revoked the unused initial secret and repeated the SDK read   | Only the locally stored secret remains active; authenticated access still succeeds                 |
-
-## Go/no-go gates
-
-- **2026-09-05:** install official CLIs/SDKs, verify account paths, and capture
-  a minimal sanitized success log for each integration.
-- **2026-09-07:** a live Graph query must affect simulation input.
-- **2026-09-09:** a confidential CRE simulation must return a validated verdict.
-- **2026-09-10:** Privy must authorize a real Sepolia transaction.
-
-If an advanced feature is unavailable, use the documented P0 fallback without
-claiming the unavailable feature in the submission.
+Sources checked Sep 7:
+[The Graph prize](https://ethglobal.com/events/ethonline2026/prizes/the-graph),
+[Chainlink prize](https://ethglobal.com/events/ethonline2026/prizes/chainlink),
+[Privy prize](https://ethglobal.com/events/ethonline2026/prizes/privy),
+[Privy policy documentation](https://docs.privy.io/controls/policies/overview).
+Qualification remains subject to the partners' rules and judges, not guaranteed.

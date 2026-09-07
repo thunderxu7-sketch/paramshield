@@ -1,9 +1,48 @@
-# Subgraph
+# ParamShield Sepolia Subgraph
 
-The Sepolia Subgraph will index positions, market parameters, change lifecycle
-events, and evidence hashes. Schema and mappings begin after the first contract
-deployment so generated bindings reflect the actual ABI.
+The checked-in manifest targets the **September 6 v1** deployment at
+block 11645965. This is a data-readiness index, not the local v2 execution
+deployment. Its ABIs come from the immutable deployment record, not current
+contract builds.
 
-The Graph CLI is pinned locally. Run `pnpm spike:graph` from the repository root
-to verify that the supported toolchain is available without installing it
-globally.
+```bash
+pnpm --dir subgraph build
+# After connecting the event account and creating a Studio subgraph:
+pnpm --dir subgraph exec graph auth <DEPLOY_KEY>
+pnpm --dir subgraph exec graph deploy <STUDIO_SLUG> --version-label v0.1.0
+# Keep credentials in ignored local environment; never paste them in a report.
+node --env-file=.env.local --import ./apps/web/node_modules/tsx/dist/loader.mjs apps/web/scripts/graph-live-spike.ts
+```
+
+## Indexing design
+
+- PositionUpdated is the single source of position amounts; PositionSeeded is
+  not processed a second time. Totals are accumulated from deltas starting at
+  zero, not initialized from end-of-block totals and then double-counted.
+- Constructor-only price, LT, and decimal scales are read from the actual
+  contract at the event block. There is no hard-coded price/parameter fallback.
+- LT/price events update configuration. Health factors are recomputed downstream
+  from current indexed amounts; a previously emitted HF is not current after LT
+  changes.
+- Execution lifecycle events expose proposal, decision, expiry, and transaction
+  identifiers. v1 cannot claim a market stateVersion or v2 guard.
+
+## Query and acceptance
+
+`@paramshield/graph-client` first obtains `_meta`, then pins **all** market and
+cursor-paginated position reads to that block hash. It verifies deployment/block
+consistency, scope, position count, totals, indexing errors, and freshness. The
+live spike independently corroborates indexed config and every position with RPC
+at that block and checks for reorgs; it never substitutes RPC/fixtures for a
+failed Graph read. Endpoint tokens are not part of public provenance.
+
+Local compilation and mocked client tests are not live indexing proof. Until an
+authenticated Studio deployment returns current data and the live spike writes
+its evidence artifact, R-05 remains incomplete. Mapping runtime behavior still
+needs the real deployment/reconciliation test. When v2 is deployed, create a
+versioned manifest/endpoint with v2 events and new addresses, and re-run all
+gates.
+
+References:
+[manifest](https://thegraph.com/docs/en/subgraphs/developing/creating/subgraph-manifest/),
+[block-pinned queries and metadata](https://thegraph.com/docs/en/subgraphs/querying/graphql-api/).

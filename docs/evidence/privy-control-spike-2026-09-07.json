@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-09-07T03:12:26.129Z",
+  "provider": "privy",
+  "sdk": "@privy-io/node 0.34.0",
+  "mode": "isolated-sign-only-spike",
+  "walletAddress": "0x9c3BB33E259bCE8F941f8F8B2527f1a0b225C1f2",
+  "policyAttached": true,
+  "allowed": {
+    "signatureRecovered": true,
+    "chainId": 11155111,
+    "transactionDigest": "0xfdd7dc9076b37a1238b01001c0614f169282103295a7280659d208d1cba621de",
+    "broadcast": false
+  },
+  "denied": [
+    {
+      "case": "wrong-chain",
+      "result": "provider-policy-denied",
+      "status": 400
+    },
+    {
+      "case": "wrong-target",
+      "result": "provider-policy-denied",
+      "status": 400
+    },
+    {
+      "case": "nonzero-value",
+      "result": "provider-policy-denied",
+      "status": 400
+    },
+    {
+      "case": "wrong-calldata-argument",
+      "result": "provider-policy-denied",
+      "status": 400
+    }
+  ],
+  "limitations": [
+    "No chain broadcast, funding, operator role, human approval or quorum proved",
+    "App-managed test policy; final execution policy and independent decision authority are separate gates"
+  ]
+}

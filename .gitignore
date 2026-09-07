@@ -31,3 +31,10 @@ secrets.*.yaml
 .turbo/
 *.tsbuildinfo
 contracts/.forge-snapshots/
+
+# Private integration resource IDs and local runner state
+.local/
+
+# Generated Subgraph build output
+subgraph/generated/
+subgraph/build/

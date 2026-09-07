@@ -1,0 +1,50 @@
+type Market @entity(immutable: false) {
+  id: ID!
+  owner: Bytes!
+  contractVersion: String!
+  stateVersion: BigInt
+  liquidationThresholdBps: Int!
+  collateralPriceUsdE18: BigInt!
+  collateralDecimals: Int!
+  debtDecimals: Int!
+  totalCollateral: BigInt!
+  totalDebt: BigInt!
+  positionCount: Int!
+  updatedAtBlock: BigInt!
+  positions: [Position!]! @derivedFrom(field: "market")
+}
+
+type Position @entity(immutable: false) {
+  id: ID!
+  market: Market!
+  account: Bytes!
+  collateralAmount: BigInt!
+  debtAmount: BigInt!
+  updatedAtBlock: BigInt!
+}
+
+type Change @entity(immutable: false) {
+  id: ID!
+  executor: Bytes!
+  operator: Bytes!
+  target: Bytes!
+  selector: Bytes!
+  dataHash: Bytes!
+  nonce: BigInt!
+  preflightHash: Bytes!
+  expiresAt: BigInt!
+  decision: Int!
+  decisionHash: Bytes
+  state: String!
+  createdAtBlock: BigInt!
+  updatedAtBlock: BigInt!
+  executionTransaction: Bytes
+}
+
+type MarketEvent @entity(immutable: true) {
+  id: Bytes!
+  market: Market!
+  kind: String!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}

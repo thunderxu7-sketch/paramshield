@@ -1,0 +1,60 @@
+specVersion: 1.3.0
+description:
+  ParamShield Sepolia v1 reference market. Data readiness only; not the v2
+  execution deployment.
+repository: https://github.com/thunderxu7-sketch/paramshield
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ReferenceLendingMarket
+    network: sepolia
+    source:
+      address: "0xFabda359d272974F6561E907a4BB740b11A9fC26"
+      abi: ReferenceLendingMarket
+      startBlock: 11645965
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities: [Market, Position, MarketEvent]
+      abis:
+        - name: ReferenceLendingMarket
+          file: ../deployments/abi/ReferenceLendingMarket.json
+      eventHandlers:
+        - event: PositionUpdated(indexed address,uint256,uint256,uint256)
+          handler: handlePositionUpdated
+        - event: LiquidationThresholdUpdated(uint16,uint16,indexed address)
+          handler: handleThresholdUpdated
+        - event: CollateralPriceUpdated(uint256,uint256,indexed address)
+          handler: handlePriceUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/market.ts
+  - kind: ethereum/contract
+    name: ParamShieldExecutor
+    network: sepolia
+    source:
+      address: "0xF5523BDB15d353ABCE276bF6ae02c1C7244381D2"
+      abi: ParamShieldExecutor
+      startBlock: 11645965
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities: [Change]
+      abis:
+        - name: ParamShieldExecutor
+          file: ../deployments/abi/ParamShieldExecutor.json
+      eventHandlers:
+        - event:
+            ProposalCreated(indexed bytes32,indexed address,indexed
+            address,bytes4,bytes32,uint256,bytes32,uint64)
+          handler: handleProposalCreated
+        - event: DecisionRecorded(indexed bytes32,uint8,indexed bytes32,uint8)
+          handler: handleDecisionRecorded
+        - event: ProposalExecuted(indexed bytes32,indexed address,bytes32)
+          handler: handleProposalExecuted
+        - event: ProposalMarkedExpired(indexed bytes32)
+          handler: handleProposalExpired
+      file: ./src/executor.ts
