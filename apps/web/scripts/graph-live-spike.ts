@@ -2,10 +2,13 @@ import { createPublicClient, http, parseAbi, type Address } from "viem";
 import { sepolia } from "viem/chains";
 import {
   fetchGraphSnapshot,
+  fetchLocalGraphSnapshot,
+  LOCAL_GRAPH_URL,
   corroborateSnapshot,
   type RpcSnapshotPort,
 } from "@paramshield/graph-client";
 import { simulate } from "@paramshield/risk-engine";
+import { assertSnapshotFreshness } from "@paramshield/shared";
 import { hashCanonical } from "@paramshield/evidence";
 import { mkdir, writeFile } from "node:fs/promises";
 const ABI = parseAbi([
@@ -18,7 +21,8 @@ const ABI = parseAbi([
   "function positions(address) view returns(uint256 collateralAmount,uint256 debtAmount)",
 ]);
 async function main() {
-  const url = process.env.GRAPH_QUERY_URL;
+  const local = process.argv.includes("--local");
+  const url = local ? LOCAL_GRAPH_URL : process.env.GRAPH_QUERY_URL;
   if (!url)
     throw new Error(
       "GRAPH_QUERY_URL not configured: live Graph verification is pending",
@@ -34,14 +38,21 @@ async function main() {
   const chainId = await client.getChainId();
   if (chainId !== 11155111) throw new Error("Sepolia required");
   const headBlock = Number(await client.getBlockNumber());
-  const snapshot = await fetchGraphSnapshot({
+  const options = {
     url,
-    ...(process.env.GRAPH_API_KEY ? { apiKey: process.env.GRAPH_API_KEY } : {}),
     market: "0xFabda359d272974F6561E907a4BB740b11A9fC26",
     chainId,
     now: Math.floor(Date.now() / 1000),
     headBlock,
-  });
+  };
+  const snapshot = local
+    ? await fetchLocalGraphSnapshot(options)
+    : await fetchGraphSnapshot({
+        ...options,
+        ...(process.env.GRAPH_API_KEY
+          ? { apiKey: process.env.GRAPH_API_KEY }
+          : {}),
+      });
   if (snapshot.contractVersion !== "v1")
     throw new Error("This spike only targets the recorded v1 deployment");
   const port: RpcSnapshotPort = {
@@ -96,11 +107,23 @@ async function main() {
     },
   };
   await corroborateSnapshot(snapshot, port);
+  const validation = {
+    headBlock: Number(await client.getBlockNumber({ cacheTime: 0 })),
+    validatedAt: Math.floor(Date.now() / 1000),
+  };
+  assertSnapshotFreshness(
+    snapshot,
+    validation.validatedAt,
+    validation.headBlock,
+  );
   const simulation = simulate(snapshot, 7000);
   const evidence = {
     checkedAt: new Date().toISOString(),
-    kind: "graph-v1-data-readiness",
+    kind: local ? "graph-local-v1-data-readiness" : "graph-v1-data-readiness",
+    hostedProviderVerified: !local,
+    sponsorQualificationClaimed: false,
     snapshot,
+    validation,
     snapshotHash: hashCanonical(snapshot),
     simulation,
     rpcCorroborated: true,
@@ -109,7 +132,12 @@ async function main() {
   const root = new URL("../../../", import.meta.url);
   await mkdir(new URL("docs/evidence/", root), { recursive: true });
   await writeFile(
-    new URL("docs/evidence/graph-live-v1.json", root),
+    new URL(
+      local
+        ? "docs/evidence/graph-local-live-v1.json"
+        : "docs/evidence/graph-live-v1.json",
+      root,
+    ),
     JSON.stringify(evidence, null, 2) + "\n",
   );
   console.log(

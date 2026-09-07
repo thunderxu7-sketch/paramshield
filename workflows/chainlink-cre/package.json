@@ -1,0 +1,28 @@
+{
+  "name": "@paramshield/chainlink-cre",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@chainlink/cre-sdk": "1.18.0",
+    "@paramshield/evidence": "workspace:*",
+    "@paramshield/risk-engine": "workspace:*",
+    "@paramshield/shared": "workspace:*",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  },
+  "exports": {
+    "./protocol": "./src/protocol.ts"
+  }
+}

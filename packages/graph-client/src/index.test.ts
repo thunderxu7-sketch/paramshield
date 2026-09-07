@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { demoSnapshot } from "@paramshield/risk-engine/fixtures";
+import { assertFreshSnapshot } from "@paramshield/shared";
 import {
   fetchGraphSnapshot,
+  fetchLocalGraphSnapshot,
+  LOCAL_GRAPH_URL,
   corroborateSnapshot,
   type RpcSnapshotPort,
 } from "./index";
@@ -124,6 +127,45 @@ describe("complete pinned Graph snapshot", () => {
     expect(mock.requests[2]).toMatchObject({
       variables: { cursor: rows[99]!.id, block: { hash: s.block.hash } },
     });
+  });
+});
+describe("explicit local development transport", () => {
+  it("keeps real local indexing distinct from hosted execution evidence", async () => {
+    const result = await fetchLocalGraphSnapshot({
+      ...opts,
+      url: LOCAL_GRAPH_URL,
+      ...stub([{ data: { _meta: meta } }, { data: page() }]),
+    });
+    expect(result.source.kind).toBe("graph-local");
+    expect(result.positions).toEqual(s.positions);
+    expect(() => assertFreshSnapshot(result, opts.now, opts.headBlock)).toThrow(
+      "Live Graph",
+    );
+  });
+  it.each([
+    "http://example.com/graph",
+    "http://127.0.0.1:18020/",
+    "http://localhost:18000/subgraphs/name/paramshield-v1",
+    `${LOCAL_GRAPH_URL}?token=secret`,
+    "http://user:secret@127.0.0.1:18000/subgraphs/name/paramshield-v1",
+  ])("rejects a non-allowlisted local URL: %s", async (url) => {
+    await expect(fetchLocalGraphSnapshot({ ...opts, url })).rejects.toThrow(
+      "local development endpoint",
+    );
+  });
+  it("keeps stale local data fail-closed and rejects API credentials", async () => {
+    await expect(
+      fetchLocalGraphSnapshot({
+        ...opts,
+        now: opts.now + 121,
+        url: LOCAL_GRAPH_URL,
+        ...stub([{ data: { _meta: meta } }, { data: page() }]),
+      }),
+    ).rejects.toThrow("Stale");
+    const unsafe = { ...opts, url: LOCAL_GRAPH_URL, apiKey: "never-send-this" };
+    await expect(fetchLocalGraphSnapshot(unsafe)).rejects.toThrow(
+      "credential-free",
+    );
   });
 });
 describe("RPC corroboration does not replace Graph input", () => {

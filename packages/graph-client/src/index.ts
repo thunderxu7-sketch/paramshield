@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   assertFreshSnapshot,
+  assertSnapshotFreshness,
   nonzeroAddressSchema,
   nonzeroHashSchema,
   positionSchema,
@@ -64,10 +65,32 @@ type Options = {
 export async function fetchGraphSnapshot(
   options: Options,
 ): Promise<MarketSnapshot> {
+  return fetchIndexedSnapshot(options, "graph");
+}
+
+export const LOCAL_GRAPH_URL =
+  "http://127.0.0.1:18000/subgraphs/name/paramshield-v1";
+
+/** Explicit development lane. Never turns local data into hosted-provider proof. */
+export async function fetchLocalGraphSnapshot(
+  options: Omit<Options, "apiKey">,
+): Promise<MarketSnapshot> {
+  return fetchIndexedSnapshot(options, "graph-local");
+}
+
+async function fetchIndexedSnapshot(
+  options: Options,
+  sourceKind: "graph" | "graph-local",
+): Promise<MarketSnapshot> {
   const market = nonzeroAddressSchema.parse(options.market),
     fetcher = options.fetchImpl ?? fetch;
   const url = new URL(options.url);
-  if (url.protocol !== "https:" || url.username || url.password)
+  if (sourceKind === "graph-local") {
+    if (url.href !== LOCAL_GRAPH_URL || options.apiKey)
+      throw new Error(
+        "Only the credential-free local development endpoint is allowed",
+      );
+  } else if (url.protocol !== "https:" || url.username || url.password)
     throw new Error("Configured HTTPS Graph endpoint required");
   const timeout = options.timeoutMs ?? 10000;
   if (!Number.isSafeInteger(timeout) || timeout < 1 || timeout > 30000)
@@ -150,13 +173,15 @@ export async function fetchGraphSnapshot(
     block: head.block,
     fetchedAt: options.now,
     source: {
-      kind: "graph",
+      kind: sourceKind,
       deployment: head.deployment,
       queryId: "market-snapshot-v1",
     },
     positions,
   });
-  assertFreshSnapshot(snapshot, options.now, options.headBlock);
+  if (sourceKind === "graph")
+    assertFreshSnapshot(snapshot, options.now, options.headBlock);
+  else assertSnapshotFreshness(snapshot, options.now, options.headBlock);
   return snapshot;
 }
 
@@ -187,8 +212,8 @@ export async function corroborateSnapshot(
   rpc: RpcSnapshotPort,
 ): Promise<void> {
   const s = snapshotSchema.parse(input);
-  if (s.source.kind !== "graph")
-    throw new Error("Only Graph snapshots can be corroborated");
+  if (s.source.kind !== "graph" && s.source.kind !== "graph-local")
+    throw new Error("Only indexed Graph snapshots can be corroborated");
   if ((await rpc.getChainId()) !== s.chainId)
     throw new Error("RPC chain mismatch");
   const block = await rpc.block(s.block.number);

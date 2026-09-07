@@ -1,0 +1,53 @@
+name: paramshield-graph-local
+x-logging: &local-logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+services:
+  postgres:
+    logging: *local-logging
+    image: postgres:16-alpine@sha256:16bc17c64a573ef34162af9298258d1aec548232985b33ed7b1eac33ba35c229
+    environment:
+      POSTGRES_USER: graph
+      POSTGRES_PASSWORD: ${GRAPH_LOCAL_DB_PASSWORD:?Use scripts/graph-local.sh}
+      POSTGRES_DB: graph
+      POSTGRES_INITDB_ARGS: -E UTF8 --locale=C
+    command: [postgres, -cshared_preload_libraries=pg_stat_statements]
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U graph -d graph]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  ipfs:
+    logging: *local-logging
+    image: ipfs/kubo@sha256:63f5502f7a01b82a675e45bae81b2f5dfa90248ec4a86cd0a58c218347e1f2d2
+    environment:
+      IPFS_PROFILE: server
+    ports: [127.0.0.1:15001:5001]
+    volumes: [ipfs-data:/data/ipfs]
+  graph-node:
+    logging: *local-logging
+    image: graphprotocol/graph-node:v0.45.0@sha256:b0436347fb24f9ae45b6d3959cac97bf60b3238ad1633a875c118ff86a07a0d3
+    platform: linux/amd64
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ipfs:
+        condition: service_started
+    ports:
+      - 127.0.0.1:18000:8000
+      - 127.0.0.1:18020:8020
+      - 127.0.0.1:18030:8030
+    environment:
+      postgres_host: postgres
+      postgres_user: graph
+      postgres_pass: ${GRAPH_LOCAL_DB_PASSWORD:?Use scripts/graph-local.sh}
+      postgres_db: graph
+      ipfs: ipfs:5001
+      ethereum: sepolia:${GRAPH_LOCAL_RPC_URL:-https://ethereum-sepolia-rpc.publicnode.com}
+      GRAPH_LOG: ${GRAPH_LOCAL_LOG_LEVEL:-info}
+volumes:
+  postgres-data:
+  ipfs-data:

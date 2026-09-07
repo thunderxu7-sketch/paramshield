@@ -19,7 +19,10 @@
     "spike:privy": "pnpm --dir apps/web spike:privy",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "graph:local": "bash scripts/graph-local.sh",
+    "spike:graph-local": "pnpm --dir apps/web spike:graph-live --local",
+    "spike:cre-local": "pnpm --dir apps/web spike:cre-local"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

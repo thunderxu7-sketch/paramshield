@@ -60,7 +60,7 @@ export const snapshotSchema = z
       .strict(),
     source: z
       .object({
-        kind: z.enum(["graph", "fixture"]),
+        kind: z.enum(["graph", "graph-local", "fixture"]),
         deployment: z.string().regex(/^[a-zA-Z0-9._-]{1,128}$/),
         queryId: z.literal("market-snapshot-v1"),
       })
@@ -196,6 +196,18 @@ export function assertFreshSnapshot(
   maxAgeSeconds = 120,
   maxBlockLag = 12,
 ): void {
+  if (s.source.kind !== "graph") throw new Error("Live Graph data required");
+  assertSnapshotFreshness(s, now, head, maxAgeSeconds, maxBlockLag);
+}
+
+/** Freshness only, NOT an execution/provenance authorization check. */
+export function assertSnapshotFreshness(
+  s: MarketSnapshot,
+  now: number,
+  head: number,
+  maxAgeSeconds = 120,
+  maxBlockLag = 12,
+): void {
   if (
     ![now, head, maxAgeSeconds, maxBlockLag].every(Number.isSafeInteger) ||
     now <= 0 ||
@@ -204,7 +216,6 @@ export function assertFreshSnapshot(
     maxBlockLag < 0
   )
     throw new Error("Invalid freshness configuration");
-  if (s.source.kind !== "graph") throw new Error("Live Graph data required");
   if (
     s.fetchedAt > now ||
     s.block.timestamp > now ||

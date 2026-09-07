@@ -1,0 +1,8 @@
+# Only a local simulation target is configured. No deployment/broadcast target.
+development-settings:
+  user-workflow:
+    workflow-name: paramshield-policy-preview
+  workflow-artifacts:
+    workflow-path: ./src/main.ts
+    config-path: ../../.local/cre-run/config.json
+    secrets-path: ../../.local/cre-run/secrets.yaml
