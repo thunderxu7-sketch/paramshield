@@ -1,0 +1,198 @@
+{
+  "checkedAt": "2026-09-07T04:20:26.524Z",
+  "kind": "cre-local-graph-policy-preview",
+  "cliVersion": "CRE CLI version v1.32.0",
+  "wasmSha256": "4261b0782d6a38c6658d8d73fa20515a351b0ee4f0a24dd37c32db1304aeb88c",
+  "sourceHashes": {
+    "workflows/chainlink-cre/src/main.ts": "0ac9b571008f02b70d2a472c1f89b77e5e4607087053a44a351e98c327f3e50a",
+    "workflows/chainlink-cre/src/workflow.ts": "992e75299cf20c75aa605c53d25e3f2b23faa9c33a7f540e80e118706d10354f",
+    "workflows/chainlink-cre/src/protocol.ts": "bffd4f4d18af43dd5130121ae785307c65720b79cce827a833d2fe188021ef97",
+    "packages/risk-engine/src/index.ts": "11132845b3ab65c4080f79ab1d401bbec8e5c29054677f95aa7ac9f78a9ae480",
+    "packages/risk-engine/src/policy.ts": "eeccd8f3d5dfde6291019d306ff9a0abd4fd75bd14b554a27b5e946472434f36",
+    "packages/shared/src/index.ts": "1115e2ac1b931672c7bef53a9ce7459904b74eef525f09c9298ee5810f94cb46",
+    "packages/evidence/src/index.ts": "3312668dc9886397e90d3fcb3bfb63eec0a17707941c90f5bbb05a6d07bb298a",
+    "pnpm-lock.yaml": "5fc45643364e55e3c66c56b5ad4adf5d36783fc167878f887fad876e94d322b3",
+    "workflows/chainlink-cre/tsconfig.json": "087cdcbe1b66e02127560c50230b677973c48a7126d00f2de08a6e12c4fe535f",
+    "workflows/chainlink-cre/project.yaml": "c123b84d5d9decfa63101ba9647304bdcfefe21834c98d9e35e0c35729b06963",
+    "workflows/chainlink-cre/workflow.yaml": "840d0c0a93ff8dd478cc3f4c925f30f7c86f82a24e52f8255e8b58be6a891494",
+    "apps/web/scripts/cre-local-spike.ts": "3ef2b70ea69ed0f85c2ba0b724a29e328fb173690f3cd66650a2984378a19700",
+    "apps/web/scripts/graph-live-spike.ts": "32dbc6c8e982777c7b3b234e232f01b943f711f9081a5fe270938f83eb42feb0",
+    "apps/web/src/lib/bounded-process.ts": "acef077ab23140ab3cf81ec1f4c2c15625ae156f95a02c4ad8176b88f27435f3",
+    "packages/graph-client/src/index.ts": "f22cad9b1766fd0380ab2168932e6863727ef938b908d5bb46841738dea4aa99"
+  },
+  "policyInput": "public-demo-values-loaded-as-runtime-secret",
+  "hardwareTeeAttested": false,
+  "hostedGraphProviderVerified": false,
+  "onchainTransactionsSent": false,
+  "executable": false,
+  "runs": [
+    {
+      "request": {
+        "schemaVersion": "paramshield.policy-preview.request.v1",
+        "runId": "1b3140f6-86ed-4636-8b2d-7e8e1bf22a55",
+        "snapshot": {
+          "schemaVersion": "paramshield.snapshot.v1",
+          "chainId": 11155111,
+          "market": "0xfabda359d272974f6561e907a4bb740b11a9fc26",
+          "contractVersion": "v1",
+          "stateVersion": null,
+          "block": {
+            "number": 11651811,
+            "hash": "0xa33b4ba1226a4dd893734481090f9423849a9a739964158d08d327ed95363cab",
+            "timestamp": 1788754812
+          },
+          "source": {
+            "kind": "graph-local",
+            "deployment": "QmTJBKe1xEtjJzay4JBaZMfsKwzJYocmRN7QzxCmy55SUW",
+            "queryId": "market-snapshot-v1"
+          },
+          "fetchedAt": 1788754818,
+          "liquidationThresholdBps": 8000,
+          "collateralPriceUsdE18": "2000000000000000000000",
+          "collateralDecimals": 18,
+          "debtDecimals": 6,
+          "totalCollateral": "55000000000000000000",
+          "totalDebt": "68300000000",
+          "positionCount": 5,
+          "positions": [
+            {
+              "account": "0x0000000000000000000000000000000000001001",
+              "collateralAmount": "10000000000000000000",
+              "debtAmount": "12000000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001002",
+              "collateralAmount": "10000000000000000000",
+              "debtAmount": "15000000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001003",
+              "collateralAmount": "10000000000000000000",
+              "debtAmount": "13500000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001004",
+              "collateralAmount": "5000000000000000000",
+              "debtAmount": "7800000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001005",
+              "collateralAmount": "20000000000000000000",
+              "debtAmount": "20000000000"
+            }
+          ]
+        },
+        "proposedValueBps": 7000,
+        "stressBps": 1500,
+        "headBlock": 11651811,
+        "expiresAt": 1788755060
+      },
+      "result": {
+        "schemaVersion": "paramshield.policy-preview.result.v1",
+        "requestHash": "0xc3c3cc3a79cbecaf1d088d85d32f4fba408a3770936d4985472f759403c493eb",
+        "runId": "1b3140f6-86ed-4636-8b2d-7e8e1bf22a55",
+        "snapshotHash": "0xa99d5e8f532c08d91e0b7b4945db2437659dd11af93cfbeee68bd9d4df25988c",
+        "proposedValueBps": 7000,
+        "verdict": "BLOCK",
+        "policyVersion": "incremental-exposure-v2",
+        "violations": [
+          "MAX_LT_DECREASE",
+          "NEW_NORMAL_LIQUIDATABLE",
+          "STRESS_EXPOSURE"
+        ],
+        "recommendationStatus": "RECOMMENDED",
+        "recommendedValueBps": 7942,
+        "expiresAt": 1788755060,
+        "executable": false,
+        "source": "graph-local",
+        "workflow": {
+          "id": "paramshield-policy",
+          "mode": "cli-simulation-preview"
+        }
+      },
+      "resultHash": "0x9e2ad145109af32f9012eb370c474b518378e896d285b3fa5e764e6b50f70183"
+    },
+    {
+      "request": {
+        "schemaVersion": "paramshield.policy-preview.request.v1",
+        "runId": "b6458e87-6ddb-4873-a3a3-86f9fa4b98e3",
+        "snapshot": {
+          "schemaVersion": "paramshield.snapshot.v1",
+          "chainId": 11155111,
+          "market": "0xfabda359d272974f6561e907a4bb740b11a9fc26",
+          "contractVersion": "v1",
+          "stateVersion": null,
+          "block": {
+            "number": 11651811,
+            "hash": "0xa33b4ba1226a4dd893734481090f9423849a9a739964158d08d327ed95363cab",
+            "timestamp": 1788754812
+          },
+          "source": {
+            "kind": "graph-local",
+            "deployment": "QmTJBKe1xEtjJzay4JBaZMfsKwzJYocmRN7QzxCmy55SUW",
+            "queryId": "market-snapshot-v1"
+          },
+          "fetchedAt": 1788754823,
+          "liquidationThresholdBps": 8000,
+          "collateralPriceUsdE18": "2000000000000000000000",
+          "collateralDecimals": 18,
+          "debtDecimals": 6,
+          "totalCollateral": "55000000000000000000",
+          "totalDebt": "68300000000",
+          "positionCount": 5,
+          "positions": [
+            {
+              "account": "0x0000000000000000000000000000000000001001",
+              "collateralAmount": "10000000000000000000",
+              "debtAmount": "12000000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001002",
+              "collateralAmount": "10000000000000000000",
+              "debtAmount": "15000000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001003",
+              "collateralAmount": "10000000000000000000",
+              "debtAmount": "13500000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001004",
+              "collateralAmount": "5000000000000000000",
+              "debtAmount": "7800000000"
+            },
+            {
+              "account": "0x0000000000000000000000000000000000001005",
+              "collateralAmount": "20000000000000000000",
+              "debtAmount": "20000000000"
+            }
+          ]
+        },
+        "proposedValueBps": 7942,
+        "stressBps": 1500,
+        "headBlock": 11651812,
+        "expiresAt": 1788755065
+      },
+      "result": {
+        "schemaVersion": "paramshield.policy-preview.result.v1",
+        "requestHash": "0xec6600c72127d42976ed21ea88b7e0887e53173e272c1485db8885c500ad46f0",
+        "runId": "b6458e87-6ddb-4873-a3a3-86f9fa4b98e3",
+        "snapshotHash": "0x061da6addae34a658fce7789d3bba737f4d614cf35ad743b033af0bfa8bee3d7",
+        "proposedValueBps": 7942,
+        "verdict": "ALLOW",
+        "policyVersion": "incremental-exposure-v2",
+        "violations": [],
+        "recommendationStatus": "NOT_NEEDED",
+        "recommendedValueBps": null,
+        "expiresAt": 1788755065,
+        "executable": false,
+        "source": "graph-local",
+        "workflow": {
+          "id": "paramshield-policy",
+          "mode": "cli-simulation-preview"
+        }
+      },
+      "resultHash": "0x058c5457e4ab4352c62bdda22fdd1fdd96dec7a9d45ff4ceee3caae19c14fcef"
+    }
+  ]
+}

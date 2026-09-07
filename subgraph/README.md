@@ -36,12 +36,15 @@ live spike independently corroborates indexed config and every position with RPC
 at that block and checks for reorgs; it never substitutes RPC/fixtures for a
 failed Graph read. Endpoint tokens are not part of public provenance.
 
-Local compilation and mocked client tests are not live indexing proof. Until an
-authenticated Studio deployment returns current data and the live spike writes
-its evidence artifact, R-05 remains incomplete. Mapping runtime behavior still
-needs the real deployment/reconciliation test. When v2 is deployed, create a
-versioned manifest/endpoint with v2 events and new addresses, and re-run all
-gates.
+Local compilation and mocked client tests are not live indexing proof. The
+September 7 [local Graph fallback](../infra/graph-local/README.md) subsequently
+indexed real Sepolia events and reconciled all positions/config against RPC. Its
+runtime evidence is labelled `graph-local`; the hosted-provider gate remains
+incomplete because Studio login's GraphQL path returned 503. Keep the hosted
+spike/evidence separate; do not relabel a local result as a hosted deployment. A
+new-event-to-analysis demonstration still needs a reviewed transaction. When v2
+is deployed, create a versioned manifest/endpoint with v2 events and new
+addresses, and re-run all gates.
 
 References:
 [manifest](https://thegraph.com/docs/en/subgraphs/developing/creating/subgraph-manifest/),

@@ -5,11 +5,11 @@ final product integration are different gates. No credentials are included here.
 
 ## Matrix
 
-| Sponsor       | Verified evidence                                                                                                              | Still missing                                                                                                   |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| The Graph     | Prior account/email setup; CLI 0.98.1; v1 schema/mappings compile; pinned pagination/reconciliation client tests               | Studio session is logged out; wallet reconnect, authenticated deployment, live query and new-event proof        |
-| Chainlink CRE | Prior CLI 1.32.0 authentication and nine official-template tests/local simulation                                              | Product handler, trusted relay and bound live-input run; private-beta network access remains unverified/pending |
-| Privy         | Development app SDK authentication; real isolated policy-bound wallet; valid signature recovered; four provider policy denials | Final execution policy, distinct decision role, human-reviewed organization flow and real Sepolia broadcast     |
+| Sponsor       | Verified evidence                                                                                                                                                                 | Still missing                                                                                                                                    |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| The Graph     | Real Sepolia v1 events indexed by local Graph Node; all five positions/config/totals independently corroborated at pinned block; strict client tests                              | Studio GraphQL login path 503; authenticated hosted deployment, v2 index and new-event-to-analysis demonstration                                 |
+| Chainlink CRE | Actual product handler compiled to WASM and CLI-simulated on fresh local Graph input; runtime secret drives policy/search; 7000 BLOCK and fresh 7942 ALLOW; bindings/runner tests | Live v2 execution lane, durable trusted relay; no hardware TEE/network deployment claimed                                                        |
+| Privy         | Real isolated policy-bound wallet/signature and four provider policy denials; server-side pre-sign checks tested separately with synthetic v2 state                               | Final execution policy, real RPC/review-store adapters, distinct roles onchain, authenticated organization approval and actual Sepolia broadcast |
 
 ## Exact partner positioning
 
@@ -28,13 +28,15 @@ final product integration are different gates. No credentials are included here.
 
 ## Sanitized evidence log
 
-| Time (UTC)     | Integration | Actual result                                                                                                                                                         |
-| -------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sep 4–5        | Graph       | Event wallet connected, email verified, CLI runs; no live subgraph created                                                                                            |
-| Sep 4 21:40    | CRE         | Official confidential starter: nine tests and CLI simulation; secret delivery exercised in simulation, **not hardware TEE**                                           |
-| Sep 4 21:51–54 | Privy       | SDK user-list authentication passed; unused initial app secret revoked                                                                                                |
-| Sep 7          | Graph       | v1 mappings/codegen/WASM build and pinned client tests pass; browser asks to reconnect wallet/accept service terms                                                    |
-| Sep 7 03:12    | Privy       | Isolated sign-only policy/wallet verified; wrong chain, target, nonzero value, and changed calldata argument all rejected by provider policy (HTTP 400); no broadcast |
+| Time (UTC)     | Integration      | Actual result                                                                                                                                                                 |
+| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sep 4–5        | Graph            | Account/email/CLI readiness; no hosted subgraph created                                                                                                                       |
+| Sep 4 21:40    | CRE              | Official starter: nine tests and local simulation; not hardware TEE                                                                                                           |
+| Sep 4 21:51–54 | Privy            | SDK authentication passed; unused initial app secret revoked                                                                                                                  |
+| Sep 7 03:12    | Privy            | One recovered sign-only payload and four policy denials (chain, target, value, calldata argument); no broadcast                                                               |
+| Sep 7          | Graph            | Local Graph Node synced real deployed v1 events and RPC reconciliation passed; see timestamped [artifact](evidence/graph-local-live-v1.json)                                  |
+| Sep 7          | CRE              | Product handler returned BLOCK/recommended 7942 and independent ALLOW; real CLI/WASM, local Graph source, no execution; see [artifact](evidence/cre-local-graph-preview.json) |
+| Sep 7 04:16    | Studio diagnosis | TLS-verified curl probe: public page 200, login GraphQL API 503, deploy endpoint GET 200; reachability is not authenticated deployment                                        |
 
 The actual Privy check is recorded in
 [the machine-readable evidence file](evidence/privy-control-spike-2026-09-07.json).
@@ -47,16 +49,33 @@ The test wallet is app-managed and intentionally has no market/executor role.
 Its proof policy restricts sign-only calls; final policy configuration and
 reviewer authorization must be implemented and verified independently.
 
-## Next gates
+## Outage fallback and remaining gates
 
-1. Reconnect Studio, deploy the index, query live state and corroborate at its
-   block.
-2. Run the actual CRE product handler and validate relay inputs/results.
-3. Review v2 deployment and distinct operational roles before changing Sepolia.
-4. Complete Privy-controlled real execution with receipt/state/evidence
-   matching.
-5. Add runtime grounded AI, repeat the demo, and publish all submission
-   artifacts.
+The [connectivity evidence](evidence/graph-studio-connectivity-2026-09-07.json)
+supports an unavailable Studio API path from this egress, not a global outage or
+an identified upstream root cause. Retrying a wallet signature or funding it
+cannot repair that HTTP 503. Do not reinstall the wallet, change accounts, or
+turn off security software merely because Studio's public shell loads.
+
+The [local Graph fallback](../infra/graph-local/README.md) unblocks development.
+It uses actual events, but local-only data does **not** complete The Graph prize
+requirement. No `graph` provenance is fabricated and no stale/fixture data is
+promoted into execution. Goldsky remains a conditional option: account setup and
+award suitability would need verification; neither is claimed here.
+
+1. Restore Studio login and deploy/query the hosted index. Confirm a real new
+   event changes the analysis using a separately reviewed transaction.
+2. Review/deploy v2 with distinct operational roles, preserved v1 records and
+   newly pinned code hashes; update indexing/version manifests.
+3. Wire real RPC and authenticated persisted-review adapters; final Privy
+   control must restrict exact execution and verify the signed transaction.
+   Complete the trusted-relay → real transaction → receipt/state/evidence chain.
+4. Add runtime grounded AI, durable console/idempotency/recovery, repeated demo,
+   human review/narration and complete submission materials.
+
+Local regression: `pnpm verify`, **120 passing tests**. The pure pre-sign module
+performs no provider policy update, signing, funding, role assignment or
+broadcast; it is not a second real Privy control proof.
 
 Sources checked Sep 7:
 [The Graph prize](https://ethglobal.com/events/ethonline2026/prizes/the-graph),

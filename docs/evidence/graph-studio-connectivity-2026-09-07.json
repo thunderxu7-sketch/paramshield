@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-09-07T04:16:52.208322+00:00",
+  "client": "curl (TLS verification enabled)",
+  "checks": [
+    {
+      "check": "Studio public shell",
+      "url": "https://thegraph.com/studio/",
+      "httpStatus": 200,
+      "authenticated": false
+    },
+    {
+      "check": "Unauthenticated GraphQL connectivity probe",
+      "url": "https://api.studio.thegraph.com/graphql",
+      "httpStatus": 503,
+      "authenticated": false
+    },
+    {
+      "check": "Deploy endpoint reachability only",
+      "url": "https://api.studio.thegraph.com/deploy/",
+      "httpStatus": 200,
+      "authenticated": false
+    }
+  ],
+  "scope": "One local egress; no claim of global outage or authenticated deployment success",
+  "interpretation": "GraphQL unavailability blocks Studio login even if the page loads; this probe cannot prove the upstream root cause or exclude an egress-specific failure"
+}

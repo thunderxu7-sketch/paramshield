@@ -9,27 +9,58 @@
 
 ### 2026-09-05
 
-- [x] **T-001**：pnpm monorepo、Next.js、Foundry、lint、typecheck、test、build 与 GitHub Actions 已建立；本地 `pnpm verify` 和远程 CI 均通过。
-- [x] **T-002**：三个 Sponsor 的账号路径和本地工具链已验证；The Graph 已用 MetaMask 登录并完成邮箱验证；Chainlink CRE 已完成账号登录、Sepolia 支持检查和官方 Confidential Workflow 本地仿真，部署权限申请等待审核；Privy 开发应用已创建，凭据仅保存于本地忽略文件，认证 SDK 读取成功。
-- [x] **T-003**：产品 spec、架构、threat model、AI usage 与 Sponsor 验收边界已经固化并提交。
+- [x] **T-001**：pnpm
+      monorepo、Next.js、Foundry、lint、typecheck、test、build 与 GitHub
+      Actions 已建立；本地 `pnpm verify` 和远程 CI 均通过。
+- [x] **T-002**：三个 Sponsor 的账号路径和本地工具链已验证；The
+      Graph 已用 MetaMask 登录并完成邮箱验证；Chainlink
+      CRE 已完成账号登录、Sepolia 支持检查和官方 Confidential
+      Workflow 本地仿真，部署权限申请等待审核；Privy 开发应用已创建，凭据仅保存于本地忽略文件，认证 SDK 读取成功。
+- [x] **T-003**：产品 spec、架构、threat model、AI
+      usage 与 Sponsor 验收边界已经固化并提交。
 - [x] 已形成多个小而可审查的 Conventional Commits，并持续推送至 `main`。
 
 ### 2026-09-06
 
-- [x] **T-101**：Reference Lending Market 与 mETH/mUSDC mock assets 已实现，支持确定性仓位和 LT 参数变更。
+- [x] **T-101**：Reference Lending Market 与 mETH/mUSDC mock
+      assets 已实现，支持确定性仓位和 LT 参数变更。
 - [x] **T-102**：5 个 canonical seed 仓位、seed 脚本与 Foundry 测试已完成。
-- [x] **T-103**：Executor 状态机已完成；对链、target、calldata、evidence、nonce 和过期时间进行绑定，并对风险路径 fail closed。
-- [x] **T-104**：已用单笔交易部署 Sepolia bootstrap（区块 `11645965`），记录全部 5 个合约地址、ABI、浏览器链接和链上初始状态；Sourcify exact-match 与 Blockscout 源码验证均通过。
+- [x] **T-103**：Executor 状态机已完成；对链、target、calldata、evidence、nonce 和过期时间进行绑定，并对风险路径 fail
+      closed。
+- [x] **T-104**：已用单笔交易部署 Sepolia bootstrap（区块
+      `11645965`），记录全部 5 个合约地址、ABI、浏览器链接和链上初始状态；Sourcify
+      exact-match 与 Blockscout 源码验证均通过。
 
 ### 2026-09-07
 
-- [x] **R-01**：规则/政策/隐私/证据 DAG/计划修订；保留本地 ignore，公开完整脱敏 plan 与现有 material prompt 记录。
-- [x] **R-02**：bigint 四组指标、机密边界可复用政策与有界搜索；7942 / 7941 边界、absolute 无解等回归。
-- [x] **R-03**：严格 v2 schema、preflight/change/decision/final 哈希 DAG、TypeScript / Solidity golden vector；这只是结构完整性，不是远程真实性证明。
-- [x] **R-04（本地）**：stateVersion、authorizationEpoch、角色分离、ESCALATE hold 与回归；未部署，不覆盖现有 Sepolia v1。
-- [ ] **R-05**：schema/mappings 可编译、分页固定 block/hash client 与 RPC 核对及测试已完成；Studio 会话退出，待钱包重新登录和 live 部署/核对。
-- [x] **R-06（control spike）**：Privy 隔离钱包真实签名通过，wrong chain/target/value/calldata 参数均由 provider policy 拒绝；未广播、未入金、没有 operator 权限。最终组织审批/执行仍待 R-09。
-- [ ] **R-07 至 R-13**：产品 CRE/relay、v2 链上发布、端到端、AI、复演、视频、正式提交仍未完成。
+- [x] **R-01**：规则/政策/隐私/证据 DAG/计划修订；保留本地 ignore，公开完整脱敏 plan 与现有 material
+      prompt 记录。
+- [x] **R-02**：bigint 四组指标、机密边界可复用政策与有界搜索；7942 /
+      7941 边界、absolute 无解等回归。
+- [x] **R-03**：严格 v2
+      schema、preflight/change/decision/final 哈希 DAG、TypeScript / Solidity
+      golden vector；这只是结构完整性，不是远程真实性证明。
+- [x] **R-04（本地）**：stateVersion、authorizationEpoch、角色分离、ESCALATE
+      hold 与回归；未部署，不覆盖现有 Sepolia v1。
+- [x] **R-05 本地备援**：本地 Graph Node 已同步真实 Sepolia
+      v1 事件；5 个仓位、总量和配置均与同块 RPC 核对，保留 `graph-local`
+      标记且不可执行。
+- [ ] **R-05 hosted
+      gate**：Studio 登录 GraphQL 返回 503；官方远端部署、v2 索引与新事件影响分析仍待完成。本地成功不等于 The
+      Graph 奖项资格。
+- [x] **R-06（control spike）**：Privy 隔离钱包真实签名通过，wrong
+      chain/target/value/calldata 参数均由 provider
+      policy 拒绝；未广播、未入金、没有 operator 权限。最终组织审批/执行仍待 R-09。
+- [x] **R-07 产品预览**：真实 CRE CLI/WASM 接入 fresh local Graph；运行时 demo
+      secret 驱动政策与搜索，7000 BLOCK、推荐 7942、独立重审 ALLOW；均
+      `executable: false`，不是硬件 TEE。
+- [x] **签名前校验准备**：增加 v2
+      bytecode/角色/state/epoch/链上 ALLOWED/decisionHash/持久人工复核/过期/reorg 等本地测试；只生成精确 unsigned
+      call，未接真实 RPC/审核存储适配器，未签名广播。
+- [x] **本地验证**：`pnpm verify`
+      全部通过，共 120 项测试；Graph/CRE 真实本地联调另存公开脱敏证据。
+- [ ] **R-07 执行 relay 与 R-08 至 R-13**：真实 v2/hosted
+      Graph、Privy 最终控制/身份与审核适配、完整端到端、AI、复演、视频、正式提交仍待完成。
 
 ## 1. 产品定义
 
@@ -67,7 +98,8 @@ ParamShield 在协议参数变更进入多签并执行前，使用实时仓位�
 - 完成一个可复现的端到端风险门禁流程，而不是堆积多个浅层功能。
 - 形成一条不可拆分的 Sponsor 链路：
   - **The Graph**：提供实时仓位和参数历史。
-  - **Chainlink CRE Confidential Workflow**：机密 handler 执行政策/搜索；P0 使用 CLI 仿真，不声称硬件 TEE。
+  - **Chainlink CRE Confidential
+    Workflow**：机密 handler 执行政策/搜索；P0 使用 CLI 仿真，不声称硬件 TEE。
   - **Privy**：提供组织钱包、Signer/Policy/Quorum 或 Intent 驱动的受控执行。
 - 提交一个公开、可运行、提交历史可信的仓库。
 - 制作 2–4 分钟、不使用 AI 配音的清晰 Demo 视频。
@@ -145,15 +177,19 @@ Reference Lending Market 中存在一批不同健康度的 ETH 抵押 / USDC 借
 
 - ETH 价格瞬时下跌 15%。
 - USDC 债务价格保持 1 美元。
-- 计算所有仓位冲击后的 Health Factor、可清算债务和简单抵押短缺（不是实际坏账，未含滑点/成本）。
+- 计算所有仓位冲击后的 Health
+  Factor、可清算债务和简单抵押短缺（不是实际坏账，未含滑点/成本）。
 
 ### 4.3 历史回放
 
 P1 延后功能，不进入本周 P0：可以回放 **Aave V2 CRV 风险参数/流动性事件**。
 
-- 首选参考：Aave AIP-92 对 CRV Liquidation Threshold 的逐步调整；公开说明明确检查参数更新不会导致账户被清算。
-- 扩展参考：2022-11-22 Aave V2 CRV 市场事件，约 6300 万美元抵押被清算并留下约 170 万美元坏账。
-- 回放必须标记为 counterfactual simulation，不能宣称单一参数一定可以完全阻止历史事件。
+- 首选参考：Aave AIP-92 对 CRV Liquidation
+  Threshold 的逐步调整；公开说明明确检查参数更新不会导致账户被清算。
+- 扩展参考：2022-11-22 Aave V2
+  CRV 市场事件，约 6300 万美元抵押被清算并留下约 170 万美元坏账。
+- 回放必须标记为 counterfactual
+  simulation，不能宣称单一参数一定可以完全阻止历史事件。
 - 若历史区块数据接入耗时过高，保留可复现数据集和来源链接，不阻塞主 Demo。
 
 参考资料：
@@ -262,7 +298,8 @@ CRE 工作流读取：
 - 公开：变更意图、Graph 状态摘要、仿真摘要。
 - 私密：从 secret 加载的政策阈值、必要 API 凭证；公开 fixture 参数不属于真实生产机密。
 - 在机密 handler 内重新计算完整快照，并完成政策评估与候选搜索；不能相信浏览器传入指标。
-- P0 选择 CRE CLI simulation + trusted relay，明确不是硬件 TEE 或链上 attestation。
+- P0 选择 CRE CLI simulation + trusted
+  relay，明确不是硬件 TEE 或链上 attestation。
 
 返回严格 JSON：
 
@@ -280,10 +317,12 @@ CRE 工作流读取：
 
 ### FR-06 推荐安全参数
 
-- 仅支持下调，在 [proposal, current] 中有界逐 bp 枚举（最多 4,501）；整个评估/搜索留在机密 handler 内。
+- 仅支持下调，在 [proposal,
+  current] 中有界逐 bp 枚举（最多 4,501）；整个评估/搜索留在机密 handler 内。
 - 每个候选值必须重新运行确定性仿真。
 - AI 仅解释证据，不能选择可执行参数或绕过硬约束。
-- 当前值本身通过但无有效变更时返回 NO_CHANGE；原 absolute 2% 政策无解必须 NO_SAFE_VALUE。
+- 当前值本身通过但无有效变更时返回 NO_CHANGE；原 absolute
+  2% 政策无解必须 NO_SAFE_VALUE。
 - 找不到安全值时返回 `NO_SAFE_VALUE`。
 
 ### FR-07 执行门禁
@@ -291,8 +330,10 @@ CRE 工作流读取：
 - `BLOCK`：合约层禁止执行。
 - `ESCALATE`：保持 hold；重新评审必须创建新 nonce、新快照和新 decision，不能普通审批后执行原 intent。
 - `ALLOW`：仍需通过对应 Privy 控制后方可执行。
-- Verdict 绑定完整 v2 intent；增加 market stateVersion 与 executor authorizationEpoch。任何风险状态变化或角色/allowlist 轮换令旧 intent 失效。
-- Privy operator 与 decisionAuthority 必须不同；治理 admin 仍被信任，不宣传 admin-proof。
+- Verdict 绑定完整 v2 intent；增加 market stateVersion 与 executor
+  authorizationEpoch。任何风险状态变化或角色/allowlist 轮换令旧 intent 失效。
+- Privy
+  operator 与 decisionAuthority 必须不同；治理 admin 仍被信任，不宣传 admin-proof。
 
 ### FR-08 审批与执行
 
@@ -317,7 +358,9 @@ CRE 工作流读取：
 - Sepolia 交易哈希和 receipt。
 - Before/After 状态。
 
-依赖 DAG：intentCore + snapshot + simulation -> preflightHash -> changeHash -> decisionHash -> receipt -> finalBundleHash。链上 evidenceHash 指 preflightHash；最终包引用链上 preflight/decision，自己的 hash 不冒称已在执行前上链。IPFS 为 P1。
+依赖 DAG：intentCore + snapshot + simulation -> preflightHash -> changeHash ->
+decisionHash -> receipt ->
+finalBundleHash。链上 evidenceHash 指 preflightHash；最终包引用链上 preflight/decision，自己的 hash 不冒称已在执行前上链。IPFS 为 P1。
 
 ## 7. 非功能与安全要求
 
@@ -429,11 +472,14 @@ paramshield/
 
 - 接收参数变更 intent。
 - 保存 changeHash、状态、nonce、expiry。
-- 验证独立 decisionAuthority 调用（P0 为 trusted relay，不是报告/TEE attestation 验证器）。
+- 验证独立 decisionAuthority 调用（P0 为 trusted relay，不是报告/TEE
+  attestation 验证器）。
 - 校验 target 和 selector allowlist。
 - 阻止 `BLOCK`、过期、重放、证据不匹配的执行。
 - 经批准后调用 Lending Market。
-- 发出 `ProposalCreated`、`ProposalPreconditions`、`DecisionRecorded`、`ProposalExecuted`、`ProposalMarkedExpired` 等实际事件。
+- 发出
+  `ProposalCreated`、`ProposalPreconditions`、`DecisionRecorded`、`ProposalExecuted`、`ProposalMarkedExpired`
+  等实际事件。
 
 ### 9.3 `EvidenceRegistry.sol`（可合并）
 
@@ -497,7 +543,8 @@ HF = collateralValue × liquidationThreshold / debtValue
 
 ### 12.1 The Graph
 
-目标：Best AI Tooling or AI Use Case with The Graph (From Scratch)。自定义单一 Subgraph 不等于标准化/可组合赛道资格；加入 P0 证据式风险问答。
+目标：Best AI Tooling or AI Use Case with The Graph (From
+Scratch)。自定义单一 Subgraph 不等于标准化/可组合赛道资格；加入 P0 证据式风险问答。
 
 - [ ] 使用 Graph Provider 的 live data，不使用本地静态 JSON 冒充。
 - [ ] 查询结果直接进入仿真和 verdict。
@@ -526,7 +573,8 @@ HF = collateralValue × liquidationThreshold / debtValue
 
 ### 13.1 页面
 
-一个 Operator Console + Timeline，分区展示 Overview、New Change、Analysis、Decision、Approval、Execution、Evidence，不做七个独立页面。
+一个 Operator Console + Timeline，分区展示 Overview、New
+Change、Analysis、Decision、Approval、Execution、Evidence，不做七个独立页面。
 
 ### 13.2 状态机
 
@@ -663,7 +711,8 @@ DRAFT
   - 验收：刷新页面后仍能从真实状态恢复。
 - **T-504** 实现 Evidence Bundle。
   - 依赖：T-303、T-403。
-  - 验收：preflight 与 decision hash 对应链上事件；最终包引用 receipt 并独立验证，不能循环哈希。
+  - 验收：preflight 与 decision
+    hash 对应链上事件；最终包引用 receipt 并独立验证，不能循环哈希。
 - **T-505** 接入受约束的 AI 风险解释。
   - 依赖：T-204、T-301。
   - 验收：解释只引用 evidence 中存在的数据，失败时不伪造文本。
@@ -724,7 +773,8 @@ T-101 Market
 ### 9 月 7 日
 
 - 修订 policy 回归、证据 DAG、v2 状态/权限 epoch 约束。
-- 完成 live Graph 数据与真正 Privy wallet/control 提前验证（SDK 读取不等于集成完成）。
+- 完成 live Graph 数据与真正 Privy
+  wallet/control 提前验证（SDK 读取不等于集成完成）。
 
 ### 9 月 8 日
 
@@ -769,7 +819,8 @@ T-101 Market
 
 ### 2:05–2:35 — 安全替代参数
 
-展示 79.42% 等实时计算结果（仅为 canonical fixture 预期），并证明它满足全部硬约束。
+展示 79.42% 等实时计算结果（仅为 canonical
+fixture 预期），并证明它满足全部硬约束。
 
 ### 2:35–3:15 — 审批与执行
 
@@ -781,7 +832,8 @@ T-101 Market
 
 ### 3:45–4:00 — 价值
 
-“ParamShield turns protocol parameter changes from blind multisig signing into evidence-backed, policy-bound execution.”
+“ParamShield turns protocol parameter changes from blind multisig signing into
+evidence-backed, policy-bound execution.”
 
 ## 19. 提交清单
 
@@ -802,16 +854,16 @@ T-101 Market
 
 ## 20. 风险与降级方案
 
-| 风险 | 影响 | 处理 |
-|---|---|---|
-| CRE live deployment 不稳定 | 核心门禁中断 | P0 保证 CRE CLI simulation 可复现并保存完整证据；产品仍 fail closed |
-| Privy 高级 quorum 权限不可用 | 审批流程受阻 | 立即验证；优先使用可用的 Policy/Signer/Intent，必要时用合约多签补充但不伪称 Privy quorum |
-| Graph indexing 延迟 | 数据不新鲜 | UI 显示 indexed block；超出 freshness threshold 时阻止执行 |
-| 历史数据工作量过大 | 延误主流程 | 历史回放降为 P1，绝不阻塞主 Demo |
-| Reference Market 被认为过于玩具化 | 实用性得分低 | 使用真实风控公式、真实 calldata、Sepolia 状态和 Aave 参数治理资料；明确 adapter 路线 |
-| AI 推荐错误 | 安全风险 | 所有推荐值必须重新经过确定性仿真和政策验证 |
-| 前端状态伪成功 | 信任受损 | 只以 receipt + 合约回读确认执行完成 |
-| Sponsor 集成显得生硬 | 奖项资格风险 | 在 README 明确说明移除任一集成会破坏哪项核心能力 |
+| 风险                              | 影响         | 处理                                                                                     |
+| --------------------------------- | ------------ | ---------------------------------------------------------------------------------------- |
+| CRE live deployment 不稳定        | 核心门禁中断 | P0 保证 CRE CLI simulation 可复现并保存完整证据；产品仍 fail closed                      |
+| Privy 高级 quorum 权限不可用      | 审批流程受阻 | 立即验证；优先使用可用的 Policy/Signer/Intent，必要时用合约多签补充但不伪称 Privy quorum |
+| Graph indexing 延迟               | 数据不新鲜   | UI 显示 indexed block；超出 freshness threshold 时阻止执行                               |
+| 历史数据工作量过大                | 延误主流程   | 历史回放降为 P1，绝不阻塞主 Demo                                                         |
+| Reference Market 被认为过于玩具化 | 实用性得分低 | 使用真实风控公式、真实 calldata、Sepolia 状态和 Aave 参数治理资料；明确 adapter 路线     |
+| AI 推荐错误                       | 安全风险     | 所有推荐值必须重新经过确定性仿真和政策验证                                               |
+| 前端状态伪成功                    | 信任受损     | 只以 receipt + 合约回读确认执行完成                                                      |
+| Sponsor 集成显得生硬              | 奖项资格风险 | 在 README 明确说明移除任一集成会破坏哪项核心能力                                         |
 
 ## 21. Definition of Done
 
@@ -832,12 +884,32 @@ T-101 Market
 
 ## 22. 本地计划文件的发布策略
 
-本地 `PLAN.md` 继续由 `.gitignore` 排除；经用户同意，把本计划完整脱敏副本发布为 `docs/planning/PLAN.md`，执行表为 `docs/implementation-plan.md`。不得仅用短摘要替代实际使用的完整规划材料。每次公开前检查秘密与个人信息；材料覆盖范围与历史 prompt 缺口写入 `docs/planning/README.md`，不伪造丢失的原始聊天记录。
+本地 `PLAN.md` 继续由 `.gitignore` 排除；经用户同意，把本计划完整脱敏副本发布为
+`docs/planning/PLAN.md`，执行表为
+`docs/implementation-plan.md`。不得仅用短摘要替代实际使用的完整规划材料。每次公开前检查秘密与个人信息；材料覆盖范围与历史 prompt 缺口写入
+`docs/planning/README.md`，不伪造丢失的原始聊天记录。
 
 ## 23. 2026-09-07 审阅结论与执行入口
 
-- 权威修订：`docs/decisions/0001-risk-and-execution-boundaries.md` 与 `docs/product-spec.md`。
+- 权威修订：`docs/decisions/0001-risk-and-execution-boundaries.md` 与
+  `docs/product-spec.md`。
 - 逐项依赖/验收/状态：`docs/implementation-plan.md` R-01 至 R-13。
-- T-002 已完成的是账号/SDK readiness；live Graph、产品 CRE、Privy control、真实受控交易各自验收。
-- Sepolia 2026-09-06 部署是 v1；本地 v2 测试不代表 v2 已在链上，不覆盖旧 manifest/ABI。
+- T-002 已完成的是账号/SDK readiness；live Graph、产品 CRE、Privy
+  control、真实受控交易各自验收。
+- Sepolia
+  2026-09-06 部署是 v1；本地 v2 测试不代表 v2 已在链上，不覆盖旧 manifest/ABI。
 - 旧资料中笼统的“安全”均指声明模型/政策下的参数合规，不代表整个市场安全。
+
+## 24. 2026-09-07 Studio 故障后的执行分支
+
+1. 用户要求分析连接问题和备选方案后，确认依次执行并要求继续。
+2. 已采用本地 Graph Node，未重装钱包、更换参赛账号或绕过 TLS；远端 API
+   503 与钱包余额无直接因果证据。该诊断只覆盖本机访问路径，不宣称全球故障。
+3. 本地真实索引和产品 CRE CLI 预览已打通；public demo
+   policy 通过运行时 secret 注入，不把这些公开数值伪称为私密生产政策。
+4. 现有 Sepolia
+   v1 地址和 ABI 未变；Privy 隔离钱包没有新增资金/角色，未发送交易。
+5. Studio 仍是提交主路线；恢复后再完成 hosted
+   gate。Goldsky 只是条件性备选，未创建新账号，也未确认其奖项适用性。
+6. 下一执行入口：审阅 v2 部署与角色/资金/字节码清单，接 hosted
+   Graph，补真实审核/RPC 适配和最终 Privy 控制后，才进入首次受控执行。不得把纯校验函数和模拟结果描述为已经完成组织审批或真实交易。

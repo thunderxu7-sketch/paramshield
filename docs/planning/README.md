@@ -19,6 +19,10 @@ transcript. Chinese directions are retained rather than silently translated.
 - “先列一个完整的计划, 加入到 ignore 中”
 - “review 一下当前的规划是否合理? 是否有需要完善的地方”
 - “好的, 按照你的建议依次执行” — authorizes the accepted September 7 revisions.
+- “连接状态有点问题” / “分析一下原因, 以及是否有其他备选方案” — requests
+  diagnosis of the Studio/MetaMask login problem.
+- “好的, 依次执行” / “continue” — continues the agreed outage fallback and
+  integration work, not a request to lower risk controls or relabel local data.
 
 ### User's original feature list
 
@@ -52,3 +56,13 @@ workflow configs, and commit them. Do not reconstruct missing messages as exact
 quotes. Redact credentials, account identifiers, personal browser context, and
 unrelated private projects; record redaction categories without publishing their
 values. No private pre-event project implementation is imported into this repo.
+
+## September 7 outage implementation record
+
+The agreed implementation sequence was a local Graph development fallback,
+real-chain reconciliation, product CRE CLI integration and signing preparation,
+while retaining hosted Studio as the submission path. The fallback, handler,
+runner, tests and pre-sign checks were AI-assisted. Goldsky remains conditional;
+no alternate account or unreviewed v2 transaction was created. The complete plan
+records verified versus pending gates; unit mock adapters and a CLI simulation
+are not represented as production identity checks or a hardware TEE.

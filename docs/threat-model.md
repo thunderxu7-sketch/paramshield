@@ -68,6 +68,25 @@ simulation is not a TEE and should not process real sensitive production input.
 Policy versions, verdicts, and recommendations themselves leak some information;
 no claim of zero knowledge or information-theoretic privacy is made.
 
+## Local fallback and runner boundary
+
+The development fallback indexes real Sepolia via local Graph Node but emits
+`graph-local` previews only. It does not bypass the hosted-source requirement
+for v2 preflight creation or imply prize eligibility. The loopback request
+server is a local transport, not a public authenticated product API.
+
+The runner executes fixed internal commands with one-run locking and strict
+output/time bounds. Any timeout, ambiguous output, wrong run/hash, stale input
+or schema failure prevents acceptance. A lock is not durable job idempotency;
+crash recovery, authenticated requests and hosted orchestration remain gates.
+
+Pre-sign preparation checks a pinned v2 deployment, distinct roles, fresh
+corroborated state, onchain ALLOWED/decision hash and a persisted matching human
+review through trusted ports. The ports currently have unit implementations, not
+production RPC/identity adapters. Neither forged browser approval booleans nor
+structurally valid CLI output alone authorize a transaction. A compromised
+server, review store or governance remains inside the stated trust model.
+
 ## Release gates
 
 - Local v2 protections are **not** active at the recorded September 6 v1

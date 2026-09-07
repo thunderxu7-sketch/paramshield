@@ -27,6 +27,8 @@ ParamShield turns that review into one auditable pipeline:
 
 ## ETHOnline 2026 demo
 
+**Target full demo; live controlled execution is still pending.**
+
 The reference market starts with an 80% liquidation threshold. An operator
 proposes lowering it to 70%. Live indexed positions show that the change would
 make healthy borrowers immediately liquidatable, and a 15% ETH price shock would
@@ -54,6 +56,12 @@ September 6. The September 7 revision targets risk/evidence invariants and a
 console, and runtime AI have separate gates in the
 [implementation plan](docs/implementation-plan.md). Local tests do not prove a
 live integration is complete.
+
+Verified next milestone: a local Graph Node indexed the real v1 Sepolia market,
+and the product CRE CLI workflow returned BLOCK (7000) and an independently
+reviewed ALLOW (7942). Both are explicitly non-executable previews. See the
+[evidence and remaining gates](docs/sponsor-readiness.md); hosted Graph, v2
+rollout and final Privy-controlled execution are not yet complete.
 
 ## Planned workspace
 
@@ -95,6 +103,11 @@ checks require local credentials:
 pnpm spike:graph
 pnpm spike:cre
 pnpm spike:privy
+# Optional real-chain, read-only development preview (requires Docker/Bun/CRE):
+pnpm graph:local up
+pnpm graph:local deploy
+pnpm graph:local health
+pnpm spike:cre-local
 ```
 
 The Privy spike performs an authenticated user-list read only when
