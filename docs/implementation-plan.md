@@ -21,7 +21,7 @@ packages and `--passWithNoTests` do not count as tested implementations.
 | R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                            |
 | R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                          |
 | R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (local; not deployed)                              |
-| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Local live index verified; hosted gate pending              |
+| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 verified; new-event demonstration pending         |
 | R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)                 |
 | R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual CLI/Anvil relay verified; live hosted v2 pending     |
 | R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Bootstrap/ABI/budget prepared; roles and deployment pending |
@@ -58,13 +58,15 @@ when v2 is deployed; reject a manifest/ABI/snapshot version mismatch.
 
 ## External gates and fallbacks
 
-- Graph account access ≠ deployed index. Studio login GraphQL returned 503 on
-  September 7 and the minimum API probe returned 200 on September 8; wallet
-  reconnection/terms and hosted deployment remain pending. The local fallback
-  now indexes/corroborates actual Sepolia data and is tagged `graph-local`. It
-  cannot authorize execution or complete the hosted-provider prize gate. Keep
-  Studio recovery/hosted deployment as a separate R-05 gate; Goldsky is
-  conditional and no alternate account has been created.
+- Graph account access ≠ deployed index. After the September 7 HTTP 503 and
+  September 8 connectivity recovery, the user confirmed the connection terms;
+  authenticated Studio deployment and a fresh hosted v1 read now passed.
+  [The v1 record](evidence/graph-studio-deployment-2026-09-08.json) is separate
+  from the still-valid `graph-local` fallback. Both remain non-executable v1
+  data-readiness evidence. The Studio development endpoint is rate-limited and
+  has not been published to The Graph Network. New-event-to-analysis, hosted v2
+  and sponsor qualification are still separate gates; no alternate provider
+  account has been created.
 - CRE private-beta network access is optional for the selected CLI lane; record
   simulation honestly. A mock result or isolated template is not product
   integration.
@@ -126,9 +128,14 @@ material out of public artifacts.
   checks, BLOCK / ALLOW, persisted signature review, local sign-only idempotency
   and real epoch rotation rejection. Synthetic Graph-shaped test envelope is
   explicitly not hosted Graph; no public Sepolia or execute transaction sent.
-- Studio connectivity recovered, but authenticated hosted deployment is pending
-  wallet reconnection with action-time terms confirmation. Do not count API 200
-  as completion of R-05. See [service boundaries](execution-service.md).
+- Following the user's action-time connection confirmation, Studio login and
+  authenticated deployment of `paramshield-sepolia-v-1` version `v0.1.0`
+  succeeded. Studio reported DEPLOYED / SYNCED / 100%; the hosted query at block
+  11660066 reconciled all five positions/config/totals against RPC, with an
+  8-second block age and zero block lag at validation. The live snapshot fed the
+  7000/15%-stress calculation, not a fixture. See
+  [hosted query evidence](evidence/graph-live-v1.json). No new Sepolia event, v2
+  index, network publication or execution is inferred from this result.
 
 - Local format/lint/types and production build passed; the complete 150-test set
   passed with Turbo concurrency 1 after two host-load/default-timeout failures

@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-09-08T08:57:05.880Z",
+  "liveQueryCheckedAt": "2026-09-08T08:54:56.985Z",
+  "kind": "graph-studio-hosted-v1-deployment",
+  "provider": "The Graph Subgraph Studio",
+  "studioUrl": "https://thegraph.com/studio/subgraph/paramshield-sepolia-v-1/",
+  "slug": "paramshield-sepolia-v-1",
+  "versionLabel": "v0.1.0",
+  "deploymentCid": "QmTJBKe1xEtjJzay4JBaZMfsKwzJYocmRN7QzxCmy55SUW",
+  "sourceRevision": "96d00dc1d132333fc61cff74cfc863f5ec681c97",
+  "cliVersion": "0.98.1",
+  "indexedNetwork": "sepolia",
+  "chainId": 11155111,
+  "contractVersion": "v1",
+  "startBlock": 11645965,
+  "studioUiObserved": {
+    "status": "DEPLOYED",
+    "indexing": "SYNCED",
+    "progressPercent": 100,
+    "entityCount": 14
+  },
+  "endpointKind": "studio-development-query",
+  "endpointHost": "api.studio.thegraph.com",
+  "hostedProviderVerified": true,
+  "rpcCorroborated": true,
+  "queryEvidence": "docs/evidence/graph-live-v1.json",
+  "snapshotHash": "0x1adc2e58dfcf7ae369059632ad5f6416e2b36d21aeb7e9632337b004247f8780",
+  "queryIndexedBlock": 11660066,
+  "queryValidationHead": 11660066,
+  "queryBlockAgeSeconds": 8,
+  "positionCount": 5,
+  "sourceHashes": {
+    "subgraph/subgraph.yaml": "65366c3781905eeb043506001aa2ee4dcd17e6dbb6655b7517001350570a2b3a",
+    "subgraph/schema.graphql": "ee252ed3d23342210b16633d390ca5263172672039c22cd7f45a8978e41817e0",
+    "subgraph/src/market.ts": "ac8dba41866de88859b93f4c290b8be3bad70d9dae428350c9e926e822606ffd",
+    "subgraph/src/executor.ts": "063852638bad0d43da7149c0ab987d9331ecfbc44b97b9f276853d3046d771db",
+    "deployments/sepolia.json": "d98aa57f79c3fc916f3582c79c3d7254f00f94cb87b96f0c22e11119421e35e4",
+    "deployments/abi/ReferenceLendingMarket.json": "a9cf5483e9bd437671cce9f1cdb54ff38d1a53a3ba377a0175738ebbd56f38d9",
+    "deployments/abi/ParamShieldExecutor.json": "60e67a0d1c245d0508c8edde08627391adbe7ec4afc630b08bde16545289fb95",
+    "subgraph/package.json": "525bea6f6716d6dcc4a099f1e3e3b24419d5f33b0c422c62413072473733d518",
+    "packages/graph-client/src/index.ts": "f22cad9b1766fd0380ab2168932e6863727ef938b908d5bb46841738dea4aa99",
+    "apps/web/scripts/graph-live-spike.ts": "32dbc6c8e982777c7b3b234e232f01b943f711f9081a5fe270938f83eb42feb0",
+    "pnpm-lock.yaml": "5fc45643364e55e3c66c56b5ad4adf5d36783fc167878f887fad876e94d322b3"
+  },
+  "limitations": {
+    "executable": false,
+    "v2Deployed": false,
+    "v2Indexed": false,
+    "newEventToAnalysisDemonstrated": false,
+    "networkPublished": false,
+    "transactionBroadcast": false,
+    "sponsorQualificationClaimed": false,
+    "note": "Studio deployment and read-only risk simulation only. Existing v1 events are real Sepolia data; no new transaction, v2 execution or decentralized-network publication is claimed. Query URL account identifier, deployment credential and private local configuration are omitted."
+  },
+  "developmentQueryLimit": {
+    "queriesPerDay": 3000,
+    "sourceCheckedDate": "2026-09-08",
+    "source": "https://thegraph.com/docs/en/subgraphs/developing/deploying-publishing/using-subgraph-studio/"
+  }
+}

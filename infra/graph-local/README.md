@@ -64,11 +64,12 @@ block/hash, deployment, all five positions and totals, RPC corroboration, and
 The Studio login path returned HTTP 503 on September 7 while its public page
 returned 200; the
 [connectivity record](../../docs/evidence/graph-studio-connectivity-2026-09-07.json)
-is scoped to this client's egress, not a global-outage claim. Keep Studio as the
-submission path: after recovery, create/deploy the hosted subgraph and run the
-separate hosted spike. A reachable deploy endpoint without a deploy key does not
-prove an authenticated deployment. Goldsky is a conditional alternative, not a
-provider/account already configured or an assumed prize qualification.
+is scoped to this client's egress, not a global-outage claim. On September 8,
+authenticated Studio deployment and the separate hosted v1 spike succeeded; see
+the [hosted record](../../subgraph/README.md). This does not change local
+provenance or imply v2 execution/network publication. The local stack is
+retained as a development fallback. Goldsky remains conditional, not a
+configured provider/account or an assumed prize qualification.
 
 Sources:
 [Graph Node](https://thegraph.com/docs/en/indexing/tooling/graph-node/),

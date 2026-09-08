@@ -52,10 +52,12 @@ controlled execution.
   call is broadcast; LT stays 8000. This uses an explicitly synthetic
   Graph-shaped envelope over local RPC data; it is **not hosted Graph, real
   human review, Privy signing in the harness, or public Sepolia**.
-- [Studio connectivity](evidence/graph-studio-connectivity-2026-09-08.json):
-  frontend and minimal API probe return 200 again. The wallet connection modal
-  requires action-time terms acceptance; authenticated hosted deployment is
-  still pending. API reachability alone does not prove account readiness.
+- [Hosted Studio v1](evidence/graph-studio-deployment-2026-09-08.json): after
+  explicit connection-terms confirmation, login and authenticated deployment
+  succeeded. The official development endpoint supplied all five positions,
+  config and totals at block 11660066; same-block RPC reconciliation and
+  freshness checks passed. This is a separate real hosted data-readiness proof,
+  not the Anvil fixture, hosted v2 execution input or network publication.
 
 Reproduce with `pnpm spike:relay-anvil` and
 `pnpm spike:privy-v2 --create-isolated-test-wallet`. The latter creates/reuses

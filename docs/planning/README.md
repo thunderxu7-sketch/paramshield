@@ -79,3 +79,13 @@ preparation and isolated integration harnesses were AI-assisted. The actual
 limitations and pending role/deployment/hosted gates are recorded in
 [the execution service](../execution-service.md). No real human review, TEE,
 organization quorum or public Sepolia execution is inferred from test results.
+
+### Studio recovery continuation
+
+The user then answered “确认” to the specific Studio wallet-connection and terms
+prompt, and “解锁了” after a host-lock interruption. The existing event wallet
+was reconnected; a separate v1 Studio subgraph was created/deployed and its
+hosted read corroborated against RPC. These instructions did not authorize a
+public-network publication transaction or v2 deployment. Credential and
+account-specific query configuration remain local and ignored; the public record
+includes source hashes, deployment CID and sanitized live evidence.

@@ -1,15 +1,15 @@
 # Sponsor Integration Readiness
 
-**Updated:** 2026-09-07. Account, local build, live read, control proof, and
+**Updated:** 2026-09-08. Account, local build, live read, control proof, and
 final product integration are different gates. No credentials are included here.
 
 ## Matrix
 
-| Sponsor       | Verified evidence                                                                                                                                                                 | Still missing                                                                                                                                    |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| The Graph     | Real Sepolia v1 events indexed by local Graph Node; all five positions/config/totals independently corroborated at pinned block; strict client tests                              | Studio GraphQL login path 503; authenticated hosted deployment, v2 index and new-event-to-analysis demonstration                                 |
-| Chainlink CRE | Actual product handler compiled to WASM and CLI-simulated on fresh local Graph input; runtime secret drives policy/search; 7000 BLOCK and fresh 7942 ALLOW; bindings/runner tests | Live v2 execution lane, durable trusted relay; no hardware TEE/network deployment claimed                                                        |
-| Privy         | Real isolated policy-bound wallet/signature and four provider policy denials; server-side pre-sign checks tested separately with synthetic v2 state                               | Final execution policy, real RPC/review-store adapters, distinct roles onchain, authenticated organization approval and actual Sepolia broadcast |
+| Sponsor       | Verified evidence                                                                                                                                                                   | Still missing                                                                                                              |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| The Graph     | Studio v1 DEPLOYED/SYNCED; five positions/config/totals from the official hosted endpoint independently RPC-corroborated at a fresh pinned block; separate local fallback preserved | Hosted v2 index, new-event-to-analysis demonstration, runtime grounded AI and sponsor qualification                        |
+| Chainlink CRE | Actual product handler on local live Graph; 7000 BLOCK and fresh 7942 ALLOW; actual CLI/Anvil trusted-relay proof with RPC and review adapters                                      | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                                 |
+| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately                  | Final operator policy and independent roles onchain, actual human review, public Sepolia broadcast and receipt/state proof |
 
 ## Exact partner positioning
 
@@ -28,15 +28,16 @@ final product integration are different gates. No credentials are included here.
 
 ## Sanitized evidence log
 
-| Time (UTC)     | Integration      | Actual result                                                                                                                                                                 |
-| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sep 4–5        | Graph            | Account/email/CLI readiness; no hosted subgraph created                                                                                                                       |
-| Sep 4 21:40    | CRE              | Official starter: nine tests and local simulation; not hardware TEE                                                                                                           |
-| Sep 4 21:51–54 | Privy            | SDK authentication passed; unused initial app secret revoked                                                                                                                  |
-| Sep 7 03:12    | Privy            | One recovered sign-only payload and four policy denials (chain, target, value, calldata argument); no broadcast                                                               |
-| Sep 7          | Graph            | Local Graph Node synced real deployed v1 events and RPC reconciliation passed; see timestamped [artifact](evidence/graph-local-live-v1.json)                                  |
-| Sep 7          | CRE              | Product handler returned BLOCK/recommended 7942 and independent ALLOW; real CLI/WASM, local Graph source, no execution; see [artifact](evidence/cre-local-graph-preview.json) |
-| Sep 7 04:16    | Studio diagnosis | TLS-verified curl probe: public page 200, login GraphQL API 503, deploy endpoint GET 200; reachability is not authenticated deployment                                        |
+| Time (UTC)     | Integration      | Actual result                                                                                                                                                                       |
+| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sep 4–5        | Graph            | Account/email/CLI readiness; no hosted subgraph created                                                                                                                             |
+| Sep 4 21:40    | CRE              | Official starter: nine tests and local simulation; not hardware TEE                                                                                                                 |
+| Sep 4 21:51–54 | Privy            | SDK authentication passed; unused initial app secret revoked                                                                                                                        |
+| Sep 7 03:12    | Privy            | One recovered sign-only payload and four policy denials (chain, target, value, calldata argument); no broadcast                                                                     |
+| Sep 7          | Graph            | Local Graph Node synced real deployed v1 events and RPC reconciliation passed; see timestamped [artifact](evidence/graph-local-live-v1.json)                                        |
+| Sep 7          | CRE              | Product handler returned BLOCK/recommended 7942 and independent ALLOW; real CLI/WASM, local Graph source, no execution; see [artifact](evidence/cre-local-graph-preview.json)       |
+| Sep 7 04:16    | Studio diagnosis | TLS-verified curl probe: public page 200, login GraphQL API 503, deploy endpoint GET 200; reachability is not authenticated deployment                                              |
+| Sep 8 08:54    | Hosted Graph v1  | Studio v0.1.0 deployed/synced; official hosted query at block 11660066 matched RPC for all five positions/config/totals; 8-second block age, zero lag at validation; no transaction |
 
 The actual Privy check is recorded in
 [the machine-readable evidence file](evidence/privy-control-spike-2026-09-07.json).
@@ -63,19 +64,23 @@ requirement. No `graph` provenance is fabricated and no stale/fixture data is
 promoted into execution. Goldsky remains a conditional option: account setup and
 award suitability would need verification; neither is claimed here.
 
-1. Restore Studio login and deploy/query the hosted index. Confirm a real new
-   event changes the analysis using a separately reviewed transaction.
+1. Studio login and hosted v1 deployment/read are complete. Confirm a real new
+   event changes the analysis using a separately reviewed transaction; migrate
+   to a separately versioned hosted v2 index after v2 deployment.
 2. Review/deploy v2 with distinct operational roles, preserved v1 records and
    newly pinned code hashes; update indexing/version manifests.
-3. Wire real RPC and authenticated persisted-review adapters; final Privy
-   control must restrict exact execution and verify the signed transaction.
-   Complete the trusted-relay → real transaction → receipt/state/evidence chain.
+3. Connect the verified real RPC, persisted-review and exact-signing adapters to
+   final live roles and actual human review. Complete the trusted-relay → real
+   transaction → receipt/state/evidence chain.
 4. Add runtime grounded AI, durable console/idempotency/recovery, repeated demo,
    human review/narration and complete submission materials.
 
-Local regression: `pnpm verify`, **120 passing tests**. The pure pre-sign module
-performs no provider policy update, signing, funding, role assignment or
-broadcast; it is not a second real Privy control proof.
+The September 7 local regression had 120 passing tests; September 8 has **150
+passing tests** plus actual separated Privy/Anvil proofs. See the
+[exact verification record](execution-service.md#local-verification-record). The
+hosted deployment continuation changed only configuration/docs/evidence;
+subgraph compilation and the real hosted/RPC read passed. It did not rerun
+unrelated tests or send a chain transaction.
 
 Sources checked Sep 7:
 [The Graph prize](https://ethglobal.com/events/ethonline2026/prizes/the-graph),
@@ -86,9 +91,14 @@ Qualification remains subject to the partners' rules and judges, not guaranteed.
 
 ## September 8 progress (does not supersede pending live gates)
 
-- Studio minimal frontend/API/deploy reachability probes now return 200. The
-  reconnect modal requires terms confirmation; hosted deployment remains
-  incomplete, not automatically inferred from recovery.
+- Studio recovery progressed beyond HTTP 200: the user confirmed the connection
+  terms, the existing event wallet logged in, and the v1 index was deployed and
+  queried.
+  [Deployment/source evidence](evidence/graph-studio-deployment-2026-09-08.json)
+  and [live risk input/output](evidence/graph-live-v1.json) are separate from
+  the local fallback. This is a Studio development endpoint, not onchain network
+  publication; its documented limit is 3,000 queries/day. See
+  [official deployment documentation](https://thegraph.com/docs/en/subgraphs/developing/deploying-publishing/using-subgraph-studio/).
 - Real CRE execution-shaped CLI runs and RPC/review/signing adapters passed an
   [owned Anvil integration](evidence/relay-anvil-only-2026-09-08.json). Graph
   provenance there is explicitly synthetic and cannot count for The Graph.

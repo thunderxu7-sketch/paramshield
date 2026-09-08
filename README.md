@@ -60,8 +60,14 @@ live integration is complete.
 Verified next milestone: a local Graph Node indexed the real v1 Sepolia market,
 and the product CRE CLI workflow returned BLOCK (7000) and an independently
 reviewed ALLOW (7942). Both are explicitly non-executable previews. See the
-[evidence and remaining gates](docs/sponsor-readiness.md); hosted Graph, v2
-rollout and final Privy-controlled execution are not yet complete.
+[evidence and remaining gates](docs/sponsor-readiness.md); v2 rollout and final
+Privy-controlled execution are not yet complete.
+
+The September 8 [hosted Studio v1 deployment](subgraph/README.md) is now synced.
+All five indexed positions, totals and config were independently reconciled
+against Sepolia RPC at the same block/hash, and the live input fed the risk
+calculation. This is a rate-limited development endpoint, **not** a v2 index,
+new-event-to-analysis proof, or publication to The Graph Network.
 
 September 8 adds real RPC and EIP-712 review adapters, an owned CRE execution
 runner, and durable sign-only coordination. Actual CRE → local Anvil signing
