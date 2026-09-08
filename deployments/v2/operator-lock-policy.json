@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "name": "ParamShield v2 operator candidate LOCKED",
+  "chain_type": "ethereum",
+  "rules": [
+    {
+      "name": "Deny every action while candidate is inactive",
+      "method": "*",
+      "action": "DENY",
+      "conditions": []
+    }
+  ]
+}

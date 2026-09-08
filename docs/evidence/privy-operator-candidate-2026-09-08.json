@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-09-08T09:49:48.253Z",
+  "schemaVersion": "paramshield.operator-candidate.v1",
+  "status": "LOCKED_CANDIDATE_NOT_ASSIGNED",
+  "walletAddress": "0x2801d0FbD05972D40aF0ace94413364f6aE2A3E1",
+  "sdk": "@privy-io/node 0.34.0",
+  "policyFingerprint": "0x5381b5adfa4b83c1ae787e0f92c69eb50bfef334c8661a3378e0a8046f0b152e",
+  "policyFile": "deployments/v2/operator-lock-policy.json",
+  "policyModel": "App-managed unconditional wildcard DENY",
+  "policyAndWalletBindingReadBack": true,
+  "actualProviderDenial": {
+    "method": "eth_signTransaction",
+    "chainId": 11155111,
+    "valueWei": "0",
+    "result": "provider-policy-denied",
+    "httpStatus": 400
+  },
+  "additionalSigners": 0,
+  "privateKeyImported": false,
+  "privateKeyExported": false,
+  "readOnlySepolia": {
+    "chainId": 11155111,
+    "blockNumber": 11660322,
+    "balanceWei": "0",
+    "pendingNonce": 0,
+    "code": "0x"
+  },
+  "funded": false,
+  "operatorRoleAssigned": false,
+  "signaturePermissionActive": false,
+  "broadcast": false,
+  "humanReviewVerified": false,
+  "decisionAuthorityVerified": false,
+  "finalExecutionCapabilityVerified": false,
+  "limitations": [
+    "Locked candidate only; no final role or execution permission is assigned.",
+    "Only the listed sign-only request was actively denied; no send, export, or policy mutation probe was attempted.",
+    "App secret can change the app-managed policy. This is not independent organization quorum or admin-proof governance.",
+    "Exact intent policy activation requires a separately reviewed deployment, authenticated human review, fresh CRE/RPC state and an exact tuple."
+  ]
+}

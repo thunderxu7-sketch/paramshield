@@ -89,3 +89,20 @@ hosted read corroborated against RPC. These instructions did not authorize a
 public-network publication transaction or v2 deployment. Credential and
 account-specific query configuration remain local and ignored; the public record
 includes source hashes, deployment CID and sanitized live evidence.
+
+### Wallet funding and candidate preparation continuation
+
+The user supplied two MetaMask addresses and requested testnet funding followed
+by continued work. After a faucet account limit, the user explicitly replied
+“允许操作” to the proposed 0.05 Sepolia ETH transfer from the existing admin to
+the second address. That transfer was independently verified through RPC; it was
+not a second faucet claim or a guarded product execution. Personal account
+addresses and funding receipts remain in ignored local records.
+
+The continuation preserves MetaMask private keys and the two earlier isolated
+Privy proof wallets. A dedicated operator candidate starts with an unconditional
+deny policy, rather than treating an external MetaMask account as a
+Privy-managed signer. Candidate creation does not authorize live role
+assignment, policy activation, v2 deployment, or an assertion of independent
+organization governance. The public deployment evidence distinguishes these
+remaining gates.

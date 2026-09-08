@@ -58,6 +58,13 @@ controlled execution.
   config and totals at block 11660066; same-block RPC reconciliation and
   freshness checks passed. This is a separate real hosted data-readiness proof,
   not the Anvil fixture, hosted v2 execution input or network publication.
+- [Locked operator candidate](evidence/privy-operator-candidate-2026-09-08.json):
+  a new, unfunded Privy wallet is bound to an unconditional wildcard `DENY`
+  policy. The actual provider rejected the recorded zero-value Sepolia signing
+  request. No private key import/export, role assignment or candidate
+  transaction occurred. This is readiness preparation, not a positive execution
+  capability, human approval or organizational quorum proof. App-secret control
+  of the policy remains trusted.
 
 Reproduce with `pnpm spike:relay-anvil` and
 `pnpm spike:privy-v2 --create-isolated-test-wallet`. The latter creates/reuses

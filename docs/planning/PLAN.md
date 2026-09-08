@@ -64,6 +64,8 @@
 
 ### 2026-09-08
 
+- [x] **Privy 最终角色准备**：另建独立、未入金的 operator 候选钱包，初始 wildcard DENY；provider 实际读回绑定并拒绝 Sepolia 签名请求。候选不是既有隔离 proof 钱包，不导入 MetaMask 私钥，未分配链上权限。证据见 `docs/evidence/privy-operator-candidate-2026-09-08.json`。
+- [ ] **角色剩余 gate**：authority / reviewer 身份与签名能力、最终 operator 精确策略、v2 constructor payload / 部署仍待审核；不能将锁定候选标为完整受控执行。
 - [x] **Studio 恢复与 hosted v1**：用户确认连接条款后，使用原参赛钱包登录，创建并部署 `paramshield-sepolia-v-1` / `v0.1.0`。Studio 显示 DEPLOYED / SYNCED / 100%；正式托管端点的 5 个仓位、配置与总量在区块 11660066 与同块 RPC 核对通过，校验时区块年龄 8 秒、落后 0 块。已接入只读风险计算，不是本地 fixture。
 - [ ] **Graph 剩余 gate**：当前是有每日 3,000 次查询限制的 Studio development endpoint，未 publish 到 The Graph Network；v2 索引、新事件改变分析、运行时 AI 与参赛验收仍待完成，不把 hosted v1 当作可执行 v2。
 - [x] **R-08 部署准备**：单独 BootstrapV2、角色分离测试、Sepolia dry-run 脚本、候选 ABI、源码哈希与只读预算就绪。旧 v1 manifest / ABI 保留；最终 operator / authority 未分配，未部署 v2。

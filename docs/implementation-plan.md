@@ -72,6 +72,11 @@ when v2 is deployed; reject a manifest/ABI/snapshot version mismatch.
   integration.
 - Privy authentication ≠ control. Verify a policy-bound test wallet first; do
   not invent quorum availability or weaken execution just to show a transaction.
+  A
+  [separate locked operator candidate](evidence/privy-operator-candidate-2026-09-08.json)
+  now has a provider-verified deny policy. It is not either isolated proof
+  wallet and has no funds, live role or signing permission. Final authority /
+  reviewer identity and reviewed exact-intent activation remain pending.
 - Contract revision needs a new reviewed deployment. Never overwrite old ABIs or
   report local v2 protections as already active on Sepolia.
 - Provider outage never changes BLOCK/ESCALATE into ALLOW. Re-run with a fresh
