@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-09-08T07:12:53.677971+00:00",
+  "client": "curl (TLS verification enabled)",
+  "checks": [
+    {
+      "check": "Studio shell",
+      "url": "https://thegraph.com/studio/",
+      "httpStatus": 200,
+      "authenticated": false
+    },
+    {
+      "check": "Login GraphQL connectivity",
+      "url": "https://api.studio.thegraph.com/graphql",
+      "httpStatus": 200,
+      "authenticated": false
+    },
+    {
+      "check": "Deploy reachability only",
+      "url": "https://api.studio.thegraph.com/deploy/",
+      "httpStatus": 200,
+      "authenticated": false
+    }
+  ],
+  "scope": "One local egress; not a global outage or authenticated deployment claim"
+}

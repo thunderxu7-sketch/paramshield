@@ -1,7 +1,7 @@
 # ParamShield — 完整产品与实施计划
 
 > - 状态：本地工作计划完整公开副本；本地工作原件继续被忽略。
-> - 更新时间：2026-09-07（Asia/Shanghai）
+> - 更新时间：2026-09-08（Asia/Shanghai）
 > - ETHOnline 2026 提交截止：2026-09-14 00:00（北京时间）
 > - 当前模式：Building from Scratch
 
@@ -61,6 +61,17 @@
       全部通过，共 120 项测试；Graph/CRE 真实本地联调另存公开脱敏证据。
 - [ ] **R-07 执行 relay 与 R-08 至 R-13**：真实 v2/hosted
       Graph、Privy 最终控制/身份与审核适配、完整端到端、AI、复演、视频、正式提交仍待完成。
+
+### 2026-09-08
+
+- [x] **Studio 恢复探测**：前端 / 最小 GraphQL / deploy 连通性探测返回 200；钱包重连弹窗要求服务条款确认，尚未登录部署，不把连通性算作 hosted gate 完成。
+- [x] **R-08 部署准备**：单独 BootstrapV2、角色分离测试、Sepolia dry-run 脚本、候选 ABI、源码哈希与只读预算就绪。旧 v1 manifest / ABI 保留；最终 operator / authority 未分配，未部署 v2。
+- [x] **真实适配器**：同块 RPC 的代码/角色/版本/epoch/ALLOWED 检查；EIP-712 身份恢复与持久审核存储，拒绝自审、篡改、过期和覆盖。
+- [x] **CRE / 签名 relay**：真实 CLI execution lane、owned-run 来源约束、实际 nonce/gas/balance 读取、精确交易校验、持久幂等/nonce 保留、超时 UNKNOWN 和状态变化 QUARANTINED。只签名，不含 broadcaster。
+- [x] **实际分层联调**：Anvil-only 的 CRE BLOCK / ALLOW、签名审核与 epoch 轮换阻断；独立 Privy 隔离钱包 v2 tuple 签名成功，13 项 provider policy 拒绝。两项证据分开记录，均不声称真实 hosted Graph → Privy → Sepolia 端到端。
+- [ ] **后续真实执行**：服务条款确认后完成 hosted Graph；最终角色能力验证、v2 部署、真实人工审核、propose / decision / execute 交易与 receipt + state 证据仍待完成。
+- [x] **本地验证**：格式/lint/types/production build 通过；并行测试的两项默认超时在串行全量回归中消除，保持默认测试时限，共 150 项通过。Privy / Anvil 证据与源码哈希核对通过。
+- 验证结果见 `docs/execution-service.md` 和 `docs/implementation-plan.md`。
 
 ## 1. 产品定义
 

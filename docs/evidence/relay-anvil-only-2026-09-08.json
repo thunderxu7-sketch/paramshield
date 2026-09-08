@@ -1,0 +1,102 @@
+{
+  "checkedAt": "2026-09-08T08:08:05.998Z",
+  "kind": "anvil-only-v2-cre-relay-integration",
+  "network": "owned ephemeral Anvil, NOT public Sepolia",
+  "configuredChainId": 11155111,
+  "anvilBlockTimeSeconds": 12,
+  "hostedGraphProviderVerified": false,
+  "realHumanApproval": false,
+  "privyUsedInThisHarness": false,
+  "hardwareTeeAttested": false,
+  "publicNetworkTransactionsSent": false,
+  "executeBroadcast": false,
+  "bootstrap": {
+    "estimatedGas": "4386070",
+    "gasUsed": "4386070",
+    "initcodeBytes": 17811
+  },
+  "checks": [
+    "bootstrap-independent-roles",
+    "v2-real-rpc-hash-pinned-reads",
+    "actual-CRE-BLOCK",
+    "contract-rejects-blocked-intent",
+    "relay-rejects-BLOCK-before-signing",
+    "actual-CRE-ALLOW",
+    "missing-review-blocks",
+    "RPC-EIP712-review-recovery",
+    "relay-real-nonce-gas-balance-checks",
+    "exact-local-signature-and-durable-idempotency",
+    "real-epoch-rotation-blocks-signature-reuse",
+    "no-execute-broadcast-or-parameter-change"
+  ],
+  "runs": [
+    {
+      "run": {
+        "runId": "9d18d3db-6b54-44a3-bac9-4321d2b19486",
+        "verdict": "BLOCK",
+        "decisionHash": "0xcdb465f17a463bc671e464caf8f7a2f4488eabf1463a6106a6afe3f573e12ceb",
+        "wasmSha256": "9caff01d012948533c8fff5e48587e01f6aa5524179ea32ca713c495beb1b2c5",
+        "mode": "cli-simulation-trusted-relay",
+        "sourceSha256": {
+          "workflows/chainlink-cre/src/main.ts": "0ac9b571008f02b70d2a472c1f89b77e5e4607087053a44a351e98c327f3e50a",
+          "workflows/chainlink-cre/src/workflow.ts": "992e75299cf20c75aa605c53d25e3f2b23faa9c33a7f540e80e118706d10354f",
+          "workflows/chainlink-cre/src/protocol.ts": "bffd4f4d18af43dd5130121ae785307c65720b79cce827a833d2fe188021ef97",
+          "workflows/chainlink-cre/workflow.yaml": "dff2e5176f2e7950710b76af054b1a3ca70bf7fc0048e0e7f85e983ed4618425",
+          "workflows/chainlink-cre/project.yaml": "c1d6aa875e04fe1ee6bd086aea8976b1720b08c7ad14647e0f36e1218353c8d7",
+          "packages/evidence/src/index.ts": "3312668dc9886397e90d3fcb3bfb63eec0a17707941c90f5bbb05a6d07bb298a",
+          "packages/shared/src/index.ts": "1115e2ac1b931672c7bef53a9ce7459904b74eef525f09c9298ee5810f94cb46",
+          "packages/risk-engine/src/index.ts": "11132845b3ab65c4080f79ab1d401bbec8e5c29054677f95aa7ac9f78a9ae480",
+          "packages/risk-engine/src/policy.ts": "eeccd8f3d5dfde6291019d306ff9a0abd4fd75bd14b554a27b5e946472434f36",
+          "apps/web/src/lib/server/cre-execution-runner.ts": "eb242aebc4023ba063c21321296958264fce8aeef09a1acf24bdd170ee752a44",
+          "apps/web/src/lib/server/execution-relay.ts": "0db54b001a847b9c8211a70cfeb8a3440826fca0834ffd83fdbf3d3973ef5d5e",
+          "apps/web/src/lib/server/rpc-adapter.ts": "cb3d323e4729f86529c707b11a454ead1552f64dd25773b0686f6823a1437230",
+          "apps/web/src/lib/server/review-store.ts": "fd4a604af9fec0305172b3dffa8d5a2b10240595ffd514a3d0bf332f99e724f9",
+          "apps/web/src/lib/server/transaction-signing.ts": "4e8c5687860bd47da86c0a5d65eb98eeafea27c9a90926846aa06b91dc19203f",
+          "apps/web/src/lib/server/execution-policy.ts": "b02f3e452f891ecf26d36a20316e7b7c596fc7f34f316c7af5db54bd17bac4b8",
+          "apps/web/src/lib/server/durable-store.ts": "6c6d78c6232867b7b644e5d18db44b5be0ee8684844a40ca9c563aa3c648b062",
+          "apps/web/src/lib/execution-preflight.ts": "01991143b8b8c63760de763f3e1ca45029d9cfb4f5e55b6af52ef17394af6a98",
+          "apps/web/src/lib/bounded-process.ts": "acef077ab23140ab3cf81ec1f4c2c15625ae156f95a02c4ad8176b88f27435f3",
+          "apps/web/scripts/relay-anvil-spike.ts": "671dfc2f5a5da54e36c0989daaee3744c249f9b4143eedd957d45b3e84ba4d6c",
+          "pnpm-lock.yaml": "5fc45643364e55e3c66c56b5ad4adf5d36783fc167878f887fad876e94d322b3"
+        }
+      },
+      "changeHash": "0x08858533793795e2c25871e8791e98e0624f5f11fe4fa6518c513d0340b51462",
+      "preflightHash": "0x6a528d4723523c93efb422c77c02b5f9c600d20a44a8b896070dbe9ea793107e",
+      "snapshotProvenance": "synthetic-Graph-envelope-over-owned-Anvil-RPC-only"
+    },
+    {
+      "run": {
+        "runId": "94aebe2f-7def-4ab1-b7d5-5dd6b4f9465c",
+        "verdict": "ALLOW",
+        "decisionHash": "0xfd6e4ab1727489850f0bbe7a24b8bcc2c6706cbe267ca2a0accc03c43b5aff1e",
+        "wasmSha256": "9caff01d012948533c8fff5e48587e01f6aa5524179ea32ca713c495beb1b2c5",
+        "mode": "cli-simulation-trusted-relay",
+        "sourceSha256": {
+          "workflows/chainlink-cre/src/main.ts": "0ac9b571008f02b70d2a472c1f89b77e5e4607087053a44a351e98c327f3e50a",
+          "workflows/chainlink-cre/src/workflow.ts": "992e75299cf20c75aa605c53d25e3f2b23faa9c33a7f540e80e118706d10354f",
+          "workflows/chainlink-cre/src/protocol.ts": "bffd4f4d18af43dd5130121ae785307c65720b79cce827a833d2fe188021ef97",
+          "workflows/chainlink-cre/workflow.yaml": "dff2e5176f2e7950710b76af054b1a3ca70bf7fc0048e0e7f85e983ed4618425",
+          "workflows/chainlink-cre/project.yaml": "c1d6aa875e04fe1ee6bd086aea8976b1720b08c7ad14647e0f36e1218353c8d7",
+          "packages/evidence/src/index.ts": "3312668dc9886397e90d3fcb3bfb63eec0a17707941c90f5bbb05a6d07bb298a",
+          "packages/shared/src/index.ts": "1115e2ac1b931672c7bef53a9ce7459904b74eef525f09c9298ee5810f94cb46",
+          "packages/risk-engine/src/index.ts": "11132845b3ab65c4080f79ab1d401bbec8e5c29054677f95aa7ac9f78a9ae480",
+          "packages/risk-engine/src/policy.ts": "eeccd8f3d5dfde6291019d306ff9a0abd4fd75bd14b554a27b5e946472434f36",
+          "apps/web/src/lib/server/cre-execution-runner.ts": "eb242aebc4023ba063c21321296958264fce8aeef09a1acf24bdd170ee752a44",
+          "apps/web/src/lib/server/execution-relay.ts": "0db54b001a847b9c8211a70cfeb8a3440826fca0834ffd83fdbf3d3973ef5d5e",
+          "apps/web/src/lib/server/rpc-adapter.ts": "cb3d323e4729f86529c707b11a454ead1552f64dd25773b0686f6823a1437230",
+          "apps/web/src/lib/server/review-store.ts": "fd4a604af9fec0305172b3dffa8d5a2b10240595ffd514a3d0bf332f99e724f9",
+          "apps/web/src/lib/server/transaction-signing.ts": "4e8c5687860bd47da86c0a5d65eb98eeafea27c9a90926846aa06b91dc19203f",
+          "apps/web/src/lib/server/execution-policy.ts": "b02f3e452f891ecf26d36a20316e7b7c596fc7f34f316c7af5db54bd17bac4b8",
+          "apps/web/src/lib/server/durable-store.ts": "6c6d78c6232867b7b644e5d18db44b5be0ee8684844a40ca9c563aa3c648b062",
+          "apps/web/src/lib/execution-preflight.ts": "01991143b8b8c63760de763f3e1ca45029d9cfb4f5e55b6af52ef17394af6a98",
+          "apps/web/src/lib/bounded-process.ts": "acef077ab23140ab3cf81ec1f4c2c15625ae156f95a02c4ad8176b88f27435f3",
+          "apps/web/scripts/relay-anvil-spike.ts": "671dfc2f5a5da54e36c0989daaee3744c249f9b4143eedd957d45b3e84ba4d6c",
+          "pnpm-lock.yaml": "5fc45643364e55e3c66c56b5ad4adf5d36783fc167878f887fad876e94d322b3"
+        }
+      },
+      "changeHash": "0xf695bfef2e7660deb8da8e9b6bd93282b8b73ee9fd55301c11c39614f8d915dc",
+      "preflightHash": "0x3e58ecb1057c98396a892e80df190a0f80f22fef8a83b4937e5fdeae50c16c56",
+      "snapshotProvenance": "synthetic-Graph-envelope-over-owned-Anvil-RPC-only"
+    }
+  ]
+}

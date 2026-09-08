@@ -83,3 +83,18 @@ Sources checked Sep 7:
 [Privy prize](https://ethglobal.com/events/ethonline2026/prizes/privy),
 [Privy policy documentation](https://docs.privy.io/controls/policies/overview).
 Qualification remains subject to the partners' rules and judges, not guaranteed.
+
+## September 8 progress (does not supersede pending live gates)
+
+- Studio minimal frontend/API/deploy reachability probes now return 200. The
+  reconnect modal requires terms confirmation; hosted deployment remains
+  incomplete, not automatically inferred from recovery.
+- Real CRE execution-shaped CLI runs and RPC/review/signing adapters passed an
+  [owned Anvil integration](evidence/relay-anvil-only-2026-09-08.json). Graph
+  provenance there is explicitly synthetic and cannot count for The Graph.
+- [Privy v2 tuple control](evidence/privy-v2-control-2026-09-08.json) verifies a
+  separate isolated wallet, exact signed fields and 13 actual policy denials. No
+  final operator role, funding, organization quorum or public broadcast.
+- [v2 preparation](../deployments/v2/README.md) and
+  [sign-only service](execution-service.md) are ready for the next live gates;
+  no sponsor eligibility or complete E2E is claimed from these layered proofs.

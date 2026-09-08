@@ -63,6 +63,14 @@ reviewed ALLOW (7942). Both are explicitly non-executable previews. See the
 [evidence and remaining gates](docs/sponsor-readiness.md); hosted Graph, v2
 rollout and final Privy-controlled execution are not yet complete.
 
+September 8 adds real RPC and EIP-712 review adapters, an owned CRE execution
+runner, and durable sign-only coordination. Actual CRE → local Anvil signing
+checks and a **separate real Privy** exact-v2-policy proof passed (13 denied
+mutations). These are not a hosted-Graph → Privy → public-Sepolia E2E. See
+[execution service status](docs/execution-service.md) and the
+[separate v2 preparation](deployments/v2/README.md). No v2 contract has been
+deployed or substituted for the existing v1 addresses.
+
 ## Planned workspace
 
 ```text
@@ -108,6 +116,12 @@ pnpm graph:local up
 pnpm graph:local deploy
 pnpm graph:local health
 pnpm spike:cre-local
+# Read-only v2 preparation; no signing or broadcast:
+pnpm deployment:v2:prepare
+# Ephemeral local Anvil + actual CRE integration, NOT public Sepolia:
+pnpm spike:relay-anvil
+# Creates/reuses an isolated, unfunded Privy proof wallet; no broadcast:
+pnpm spike:privy-v2 --create-isolated-test-wallet
 ```
 
 The Privy spike performs an authenticated user-list read only when

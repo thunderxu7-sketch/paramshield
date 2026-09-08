@@ -1,0 +1,88 @@
+{
+  "checkedAt": "2026-09-08T07:45:01.323Z",
+  "kind": "privy-v2-tuple-isolated-sign-only",
+  "sdk": "@privy-io/node 0.34.0",
+  "walletAddress": "0x1036d5C44F4015A11875D03b41336975CEf01Eca",
+  "policyHash": "0x01714ea52da94c8850023a75a6d9a922af6d5df8e554850e92180066b9a9ba3d",
+  "tuplePathsVerified": true,
+  "allowed": {
+    "signatureAndAllTransactionFieldsVerified": true,
+    "transactionHash": "0x837d26d52b1b1b93a05edca92e1ee4ec3495faf7d213dd40c3bd02ccc2ec65ff"
+  },
+  "denied": [
+    {
+      "case": "outer-chain",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "outer-target",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "outer-value",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-chainId",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-target",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-value",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-data",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-nonce",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-evidenceHash",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-expectedStateVersion",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-expectedAuthorizationEpoch",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "intent-expiresAt",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    },
+    {
+      "case": "wrong-function",
+      "result": "provider-policy-denied",
+      "httpStatus": 400
+    }
+  ],
+  "broadcast": false,
+  "funded": false,
+  "chainRoleAssigned": false,
+  "humanReviewVerified": false,
+  "limitations": [
+    "Synthetic v2 calldata only; target is preserved v1, NOT a live v2 execution",
+    "App-managed exact intent policy; fee/nonce checks are in the trusted server, not provider policy",
+    "No organization quorum, hosted Graph, CRE result or end-to-end approval proven"
+  ]
+}

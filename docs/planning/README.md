@@ -66,3 +66,16 @@ runner, tests and pre-sign checks were AI-assisted. Goldsky remains conditional;
 no alternate account or unreviewed v2 transaction was created. The complete plan
 records verified versus pending gates; unit mock adapters and a CLI simulation
 are not represented as production identity checks or a hardware TEE.
+
+## September 8 implementation direction
+
+The user asked “今天的任务是什么?” and then authorized “好的,依次执行”. The
+agreed sequence was Studio recovery verification, separate v2 deployment
+preparation, real RPC/review adapters, CRE-to-Privy signing integration with
+timeout/duplicate checks, and relevant verification/documentation/commits. This
+authorized work, not automatic replacement of v1 or acceptance of new service
+terms. The implementation and tests in the server-only relay, deployment
+preparation and isolated integration harnesses were AI-assisted. The actual
+limitations and pending role/deployment/hosted gates are recorded in
+[the execution service](../execution-service.md). No real human review, TEE,
+organization quorum or public Sepolia execution is inferred from test results.

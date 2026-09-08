@@ -46,9 +46,10 @@ current approval to replay later.
 - Local input is labelled `graph-local`, produces only a preview envelope, and
   never acquires a change intent/hash, executable approval or Privy signature.
 - A separate v2 execution protocol binds the exact preflight, change hash, run
-  ID, policy version and expiry. Its current evidence is unit-test coverage;
-  live v2 and hosted Graph input are still required. Binding validation by
-  itself does not authenticate a runner or establish truth of a policy verdict.
+  ID, policy version and expiry. September 8 exercised the real CLI execution
+  lane against explicitly synthetic Graph-shaped data on owned Anvil; live v2
+  and hosted Graph input are still required. Binding validation by itself does
+  not authenticate a runner or establish truth of a policy verdict.
 - Only trusted server code may supply runner commands, config, pinned deployment
   and approval stores. Do not expose arbitrary shell/config/URL selection or
   client-supplied result JSON through an API.
@@ -60,7 +61,7 @@ current approval to replay later.
   `--wasm` paths. The WASM runtime lacks WHATWG `URL`; config validation uses a
   conservative ASCII URL subset instead of assuming Node/browser APIs exist.
 
-## Signing preparation (not live integration)
+## Sign-only relay integration (not public-chain execution)
 
 [Server-side pre-sign checks](../../apps/web/src/lib/execution-preflight.ts)
 accept only a bound ALLOW from the trusted runner, a reviewed v2 bytecode/role
@@ -69,10 +70,14 @@ with the same decision hash, and a matching persisted authenticated review. They
 build only the exact unsigned Sepolia `execute` calldata and recheck freshness
 after asynchronous dependencies.
 
-Production RPC/approval-store adapters, authenticated UI, final Privy control,
-actual signing/recovery/broadcast, durable idempotency and receipt handling are
-**not** implemented by those pure pre-sign checks. The existing live Privy
-sign-only control proof remains isolated/unfunded and has no executor role.
+The September 8 [execution service](../../docs/execution-service.md) supplies
+real RPC/EIP-712 review adapters, an owned CLI runner, exact Privy policy and
+transaction checks, durable nonce reservations and signing idempotency. Actual
+Anvil/CRE and isolated provider-control observations are recorded separately;
+the proof wallet is still unfunded and has no executor role. Hosted Graph/v2,
+authenticated UI, proposal/decision broadcasting, final role policy and
+receipt/state evidence remain outstanding. `execution-simulation-settings` is
+CLI-only and does not add a workflow/chain deployment target.
 
 ## Reference and verification
 

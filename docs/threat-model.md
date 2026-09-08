@@ -1,6 +1,6 @@
 # ParamShield Threat Model
 
-**Revision:** 2026-09-07. Reference-market demo only; no production deposits.
+**Revision:** 2026-09-08. Reference-market demo only; no production deposits.
 
 ## Assets and trust
 
@@ -77,15 +77,21 @@ server is a local transport, not a public authenticated product API.
 
 The runner executes fixed internal commands with one-run locking and strict
 output/time bounds. Any timeout, ambiguous output, wrong run/hash, stale input
-or schema failure prevents acceptance. A lock is not durable job idempotency;
-crash recovery, authenticated requests and hosted orchestration remain gates.
+or schema failure prevents acceptance. The September 8 single-host signing
+journal adds durable job/nonce reservations and fail-closed recovery states;
+public request authentication and hosted orchestration remain gates.
 
 Pre-sign preparation checks a pinned v2 deployment, distinct roles, fresh
 corroborated state, onchain ALLOWED/decision hash and a persisted matching human
-review through trusted ports. The ports currently have unit implementations, not
-production RPC/identity adapters. Neither forged browser approval booleans nor
-structurally valid CLI output alone authorize a transaction. A compromised
-server, review store or governance remains inside the stated trust model.
+review through actual RPC and recovered EIP-712 review adapters. The owned-run
+capability cannot be supplied as browser JSON. Exact signed transaction
+verification and post-sign revalidation precede any future broadcaster. Neither
+forged browser approval booleans nor structurally valid CLI output alone
+authorize a transaction. A compromised server, review store or governance
+remains inside the stated trust model. See the
+[implemented boundaries and recovery limits](execution-service.md); local
+integration and isolated Privy control are separate from live human-approved
+Sepolia execution.
 
 ## Release gates
 
