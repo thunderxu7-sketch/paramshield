@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-09-08T07:59:42.694Z",
+  "schemaVersion": "paramshield.v2-deployment-preparation.v1",
+  "status": "PREPARED_NOT_DEPLOYED",
+  "network": "Sepolia",
+  "chainId": 11155111,
+  "admin": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+  "roles": null,
+  "roleCapabilitiesVerified": false,
+  "governanceAdminTrusted": true,
+  "payload": null,
+  "sourceSha256": {
+    "contracts/src/ParamShieldBootstrapV2.sol": "417733fc1a7b17a3bdaac8d88ea9575bd315b25f8d133bd624e9223d51a68c04",
+    "contracts/src/ParamShieldExecutor.sol": "3dde447879f65ae282e6b3cd35073d56a3b3c2fa65c7f97a7aa092386b1f125c",
+    "contracts/src/ReferenceLendingMarket.sol": "4d2c0fcf6717c2586de5c8663ccb2253186f801e86b741724df914d75489ec20",
+    "contracts/src/MockERC20.sol": "9430e8e55d59d873edd308e4ae454aa6f3b5867cf6af6ebf448b656ecd750acb",
+    "contracts/src/DemoSeed.sol": "71dda3457cd7a64030b7c0ed6d25bb3bff28548f515d5b48af20cafd41f0179f",
+    "contracts/script/DeploySepoliaV2.s.sol": "de6c7e8eb28b7cd99353ede171b1cf214e9cb341a10455dedf8d35848b630630",
+    "contracts/foundry.toml": "dfbdd8b3395d092ea59ad4aa9f984fbe314b34dd061279bfaae7a6081b2a1bbe"
+  },
+  "abiSha256": {
+    "ParamShieldBootstrapV2": "fb4b0e237ccf0fae4f7ed2dee76c76733bbe59e9837852a172a39511d235863a",
+    "ReferenceLendingMarket": "e6c276469b3e74700a8e555aa60a00b8068bb33b5884c085e8172b529d2f9219",
+    "ParamShieldExecutor": "939687db7bd7f542af9c0d206543119ab88c76967a5874b439fa060f366ba164",
+    "MockERC20": "2775cd4dae565d79603f22abd37eaddda34c0dab17c5a719fe58f22625b3e987"
+  },
+  "readOnlyRpc": {
+    "blockNumber": 11659815,
+    "blockHash": "0x67c1b81f6b8e217b25a73b9a215591695c5f9b83c1c8c04ef0319d4195e266b1",
+    "adminBalanceWei": "3253542841536094588",
+    "pendingNonce": 9374,
+    "v1MarketState": {
+      "liquidationThresholdBps": 8000,
+      "collateralPriceUsdE18": "2000000000000000000000",
+      "totalCollateral": "55000000000000000000",
+      "totalDebt": "68300000000",
+      "collateralDecimals": 18,
+      "debtDecimals": 6,
+      "stateVersion": null
+    },
+    "v1RejectedByV2Adapter": true
+  },
+  "budget": {
+    "basis": "planning-only-5500000-gas-ceiling-NOT-final-estimate",
+    "gas": "5500000",
+    "maxFeePerGasWei": "1254493898",
+    "maxPriorityFeePerGasWei": "1000000",
+    "maximumCostWei": "6899716439000000",
+    "adminHasPlanningBudget": true
+  },
+  "historicalV1ManifestSha256": "d98aa57f79c3fc916f3582c79c3d7254f00f94cb87b96f0c22e11119421e35e4",
+  "broadcast": false,
+  "remaining": [
+    "Select/verify distinct operator and decision authority capabilities; isolated proof wallets are not assigned these roles",
+    "Generate and review exact constructor payload/gas once role addresses are set",
+    "Deploy separately, verify source and bytecode, save a NEW v2 manifest; leave v1 intact",
+    "Reconfigure/index hosted Graph for v2 before any execution"
+  ]
+}
