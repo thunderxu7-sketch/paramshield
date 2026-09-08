@@ -6,3 +6,12 @@ development-settings:
     workflow-path: ./src/main.ts
     config-path: ../../.local/cre-run/config.json
     secrets-path: ../../.local/cre-run/secrets.yaml
+
+# Trusted relay execution-shaped input, still CLI-only; NO chain writes/TEE claim.
+execution-simulation-settings:
+  user-workflow:
+    workflow-name: paramshield-policy-execution-simulation
+  workflow-artifacts:
+    workflow-path: ./src/main.ts
+    config-path: ../../.local/cre-execution/config.json
+    secrets-path: ../../.local/cre-execution/secrets.yaml

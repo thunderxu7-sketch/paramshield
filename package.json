@@ -22,7 +22,10 @@
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "graph:local": "bash scripts/graph-local.sh",
     "spike:graph-local": "pnpm --dir apps/web spike:graph-live --local",
-    "spike:cre-local": "pnpm --dir apps/web spike:cre-local"
+    "spike:cre-local": "pnpm --dir apps/web spike:cre-local",
+    "deployment:v2:prepare": "pnpm --dir apps/web exec tsx scripts/prepare-v2-deployment.ts",
+    "spike:relay-anvil": "pnpm --dir apps/web exec tsx scripts/relay-anvil-spike.ts --anvil-only",
+    "spike:privy-v2": "pnpm --dir apps/web exec tsx scripts/privy-v2-control-spike.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
