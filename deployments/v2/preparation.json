@@ -1,14 +1,22 @@
 {
-  "checkedAt": "2026-09-08T07:59:42.694Z",
+  "checkedAt": "2026-09-08T10:05:29.236Z",
   "schemaVersion": "paramshield.v2-deployment-preparation.v1",
   "status": "PREPARED_NOT_DEPLOYED",
   "network": "Sepolia",
   "chainId": 11155111,
   "admin": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
-  "roles": null,
+  "roles": {
+    "operator": "0x2801d0FbD05972D40aF0ace94413364f6aE2A3E1",
+    "decisionAuthority": "0x24bd7DFeF1f99Bad775698bb0D8F662fb4C1FC22"
+  },
   "roleCapabilitiesVerified": false,
   "governanceAdminTrusted": true,
-  "payload": null,
+  "payload": {
+    "initcodeHash": "0x077cc4a577697570ee71efe13d7a17b1f803fe9bde878d146ac585e2d0c47c74",
+    "initcodeBytes": 17811,
+    "estimatedGas": "4422059",
+    "gasLimit": "5306471"
+  },
   "sourceSha256": {
     "contracts/src/ParamShieldBootstrapV2.sol": "417733fc1a7b17a3bdaac8d88ea9575bd315b25f8d133bd624e9223d51a68c04",
     "contracts/src/ParamShieldExecutor.sol": "3dde447879f65ae282e6b3cd35073d56a3b3c2fa65c7f97a7aa092386b1f125c",
@@ -25,10 +33,10 @@
     "MockERC20": "2775cd4dae565d79603f22abd37eaddda34c0dab17c5a719fe58f22625b3e987"
   },
   "readOnlyRpc": {
-    "blockNumber": 11659815,
-    "blockHash": "0x67c1b81f6b8e217b25a73b9a215591695c5f9b83c1c8c04ef0319d4195e266b1",
-    "adminBalanceWei": "3253542841536094588",
-    "pendingNonce": 9374,
+    "blockNumber": 11660397,
+    "blockHash": "0x5eea8c75ed8f2ffccf2a436299f1e643c59759c620451dee3ed4719a9a027b1e",
+    "adminBalanceWei": "2198212905314665971",
+    "pendingNonce": 9383,
     "v1MarketState": {
       "liquidationThresholdBps": 8000,
       "collateralPriceUsdE18": "2000000000000000000000",
@@ -41,11 +49,11 @@
     "v1RejectedByV2Adapter": true
   },
   "budget": {
-    "basis": "planning-only-5500000-gas-ceiling-NOT-final-estimate",
-    "gas": "5500000",
-    "maxFeePerGasWei": "1254493898",
+    "basis": "live-estimate-plus-20-percent",
+    "gas": "5306471",
+    "maxFeePerGasWei": "1176670104",
     "maxPriorityFeePerGasWei": "1000000",
-    "maximumCostWei": "6899716439000000",
+    "maximumCostWei": "6243965783442984",
     "adminHasPlanningBudget": true
   },
   "historicalV1ManifestSha256": "d98aa57f79c3fc916f3582c79c3d7254f00f94cb87b96f0c22e11119421e35e4",

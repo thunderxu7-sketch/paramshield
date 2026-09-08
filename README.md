@@ -51,9 +51,10 @@ an ornamental login or badge.
 
 This repository is being built from scratch during ETHOnline 2026. The reference
 market, seeded positions, and initial executor were deployed to Sepolia on
-September 6. The September 7 revision targets risk/evidence invariants and a
-**local v2** execution gate, not yet deployed. Live sponsor integrations, the
-console, and runtime AI have separate gates in the
+September 6. The September 7 revision targets risk/evidence invariants and a v2
+execution gate. A separately reviewed v2 deployment was completed on September 8
+with the Privy operator still locked. Live sponsor integrations, the console,
+and runtime AI have separate gates in the
 [implementation plan](docs/implementation-plan.md). Local tests do not prove a
 live integration is complete.
 
@@ -74,8 +75,11 @@ runner, and durable sign-only coordination. Actual CRE → local Anvil signing
 checks and a **separate real Privy** exact-v2-policy proof passed (13 denied
 mutations). These are not a hosted-Graph → Privy → public-Sepolia E2E. See
 [execution service status](docs/execution-service.md) and the
-[separate v2 preparation](deployments/v2/README.md). No v2 contract has been
-deployed or substituted for the existing v1 addresses.
+[separate v2 deployment](deployments/v2/README.md). Its five contracts were
+created in block 11660450 with distinct admin/operator/authority addresses,
+exact bytecode/source verification and the canonical seed. The Privy policy
+remains DENY; v2 indexing and controlled execution are still pending. Existing
+v1 addresses and ABIs were not replaced.
 
 ## Planned workspace
 

@@ -5,11 +5,11 @@ final product integration are different gates. No credentials are included here.
 
 ## Matrix
 
-| Sponsor       | Verified evidence                                                                                                                                                                   | Still missing                                                                                                              |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| The Graph     | Studio v1 DEPLOYED/SYNCED; five positions/config/totals from the official hosted endpoint independently RPC-corroborated at a fresh pinned block; separate local fallback preserved | Hosted v2 index, new-event-to-analysis demonstration, runtime grounded AI and sponsor qualification                        |
-| Chainlink CRE | Actual product handler on local live Graph; 7000 BLOCK and fresh 7942 ALLOW; actual CLI/Anvil trusted-relay proof with RPC and review adapters                                      | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                                 |
-| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately                  | Final operator policy and independent roles onchain, actual human review, public Sepolia broadcast and receipt/state proof |
+| Sponsor       | Verified evidence                                                                                                                                                                   | Still missing                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| The Graph     | Studio v1 DEPLOYED/SYNCED; five positions/config/totals from the official hosted endpoint independently RPC-corroborated at a fresh pinned block; separate local fallback preserved | Hosted v2 index, new-event-to-analysis demonstration, runtime grounded AI and sponsor qualification                  |
+| Chainlink CRE | Actual product handler on local live Graph; 7000 BLOCK and fresh 7942 ALLOW; actual CLI/Anvil trusted-relay proof with RPC and review adapters                                      | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                           |
+| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately                  | Exact operator policy activation, authenticated human review, controlled execution broadcast and receipt/state proof |
 
 ## Exact partner positioning
 
@@ -67,8 +67,9 @@ award suitability would need verification; neither is claimed here.
 1. Studio login and hosted v1 deployment/read are complete. Confirm a real new
    event changes the analysis using a separately reviewed transaction; migrate
    to a separately versioned hosted v2 index after v2 deployment.
-2. Review/deploy v2 with distinct operational roles, preserved v1 records and
-   newly pinned code hashes; update indexing/version manifests.
+2. V2 deployment with distinct operational addresses is complete; v1 records are
+   preserved and v2 code hashes/source are verified. Update hosted indexing and
+   version selection before treating any v2 input as executable.
 3. Connect the verified real RPC, persisted-review and exact-signing adapters to
    final live roles and actual human review. Complete the trusted-relay → real
    transaction → receipt/state/evidence chain.
@@ -105,6 +106,15 @@ Qualification remains subject to the partners' rules and judges, not guaranteed.
 - [Privy v2 tuple control](evidence/privy-v2-control-2026-09-08.json) verifies a
   separate isolated wallet, exact signed fields and 13 actual policy denials. No
   final operator role, funding, organization quorum or public broadcast.
-- [v2 preparation](../deployments/v2/README.md) and
+- [Deployed, execution-locked v2](../deployments/v2/README.md) and the
   [sign-only service](execution-service.md) are ready for the next live gates;
   no sponsor eligibility or complete E2E is claimed from these layered proofs.
+
+## September 8 separate v2 deployment
+
+The [v2 manifest](../deployments/sepolia-v2.json) records the approved bootstrap
+transaction at block 11660450, five deployed contracts, exact source matches,
+all roles and canonical seeded state. The dedicated Privy operator is assigned
+onchain but still bound to wildcard DENY; the original isolated proof wallets
+remain separate. This advances deployment readiness, not sponsor eligibility,
+real human approval, independent governance or a complete execution E2E.

@@ -64,16 +64,41 @@
 
 ### 2026-09-08
 
-- [x] **Privy 最终角色准备**：另建独立、未入金的 operator 候选钱包，初始 wildcard DENY；provider 实际读回绑定并拒绝 Sepolia 签名请求。候选不是既有隔离 proof 钱包，不导入 MetaMask 私钥，未分配链上权限。证据见 `docs/evidence/privy-operator-candidate-2026-09-08.json`。
-- [ ] **角色剩余 gate**：authority / reviewer 身份与签名能力、最终 operator 精确策略、v2 constructor payload / 部署仍待审核；不能将锁定候选标为完整受控执行。
-- [x] **Studio 恢复与 hosted v1**：用户确认连接条款后，使用原参赛钱包登录，创建并部署 `paramshield-sepolia-v-1` / `v0.1.0`。Studio 显示 DEPLOYED / SYNCED / 100%；正式托管端点的 5 个仓位、配置与总量在区块 11660066 与同块 RPC 核对通过，校验时区块年龄 8 秒、落后 0 块。已接入只读风险计算，不是本地 fixture。
-- [ ] **Graph 剩余 gate**：当前是有每日 3,000 次查询限制的 Studio development endpoint，未 publish 到 The Graph Network；v2 索引、新事件改变分析、运行时 AI 与参赛验收仍待完成，不把 hosted v1 当作可执行 v2。
-- [x] **R-08 部署准备**：单独 BootstrapV2、角色分离测试、Sepolia dry-run 脚本、候选 ABI、源码哈希与只读预算就绪。旧 v1 manifest / ABI 保留；最终 operator / authority 未分配，未部署 v2。
+- [x] **R-08 已部署**：用户明确批准分工 → 预演 → 审阅并发送 v2。32 项合约测试与 Sepolia
+      dry-run 通过；MetaMask 单笔创建，区块 11660450，交易
+      `0x94bc330ac8eb839bd2eabb8ff907143a169f567b9c9fdbfb48b82d17f08233a6`。新 manifest：`deployments/sepolia-v2.json`，同块角色/epoch/stateVersion/5 仓位/余额/字节码已核验；v1 不变，Privy 保持 DENY。
+- [x] **Privy 候选初始准备（部署前）**：另建独立、未入金的 operator 候选钱包，初始 wildcard
+      DENY；provider 实际读回绑定并拒绝 Sepolia 签名请求。该初始证据尚无链上角色；后续已在 v2 部署中分配 operator，仍保持锁定。没有复用隔离 proof 钱包或导入 MetaMask 私钥。历史证据见
+      `docs/evidence/privy-operator-candidate-2026-09-08.json`。
+- [ ] **角色剩余 gate**：已确认分工并完成 v2 部署；authority /
+      reviewer 身份与签名能力、最终 operator 精确策略和 hosted
+      v2 仍待完成，不能将锁定部署标为完整受控执行。
+- [x] **Studio 恢复与 hosted
+      v1**：用户确认连接条款后，使用原参赛钱包登录，创建并部署
+      `paramshield-sepolia-v-1` / `v0.1.0`。Studio 显示 DEPLOYED / SYNCED /
+      100%；正式托管端点的 5 个仓位、配置与总量在区块 11660066 与同块 RPC 核对通过，校验时区块年龄 8 秒、落后 0 块。已接入只读风险计算，不是本地 fixture。
+- [ ] **Graph 剩余 gate**：当前是有每日 3,000 次查询限制的 Studio development
+      endpoint，未 publish 到 The Graph
+      Network；v2 索引、新事件改变分析、运行时 AI 与参赛验收仍待完成，不把 hosted
+      v1 当作可执行 v2。
+- [x] **R-08 部署准备**：单独 BootstrapV2、角色分离测试、Sepolia
+      dry-run 脚本、候选 ABI、源码哈希与只读预算就绪。旧 v1 manifest /
+      ABI 保留；后续经用户明确确认，v2 已在区块 11660450 部署并配置分离角色，Privy 保持 DENY。
 - [x] **真实适配器**：同块 RPC 的代码/角色/版本/epoch/ALLOWED 检查；EIP-712 身份恢复与持久审核存储，拒绝自审、篡改、过期和覆盖。
-- [x] **CRE / 签名 relay**：真实 CLI execution lane、owned-run 来源约束、实际 nonce/gas/balance 读取、精确交易校验、持久幂等/nonce 保留、超时 UNKNOWN 和状态变化 QUARANTINED。只签名，不含 broadcaster。
-- [x] **实际分层联调**：Anvil-only 的 CRE BLOCK / ALLOW、签名审核与 epoch 轮换阻断；独立 Privy 隔离钱包 v2 tuple 签名成功，13 项 provider policy 拒绝。两项证据分开记录，均不声称真实 hosted Graph → Privy → Sepolia 端到端。
-- [ ] **后续真实执行**：hosted v1 已接通；最终角色能力验证、v2 部署与对应索引、真实人工审核、propose / decision / execute 交易与 receipt + state 证据仍待完成。本轮没有发送链上交易。
-- [x] **本地验证**：格式/lint/types/production build 通过；并行测试的两项默认超时在串行全量回归中消除，保持默认测试时限，共 150 项通过。Privy / Anvil 证据与源码哈希核对通过。
+- [x] **CRE / 签名 relay**：真实 CLI execution
+      lane、owned-run 来源约束、实际 nonce/gas/balance 读取、精确交易校验、持久幂等/nonce 保留、超时 UNKNOWN 和状态变化 QUARANTINED。只签名，不含 broadcaster。
+- [x] **实际分层联调**：Anvil-only 的 CRE BLOCK /
+      ALLOW、签名审核与 epoch 轮换阻断；独立 Privy 隔离钱包 v2
+      tuple 签名成功，13 项 provider
+      policy 拒绝。两项证据分开记录，均不声称真实 hosted Graph → Privy →
+      Sepolia 端到端。
+- [ ] **后续真实执行**：hosted
+      v1 已接通；v2 部署与角色配置已完成；对应 hosted 索引、authority /
+      reviewer 身份流程、真实人工审核、propose / decision /
+      execute 交易与 receipt + state 证据仍待完成。部署交易不等于受控执行。
+- [x] **本地验证**：格式/lint/types/production
+      build 通过；并行测试的两项默认超时在串行全量回归中消除，保持默认测试时限，共 150 项通过。Privy
+      / Anvil 证据与源码哈希核对通过。
 - 验证结果见 `docs/execution-service.md` 和 `docs/implementation-plan.md`。
 
 ## 1. 产品定义

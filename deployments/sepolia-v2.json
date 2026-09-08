@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "paramshield.deployment.v2",
+  "project": "ParamShield",
+  "deploymentVersion": "v2",
+  "status": "DEPLOYED_EXECUTION_LOCKED",
+  "network": {
+    "name": "Sepolia",
+    "chainId": 11155111,
+    "explorerUrl": "https://sepolia.etherscan.io"
+  },
+  "deployment": {
+    "deployedAt": "2026-09-08T10:16:24.000Z",
+    "deployer": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+    "sourceCommit": "711ba792af2d32f79eae919eff23279b6585e5fd",
+    "transactionHash": "0x94bc330ac8eb839bd2eabb8ff907143a169f567b9c9fdbfb48b82d17f08233a6",
+    "transactionUrl": "https://sepolia.etherscan.io/tx/0x94bc330ac8eb839bd2eabb8ff907143a169f567b9c9fdbfb48b82d17f08233a6",
+    "blockNumber": 11660450,
+    "blockHash": "0x2bca21e5e601191101025f802693a11a004ebc6312b00d7363e4ad2b512a5225",
+    "gasUsed": "4386082",
+    "gasLimit": "5306471",
+    "effectiveGasPriceWei": "1018000576",
+    "transactionFeeWei": "4465034002383232",
+    "transactionFeeEth": "0.004465034002383232",
+    "transactionValueWei": "0",
+    "bootstrapInitcodeBytes": 17811,
+    "bootstrapInitcodeKeccak256": "0x077cc4a577697570ee71efe13d7a17b1f803fe9bde878d146ac585e2d0c47c74",
+    "transactionExactlyMatchesReviewedPlan": true
+  },
+  "contracts": {
+    "bootstrap": {
+      "name": "ParamShieldBootstrapV2",
+      "address": "0x67F456834a22cEF89867eFfC8AeC7d33657A63C2",
+      "source": "contracts/src/ParamShieldBootstrapV2.sol",
+      "abi": "deployments/v2/abi/ParamShieldBootstrapV2.json",
+      "codeSizeBytes": 306,
+      "runtimeCodeHash": "0x11c1f5df4c61672ab3e1133ee99d677c0e6fa93d5c9e8ad24a1054f64500191c",
+      "runtimeNonImmutableBytesExactMatch": true,
+      "abiSha256": "fb4b0e237ccf0fae4f7ed2dee76c76733bbe59e9837852a172a39511d235863a",
+      "explorerUrl": "https://sepolia.etherscan.io/address/0x67F456834a22cEF89867eFfC8AeC7d33657A63C2",
+      "verification": {
+        "sourcifyStatus": "verified",
+        "sourcifyMatch": "exact_match",
+        "creationMatch": "exact_match",
+        "runtimeMatch": "exact_match",
+        "sourcifyVerifiedAt": "2026-09-08T10:22:02Z",
+        "sourcifyApiUrl": "https://sourcify.dev/server/v2/contract/11155111/0x67F456834a22cEF89867eFfC8AeC7d33657A63C2",
+        "sourcifyJobId": "63a50149-7106-49b4-8a62-bd0c58a46a18",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/63a50149-7106-49b4-8a62-bd0c58a46a18",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0x67F456834a22cEF89867eFfC8AeC7d33657A63C2",
+        "etherscanStatus": "source-sync-rate-limited"
+      }
+    },
+    "collateralToken": {
+      "name": "MockERC20",
+      "address": "0x3b499Eb8D3F13D5Cd0eBe7146a6f8b4AE6229D74",
+      "source": "contracts/src/MockERC20.sol",
+      "abi": "deployments/v2/abi/MockERC20.json",
+      "codeSizeBytes": 1962,
+      "runtimeCodeHash": "0x2b9211b744f3176e84e8d0d37820e1c4e0decde7071e2dcdc5cb032ec79a8fa3",
+      "runtimeNonImmutableBytesExactMatch": true,
+      "abiSha256": "2775cd4dae565d79603f22abd37eaddda34c0dab17c5a719fe58f22625b3e987",
+      "explorerUrl": "https://sepolia.etherscan.io/address/0x3b499Eb8D3F13D5Cd0eBe7146a6f8b4AE6229D74",
+      "verification": {
+        "sourcifyStatus": "verified",
+        "sourcifyMatch": "exact_match",
+        "creationMatch": "exact_match",
+        "runtimeMatch": "exact_match",
+        "sourcifyVerifiedAt": "2026-09-08T10:17:32Z",
+        "sourcifyApiUrl": "https://sourcify.dev/server/v2/contract/11155111/0x3b499Eb8D3F13D5Cd0eBe7146a6f8b4AE6229D74",
+        "sourcifyJobId": null,
+        "sourcifyJobUrl": null,
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0x3b499Eb8D3F13D5Cd0eBe7146a6f8b4AE6229D74",
+        "etherscanStatus": "not-checked"
+      }
+    },
+    "debtToken": {
+      "name": "MockERC20",
+      "address": "0x493C16a434D7B0450E27A98418cD339F0478a8E6",
+      "source": "contracts/src/MockERC20.sol",
+      "abi": "deployments/v2/abi/MockERC20.json",
+      "codeSizeBytes": 1962,
+      "runtimeCodeHash": "0xf9ef3fa67ba07fba07fe05ff2a50a58182da5b92e74165d69d8f3c265e4c30c3",
+      "runtimeNonImmutableBytesExactMatch": true,
+      "abiSha256": "2775cd4dae565d79603f22abd37eaddda34c0dab17c5a719fe58f22625b3e987",
+      "explorerUrl": "https://sepolia.etherscan.io/address/0x493C16a434D7B0450E27A98418cD339F0478a8E6",
+      "verification": {
+        "sourcifyStatus": "verified",
+        "sourcifyMatch": "exact_match",
+        "creationMatch": "exact_match",
+        "runtimeMatch": "exact_match",
+        "sourcifyVerifiedAt": "2026-09-08T10:17:33Z",
+        "sourcifyApiUrl": "https://sourcify.dev/server/v2/contract/11155111/0x493C16a434D7B0450E27A98418cD339F0478a8E6",
+        "sourcifyJobId": null,
+        "sourcifyJobUrl": null,
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0x493C16a434D7B0450E27A98418cD339F0478a8E6",
+        "etherscanStatus": "not-checked"
+      }
+    },
+    "market": {
+      "name": "ReferenceLendingMarket",
+      "address": "0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a",
+      "source": "contracts/src/ReferenceLendingMarket.sol",
+      "abi": "deployments/v2/abi/ReferenceLendingMarket.json",
+      "codeSizeBytes": 5003,
+      "runtimeCodeHash": "0xbcf8d3d4b86a8c0f92c5e127d02e2120277c5184e51183b9d62579c7a9c8b469",
+      "runtimeNonImmutableBytesExactMatch": true,
+      "abiSha256": "e6c276469b3e74700a8e555aa60a00b8068bb33b5884c085e8172b529d2f9219",
+      "explorerUrl": "https://sepolia.etherscan.io/address/0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a",
+      "verification": {
+        "sourcifyStatus": "verified",
+        "sourcifyMatch": "exact_match",
+        "creationMatch": "exact_match",
+        "runtimeMatch": "exact_match",
+        "sourcifyVerifiedAt": "2026-09-08T10:22:04Z",
+        "sourcifyApiUrl": "https://sourcify.dev/server/v2/contract/11155111/0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a",
+        "sourcifyJobId": "bb5e4f97-80e3-440d-8ec5-3f4488eb03e7",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/bb5e4f97-80e3-440d-8ec5-3f4488eb03e7",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a",
+        "etherscanStatus": "source-sync-rate-limited"
+      }
+    },
+    "executor": {
+      "name": "ParamShieldExecutor",
+      "address": "0xD971505e814235b668fB56d7000492a9c68D9749",
+      "source": "contracts/src/ParamShieldExecutor.sol",
+      "abi": "deployments/v2/abi/ParamShieldExecutor.json",
+      "codeSizeBytes": 5950,
+      "runtimeCodeHash": "0xdceecaf1fcc7b23d56351cf734d45cc6b7ff51263481358bd7450dbc0ea11799",
+      "runtimeNonImmutableBytesExactMatch": true,
+      "abiSha256": "939687db7bd7f542af9c0d206543119ab88c76967a5874b439fa060f366ba164",
+      "explorerUrl": "https://sepolia.etherscan.io/address/0xD971505e814235b668fB56d7000492a9c68D9749",
+      "verification": {
+        "sourcifyStatus": "verified",
+        "sourcifyMatch": "exact_match",
+        "creationMatch": "exact_match",
+        "runtimeMatch": "exact_match",
+        "sourcifyVerifiedAt": "2026-09-08T10:22:05Z",
+        "sourcifyApiUrl": "https://sourcify.dev/server/v2/contract/11155111/0xD971505e814235b668fB56d7000492a9c68D9749",
+        "sourcifyJobId": "dcc2c5b6-a3e5-4b72-b85f-75350ad6fe7c",
+        "sourcifyJobUrl": "https://sourcify.dev/server/v2/verify/dcc2c5b6-a3e5-4b72-b85f-75350ad6fe7c",
+        "blockscoutStatus": "verified",
+        "blockscoutUrl": "https://eth-sepolia.blockscout.com/address/0xD971505e814235b668fB56d7000492a9c68D9749",
+        "etherscanStatus": "source-sync-rate-limited"
+      }
+    }
+  },
+  "initialState": {
+    "collateralPriceUsdE18": "2000000000000000000000",
+    "liquidationThresholdBps": 8000,
+    "stateVersion": "7",
+    "totalCollateralWei": "55000000000000000000",
+    "totalDebtAtomic": "68300000000",
+    "marketDebtLiquidityAtomic": "931700000000",
+    "positions": [
+      {
+        "account": "0x0000000000000000000000000000000000001001",
+        "collateralWei": "10000000000000000000",
+        "debtAtomic": "12000000000",
+        "healthFactorE18": "1333333333333333333"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001002",
+        "collateralWei": "10000000000000000000",
+        "debtAtomic": "15000000000",
+        "healthFactorE18": "1066666666666666666"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001003",
+        "collateralWei": "10000000000000000000",
+        "debtAtomic": "13500000000",
+        "healthFactorE18": "1185185185185185185"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001004",
+        "collateralWei": "5000000000000000000",
+        "debtAtomic": "7800000000",
+        "healthFactorE18": "1025641025641025641"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001005",
+        "collateralWei": "20000000000000000000",
+        "debtAtomic": "20000000000",
+        "healthFactorE18": "1600000000000000000"
+      }
+    ]
+  },
+  "controlPlane": {
+    "marketOwner": "0xD971505e814235b668fB56d7000492a9c68D9749",
+    "executorAdmin": "0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc",
+    "executorOperator": "0x2801d0FbD05972D40aF0ace94413364f6aE2A3E1",
+    "decisionAuthority": "0x24bd7DFeF1f99Bad775698bb0D8F662fb4C1FC22",
+    "authorizationEpoch": "1",
+    "allowedTarget": "0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a",
+    "allowedSelector": "0x4d5bcf96",
+    "allowedSignature": "setLiquidationThresholdBps(uint16)",
+    "operatorPolicy": "Privy app-managed wildcard DENY; retained at deployment",
+    "executionEnabled": false,
+    "humanReviewerSelected": true,
+    "humanReviewAuthenticationVerified": false,
+    "decisionAuthorityAuthenticationVerified": false,
+    "governanceAdminTrusted": true,
+    "independentOrganizationQuorum": false,
+    "operatorPolicyVerifiedAt": "2026-09-08T10:22:03.452Z",
+    "operatorPolicyFingerprint": "0x5381b5adfa4b83c1ae787e0f92c69eb50bfef334c8661a3378e0a8046f0b152e"
+  },
+  "verification": {
+    "checkedAt": "2026-09-08T10:20:41.723Z",
+    "sameBlockNumber": 11660450,
+    "confirmations": 21,
+    "creationInputExactlyMatched": true,
+    "allRuntimeNonImmutableBytesExactMatch": true,
+    "immutableGetterChecksPassed": true,
+    "roleAndEpochChecksPassed": true,
+    "seedAndBalanceChecksPassed": true,
+    "deploymentEventChecksPassed": true,
+    "historicalV1ManifestSha256": "d98aa57f79c3fc916f3582c79c3d7254f00f94cb87b96f0c22e11119421e35e4",
+    "historicalV1InitialStatePreserved": true,
+    "sourceVerifiedAt": "2026-09-08T10:24:23.439Z",
+    "allContractsSourcifyExactMatch": true,
+    "allContractsBlockscoutVerified": true,
+    "etherscanLimitation": "Sourcify automatic Etherscan sync for bootstrap/market/executor returned: Daily limit of 500 source code submissions reached. No Etherscan verification is claimed."
+  },
+  "remaining": [
+    "Index v2 through a distinct hosted Graph endpoint; do not reuse v1 Graph input",
+    "Authenticate the selected offchain reviewer and decision-authority workflow",
+    "Review operator funding and install exact intent policies only after fresh risk/approval checks",
+    "Complete real propose/decision/execute receipt and final-state evidence"
+  ]
+}

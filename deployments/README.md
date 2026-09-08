@@ -10,16 +10,15 @@ are in `abi/`. Those files are deliberately not regenerated from local v2
 source. The deployed source revision is `7da5814`; `c4cfe8f` records the
 deployment.
 
-**September 7 v2 is LOCAL ONLY until a new deployment is reviewed.** It changes
-the intent ABI/typehash, adds market stateVersion and executor
-authorizationEpoch, and refuses operation while operator equals
-decisionAuthority. Bootstrap still initializes both roles to the deployer for
-provisioning, so they must be separated before any proposal can be made. No v1
-address has these v2 protections. A new deployment must use a new manifest/ABI
-directory and a versioned Graph endpoint; never point v2 execution code at the
-existing v1 manifest.
+**September 8 v2 is deployed with execution still locked.** See
+[the separate v2 manifest](sepolia-v2.json) and
+[verification record](v2/README.md). The new BootstrapV2 initializes distinct
+approved admin/operator/authority addresses, seeds five positions and installs
+the stateVersion/authorizationEpoch aware executor. The Privy operator retains
+its wildcard DENY policy. No v1 address gains these v2 protections; no v2 ABI or
+Graph input is substituted into the historical v1 manifest.
 
-## Sepolia
+## Historical Sepolia v1
 
 Deployed in block [`11645965`](https://sepolia.etherscan.io/block/11645965) by
 [`0x5bE0...2fcc`](https://sepolia.etherscan.io/address/0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc)

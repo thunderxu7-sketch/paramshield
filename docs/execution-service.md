@@ -2,8 +2,9 @@
 
 This is a **single-host, server-only, sign-only** integration. It has no public
 HTTP API, organization quorum UI, transaction broadcaster or receipt verifier
-yet. The public Sepolia deployment remains v1. Do not call this a completed live
-controlled execution.
+yet. A separate v2 deployment now exists with the operator locked; v1 is
+preserved. The one-shot deployment helper is not the product transaction
+broadcaster, and deployment is not completed live controlled execution.
 
 ## Implemented path
 
@@ -59,12 +60,18 @@ controlled execution.
   freshness checks passed. This is a separate real hosted data-readiness proof,
   not the Anvil fixture, hosted v2 execution input or network publication.
 - [Locked operator candidate](evidence/privy-operator-candidate-2026-09-08.json):
-  a new, unfunded Privy wallet is bound to an unconditional wildcard `DENY`
-  policy. The actual provider rejected the recorded zero-value Sepolia signing
-  request. No private key import/export, role assignment or candidate
-  transaction occurred. This is readiness preparation, not a positive execution
-  capability, human approval or organizational quorum proof. App-secret control
-  of the policy remains trusted.
+  this pre-deployment snapshot records a new, unfunded Privy wallet bound to an
+  unconditional wildcard `DENY` policy. The actual provider rejected the
+  recorded zero-value Sepolia signing request. No private key import/export,
+  role assignment or candidate transaction occurred. This is readiness
+  preparation, not a positive execution capability, human approval or
+  organizational quorum proof. App-secret control of the policy remains trusted.
+- [Separate deployed v2](../deployments/sepolia-v2.json): the later, explicitly
+  approved deployment assigned distinct admin/operator/authority addresses and
+  verified five contracts, version/epoch, seed and complete transaction input.
+  All five contracts are exact source matches on Sourcify and source-verified on
+  Blockscout. The operator's DENY policy was read back unchanged afterward. No
+  policy activation or product execution occurred.
 
 Reproduce with `pnpm spike:relay-anvil` and
 `pnpm spike:privy-v2 --create-isolated-test-wallet`. The latter creates/reuses
@@ -99,11 +106,13 @@ seconds / 12 blocks**; no freshness limit was weakened to obtain a passing run.
 
 ## Remaining integration gates
 
-Hosted v2 Graph input; finalized independently controlled role addresses; new
-reviewed v2 deployment and explorer verification; proposal/decision relay
-transactions; real human review UI and identity configuration; final operator
-policy installation; controlled broadcasting and receipt/state proof. No final
-role policy or existing v1 contract is silently altered to bypass these gates.
+The [separate v2 deployment](../deployments/v2/README.md) and constructor role
+assignment are complete. Remaining: hosted v2 Graph input; authenticated
+decision-authority and real human-review workflows; proposal/decision relay
+transactions; exact operator policy activation; controlled execution broadcast
+and receipt/state proof. The selected addresses share a trusted operator/admin
+context, not proven independent governance. The operator stays locked and v1
+remains unchanged.
 
 ## Local verification record
 

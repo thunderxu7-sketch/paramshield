@@ -106,3 +106,20 @@ Privy-managed signer. Candidate creation does not authorize live role
 assignment, policy activation, v2 deployment, or an assertion of independent
 organization governance. The public deployment evidence distinguishes these
 remaining gates.
+
+### Explicit v2 deployment authorization
+
+The user then confirmed: “确定上述分工 → 部署预演 → 审阅并发送 v2 部署交易”.
+This authorizes the selected admin/operator/authority topology, offchain
+reviewer selection, the new Sepolia deployment and its verification, while
+preserving v1 and the locked Privy policy. It supersedes the earlier deployment
+pause; final human-review integration and executable Privy policies are
+activation gates, not prerequisites to constructing a locked deployment.
+
+The implementation used the compiled public BootstrapV2, a read-only Foundry
+rehearsal, a local single-attempt MetaMask helper and independent
+post-transaction RPC/source verification. The helper, private resource IDs,
+reviewer address and funding records stay local. Only contract-role addresses
+necessarily made public by the deployment and sanitized verification records are
+published. No product execution, reviewer signature, TEE or organization quorum
+is claimed.

@@ -15,21 +15,21 @@ packages and `--passWithNoTests` do not count as tested implementations.
 
 ## Ordered execution queue
 
-| ID / priority | Task                                                               | Depends on                     | Acceptance                                                                                                                    | Status                                                      |
-| ------------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| R-01 / P0     | Correct policy, privacy, trust, evidence and schedule specs        | Review approved                | Public complete plan, ADR, prompt record; no stale 78% promise                                                                | Complete                                                    |
-| R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                            |
-| R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                          |
-| R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (local; not deployed)                              |
-| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 verified; new-event demonstration pending         |
-| R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)                 |
-| R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual CLI/Anvil relay verified; live hosted v2 pending     |
-| R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Bootstrap/ABI/budget prepared; roles and deployment pending |
-| R-09 / P0     | First full controlled execution                                    | R-05 through R-08              | BLOCK old intent; new nonce/review; Privy-controlled real Sepolia update; exact receipt/state/evidence                        | Pending                                                     |
-| R-10 / P0     | One console, durable timeline, grounded risk Q&A                   | R-03, R-09                     | Source-linked numbers, unavailable-AI fallback, refresh/idempotency/recovery tests                                            | Pending                                                     |
-| R-11 / P0     | Freeze, adversarial regression, repeatable demo                    | R-09, R-10                     | Three successful complete runs; stale/version/epoch, timeout, duplicate, bad payload, policy-denial, receipt-failure coverage | Pending                                                     |
-| R-12 / P0     | Submission artifacts and demo video                                | R-11                           | All actual specs/prompts/plans, AI/human contribution log; reproducible setup; real narration, 2–4min, ≥720p                  | Pending                                                     |
-| R-13 / P0     | Submit daytime, reserve evening buffer                             | R-12                           | Dashboard submission confirmed before official deadline                                                                       | Pending                                                     |
+| ID / priority | Task                                                               | Depends on                     | Acceptance                                                                                                                    | Status                                                  |
+| ------------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| R-01 / P0     | Correct policy, privacy, trust, evidence and schedule specs        | Review approved                | Public complete plan, ADR, prompt record; no stale 78% promise                                                                | Complete                                                |
+| R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                        |
+| R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                      |
+| R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (deployed as separate v2)                      |
+| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 verified; new-event demonstration pending     |
+| R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)             |
+| R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual CLI/Anvil relay verified; live hosted v2 pending |
+| R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Complete (v2 deployed/verified; operator locked)        |
+| R-09 / P0     | First full controlled execution                                    | R-05 through R-08              | BLOCK old intent; new nonce/review; Privy-controlled real Sepolia update; exact receipt/state/evidence                        | Pending                                                 |
+| R-10 / P0     | One console, durable timeline, grounded risk Q&A                   | R-03, R-09                     | Source-linked numbers, unavailable-AI fallback, refresh/idempotency/recovery tests                                            | Pending                                                 |
+| R-11 / P0     | Freeze, adversarial regression, repeatable demo                    | R-09, R-10                     | Three successful complete runs; stale/version/epoch, timeout, duplicate, bad payload, policy-denial, receipt-failure coverage | Pending                                                 |
+| R-12 / P0     | Submission artifacts and demo video                                | R-11                           | All actual specs/prompts/plans, AI/human contribution log; reproducible setup; real narration, 2–4min, ≥720p                  | Pending                                                 |
+| R-13 / P0     | Submit daytime, reserve evening buffer                             | R-12                           | Dashboard submission confirmed before official deadline                                                                       | Pending                                                 |
 
 ## Critical path
 
@@ -74,11 +74,13 @@ when v2 is deployed; reject a manifest/ABI/snapshot version mismatch.
   not invent quorum availability or weaken execution just to show a transaction.
   A
   [separate locked operator candidate](evidence/privy-operator-candidate-2026-09-08.json)
-  now has a provider-verified deny policy. It is not either isolated proof
-  wallet and has no funds, live role or signing permission. Final authority /
-  reviewer identity and reviewed exact-intent activation remain pending.
-- Contract revision needs a new reviewed deployment. Never overwrite old ABIs or
-  report local v2 protections as already active on Sepolia.
+  now has a provider-verified deny policy and was assigned the v2 operator role
+  in the approved deployment. It is not either isolated proof wallet and remains
+  unfunded with no signing permission. Authority / reviewer authentication and
+  reviewed exact-intent activation remain pending.
+- Future contract revisions need a new reviewed deployment. Never overwrite old
+  ABIs or attribute v2 protections to the historical v1 addresses; only the
+  separately verified v2 manifest identifies the new deployment.
 - Provider outage never changes BLOCK/ESCALATE into ALLOW. Re-run with a fresh
   snapshot/nonce after recovery; do not reuse stale approval.
 
@@ -118,10 +120,12 @@ material out of public artifacts.
 
 ## September 8 verification record
 
-- Separate v2 bootstrap, deployment script and candidate ABIs are prepared;
-  [preparation report](../deployments/v2/preparation.json) retains null final
-  roles/payload and explicitly reports no deployment. Read-only Sepolia checks
-  confirm v1 remains at LT 8000 and is rejected by the v2 adapter.
+- The separate v2 bootstrap, deployment script and ABIs were prepared before
+  deployment. The
+  [10:05 UTC preparation report](../deployments/v2/preparation.json) records the
+  confirmed roles and exact payload; its no-broadcast status is a historical
+  snapshot, not the current deployment status. Read-only checks confirmed v1
+  remained at LT 8000 and was rejected by the v2 adapter.
 - Real RPC and authenticated EIP-712 review adapters, owned CRE execution
   runner, exact Privy policy/transaction checks, durable sign-only idempotency
   and nonce reservations are implemented. They do not expose an authenticated
@@ -147,3 +151,18 @@ material out of public artifacts.
   in the first parallel run. Default test timeouts and all product
   freshness/signing controls remain unchanged. See the
   [exact validation record](execution-service.md#local-verification-record).
+
+### Approved deployment and post-transaction verification
+
+- After explicit role/deployment authorization, all 32 contract tests and the
+  read-only Sepolia rehearsal passed. The new bootstrap transaction in block
+  11660450 exactly matched the reviewed input and transaction fields.
+- The [v2 manifest](../deployments/sepolia-v2.json) records all five contract
+  addresses, exact Sourcify/Blockscout source verification, runtime code hashes,
+  role/ownership/allowlist checks, epoch 1 and the complete five-position seed.
+- The actual product RPC adapter in v2 mode read stateVersion 7 from the new
+  market at the deployment block. This is a direct RPC check, not hosted Graph
+  indexing or end-to-end execution.
+- The post-deployment Privy read confirmed the unchanged wildcard DENY policy.
+  No operator funding, policy activation or propose/decision/execute transaction
+  occurred; v1 artifacts remain unchanged.

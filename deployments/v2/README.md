@@ -1,71 +1,103 @@
-# Separate v2 deployment preparation — NOT deployed
+# Sepolia v2 — deployed, execution locked
 
-The September 6 v1 manifest and ABIs remain unchanged. Files in this directory
-are **candidate v2 ABIs and a read-only preparation report**, not an active
-deployment manifest. Do not configure these ABIs against v1 addresses.
+The user approved the role topology, rehearsal, transaction review and broadcast
+on September 8. A **new** `ParamShieldBootstrapV2` was deployed in block
+[11660450](https://sepolia.etherscan.io/block/11660450), transaction
+[0x94bc…233a6](https://sepolia.etherscan.io/tx/0x94bc330ac8eb839bd2eabb8ff907143a169f567b9c9fdbfb48b82d17f08233a6).
+The current record is [sepolia-v2.json](../sepolia-v2.json). The September 6
+[historical v1 manifest](../sepolia.json) and `deployments/abi/` remain
+unchanged.
 
-## Prepared
+## Deployed addresses and roles
 
-- `ParamShieldBootstrapV2` creates/fully seeds the same five-position market,
-  installs the current version/epoch-aware executor and transfers market/token
-  ownership. Admin, operator and decision authority must all be distinct,
-  nonzero addresses; only the named admin can deploy the bootstrap.
-- `contracts/script/DeploySepoliaV2.s.sol` accepts public role addresses and
-  refuses any chain except 11155111. It does not load a private key from source.
-- `pnpm deployment:v2:prepare` rebuilds artifacts, writes candidate ABIs here,
-  reads the public Sepolia balance/fees/nonce and v1 state, and proves the v2
-  adapter does not silently downgrade on v1. It has **no signer or
-  broadcaster**.
-- The
-  [Anvil-only integration](../../docs/evidence/relay-anvil-only-2026-09-08.json)
-  consumed 4,386,070 gas for bootstrap creation. This is not the final Sepolia
-  transaction estimate. The preparation report uses a labelled 5.5M-gas planning
-  ceiling until final role addresses are chosen.
-- A separate
-  [Privy operator candidate](../../docs/evidence/privy-operator-candidate-2026-09-08.json)
-  was created on September 8, without importing a MetaMask key or repurposing
-  either isolated proof wallet. Its [initial policy](operator-lock-policy.json)
-  is an unconditional wildcard `DENY`. Actual provider reads verified the
-  wallet/policy binding and an attempted zero-value Sepolia signature received a
-  policy rejection. No signed bytes, funding, broadcast or chain role were
-  produced. This proves a locked candidate, **not a ready-to-execute operator**.
+| Component          | Address                                      |
+| ------------------ | -------------------------------------------- |
+| BootstrapV2        | `0x67F456834a22cEF89867eFfC8AeC7d33657A63C2` |
+| Reference market   | `0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a` |
+| Executor           | `0xD971505e814235b668fB56d7000492a9c68D9749` |
+| Admin / deployer   | `0x5bE049630A2c8B18F1B6BF53bE95120A3f982fcc` |
+| Privy operator     | `0x2801d0FbD05972D40aF0ace94413364f6aE2A3E1` |
+| Decision authority | `0x24bd7DFeF1f99Bad775698bb0D8F662fb4C1FC22` |
 
-## Remaining deployment sequence
+The selected reviewer is an **offchain** role, not a constructor argument; its
+private configuration remains local and its real review-signature workflow is
+not yet verified. Selecting separate addresses does not prove independent
+organization governance. Admin and the common Privy app/host remain trusted.
 
-1. Select and verify the operator and independent decision-authority
-   capabilities, including final Privy policies. The locked candidate and two
-   isolated signing-proof wallets have **not** been assigned these roles. A
-   MetaMask account is not automatically a wallet managed by this Privy app.
-   Separate addresses alone do not provide independent infrastructure; common
-   app/host and governance admin remain trusted.
-2. Set `PARAMSHIELD_OPERATOR` and `PARAMSHIELD_DECISION_AUTHORITY` to those
-   verified public addresses and rerun `pnpm deployment:v2:prepare`. This
-   generates the exact constructor payload, live estimate +20% gas allowance,
-   fee budget and nonce in ignored `.local/deployment-review/`. Review these
-   fresh values, never yesterday's balance/nonce.
-3. Use the reviewed wallet/keystore path to deploy **a new** bootstrap. Without
-   Foundry `--broadcast`, the deployment script only simulates. Neither current
-   script nor preparation performs an automatic broadcast.
-4. Verify source and actual deployed code; read all roles, version/epoch, owner,
-   totals and five positions. Save a new `deployments/sepolia-v2.json` with
-   deployment block, addresses, bytecode hashes and explorer evidence. Never
-   overwrite `deployments/sepolia.json` or `deployments/abi/`.
-5. Configure a v2 subgraph and prove hosted indexing, complete same-block RPC
-   reconciliation and a new event changing analysis. Only then enable guarded
-   execution; keep the v1/local preview separately labelled.
+## Verification completed
 
-The checked-in [preparation report](preparation.json) has `roles: null`,
-`payload: null`, `PREPARED_NOT_DEPLOYED` and `broadcast: false` deliberately.
-Missing final role facts are not filled with invented addresses.
+- All **32 contract tests** passed, followed by a successful Foundry Sepolia
+  simulation without `--broadcast`. The first invocation had an incorrect
+  relative script path and failed before simulation; correcting the working
+  directory resolved it. No contract code or safety check was weakened.
+- The single dry-run creation input, sender, nonce and predicted address matched
+  the wallet plan. A fresh RPC check still returned nonce **9383** immediately
+  before the MetaMask confirmation. The confirmed transaction's complete input,
+  chain, value, sender, nonce, Gas limit and both fee caps matched exactly.
+- Exact RPC gas estimate: **4,422,059**; wallet Gas limit with 20% allowance:
+  **5,306,471**; actual gas: **4,386,082**. Actual fee: **0.004465034002383232
+  Sepolia ETH**. Transaction value was zero.
+- All five deployed runtime bytecodes match the compiled artifacts outside
+  compiler-declared immutable slots; their immutable getters were checked
+  independently. The complete deployed code hashes are pinned in the manifest.
+- Same-block checks verified all roles, market ownership, allowlist, epoch
+  **1**, stateVersion **7**, LT **8000**, price **2000**, all five positions,
+  token ownership/decimals, total **55 mock ETH / 68,300 mock USDC debt**, and
+  actual token balances. `DeploymentCompleted` and the receipt block hash
+  matched.
+- All five contracts have exact creation/runtime matches on Sourcify and
+  verified source on Blockscout. Explorer publication results are recorded per
+  contract in the manifest. Sourcify's automatic Etherscan forwarding reported a
+  daily submission limit for the bootstrap, market and executor; no Etherscan
+  verification is claimed.
+- After deployment, a fresh Privy API read confirmed the same wallet binding and
+  unchanged [wildcard DENY policy](operator-lock-policy.json). No operator
+  funding, key export/import, policy activation, proposal, decision or execution
+  transaction was performed.
 
-The candidate policy is app-managed: the app secret can change it. It is not
-independent organizational quorum or an admin-proof security boundary. Before
-activation, review the actual deployment and identities, install only the exact
-reviewed intent policy, and rerun provider/state/signature checks. Do not add an
-unrestricted `ALLOW`, fund or export the candidate merely to bypass readiness
-gates. The initial policy creation was rejected for a display name longer than
-50 characters; shortening only the name resolved it without changing controls.
+## Deployment is not execution activation
+
+The initial
+[candidate proof](../../docs/evidence/privy-operator-candidate-2026-09-08.json)
+is a timestamped pre-deployment snapshot. That candidate is now the onchain
+operator, **still locked**; the two older isolated proof wallets were not
+reused. The policy is app-managed and can be changed by the app secret, so it is
+not admin-proof or independently approved organizational quorum.
+
+The earlier plan incorrectly put final executable policy / human-review
+integration before deployment. Those are **activation gates**, not constructor
+requirements. The current bootstrap required the approved distinct nonzero
+admin/operator/authority addresses and the admin sender, allowing the safe
+locked initial deployment above.
+
+Remaining activation work, in order:
+
+1. Deploy/index a **distinct hosted v2 subgraph**, then reconcile its complete
+   input against same-block RPC and demonstrate a new event changing analysis.
+   Keep v1/local previews clearly separated; do not reuse the v1 endpoint as v2.
+2. Authenticate the selected reviewer and decision-authority workflow. An
+   address supplied in chat or set in a constructor is not a real human
+   approval.
+3. Review operator gas funding and the exact propose/decision/execute controls.
+   Install only the reviewed intent-specific policy after fresh CRE/RPC/review
+   checks; never add an unrestricted `ALLOW` to make a demo pass.
+4. Complete real controlled transactions, receipt/state/reorg checks and the
+   final evidence bundle. The deployment transaction does not prove this E2E.
+
+## Rehearsal artifacts and reproduction
+
+[preparation.json](preparation.json) is the **10:05 UTC pre-broadcast
+snapshot**; its `PREPARED_NOT_DEPLOYED` status is historical, not the current
+chain state. `abi/` now corresponds to the source actually deployed as v2.
+Source commit: `711ba792af2d32f79eae919eff23279b6585e5fd`; Solidity
+`0.8.30+commit.73712a01`, optimizer 200, EVM Prague.
+
+`pnpm deployment:v2:prepare` is a read-only preparation tool and has no signer
+or broadcaster. Do not rerun it merely to deploy v2 again or treat a stale
+balance, nonce or payload as current. A future deployment needs a separate
+reviewed plan. The one-shot local MetaMask helper and its durable submission
+journal remain ignored; it cannot automatically send the deployment twice.
 
 Official references:
 [Privy policy evaluation](https://docs.privy.io/controls/policies/overview) and
-[wallet creation](https://docs.privy.io/api-reference/wallets/create).
+[Sourcify API v2](https://docs.sourcify.dev/docs/api/index.html).
