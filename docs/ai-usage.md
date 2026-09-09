@@ -1,6 +1,6 @@
 # AI Usage Disclosure
 
-**Updated:** 2026-09-07. Living factual disclosure, not a human-review
+**Updated:** 2026-09-09. Living factual disclosure, not a human-review
 certificate.
 
 ## Development assistance
@@ -48,3 +48,21 @@ deployment. Do not import private pre-event project-specific code.
 Keep the local plan ignored but publish all actual sanitized specs, prompts,
 planning artifacts, and runtime instructions before submission. The final video
 must use real human narration, not AI voice or sped-up narration.
+
+## September 9 implementation disclosure
+
+The v2 index, local console, HTTP authentication boundary, lifecycle
+orchestration, Privy policy restoration, broadcast/receipt/event verification,
+AI evidence selector and tests/harnesses were AI-assisted. Actual user
+direction: “依次执行今天的任务”. This authorizes implementation and
+verification, not a claim that the user has already reviewed a specific fresh
+risk decision or signed it.
+
+The runtime instruction is checked in verbatim in
+[`evidence-explanation.ts`](../apps/web/src/lib/server/evidence-explanation.ts).
+The model, when explicitly configured, selects only existing source-field IDs;
+the application renders the corresponding deterministic sentences and values.
+This deliberately narrower implementation is not unrestricted generative Q&A. No
+AI provider was called during the September 9 implementation verification:
+provider-response tests are mocked, and the real UI displays the non-AI
+fallback. No runtime model name is claimed without an actual provider run.

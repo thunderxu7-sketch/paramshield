@@ -1,6 +1,6 @@
 # ParamShield Implementation Plan
 
-**Updated:** 2026-09-08 (Asia/Shanghai). Public execution plan; full planning
+**Updated:** 2026-09-09 (Asia/Shanghai). Public execution plan; full planning
 artifact and material prompt record are in [planning](planning/README.md).
 
 ## Scope and status rules
@@ -15,21 +15,21 @@ packages and `--passWithNoTests` do not count as tested implementations.
 
 ## Ordered execution queue
 
-| ID / priority | Task                                                               | Depends on                     | Acceptance                                                                                                                    | Status                                                  |
-| ------------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| R-01 / P0     | Correct policy, privacy, trust, evidence and schedule specs        | Review approved                | Public complete plan, ADR, prompt record; no stale 78% promise                                                                | Complete                                                |
-| R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                        |
-| R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                      |
-| R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (deployed as separate v2)                      |
-| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 verified; new-event demonstration pending     |
-| R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)             |
-| R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual CLI/Anvil relay verified; live hosted v2 pending |
-| R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Complete (v2 deployed/verified; operator locked)        |
-| R-09 / P0     | First full controlled execution                                    | R-05 through R-08              | BLOCK old intent; new nonce/review; Privy-controlled real Sepolia update; exact receipt/state/evidence                        | Pending                                                 |
-| R-10 / P0     | One console, durable timeline, grounded risk Q&A                   | R-03, R-09                     | Source-linked numbers, unavailable-AI fallback, refresh/idempotency/recovery tests                                            | Pending                                                 |
-| R-11 / P0     | Freeze, adversarial regression, repeatable demo                    | R-09, R-10                     | Three successful complete runs; stale/version/epoch, timeout, duplicate, bad payload, policy-denial, receipt-failure coverage | Pending                                                 |
-| R-12 / P0     | Submission artifacts and demo video                                | R-11                           | All actual specs/prompts/plans, AI/human contribution log; reproducible setup; real narration, 2–4min, ≥720p                  | Pending                                                 |
-| R-13 / P0     | Submit daytime, reserve evening buffer                             | R-12                           | Dashboard submission confirmed before official deadline                                                                       | Pending                                                 |
+| ID / priority | Task                                                               | Depends on                     | Acceptance                                                                                                                    | Status                                                         |
+| ------------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| R-01 / P0     | Correct policy, privacy, trust, evidence and schedule specs        | Review approved                | Public complete plan, ADR, prompt record; no stale 78% promise                                                                | Complete                                                       |
+| R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                               |
+| R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                             |
+| R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (deployed as separate v2)                             |
+| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 + v2 verified; post-execution event proof pending    |
+| R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)                    |
+| R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual hosted-v2 CLI + local lifecycle verified                |
+| R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Complete (v2 deployed/verified; operator locked)               |
+| R-09 / P0     | First full controlled execution                                    | R-05 through R-08              | BLOCK old intent; new nonce/review; Privy-controlled real Sepolia update; exact receipt/state/evidence                        | Implemented; real human approval/gas/Sepolia execution pending |
+| R-10 / P0     | One console, durable timeline, grounded risk Q&A                   | R-03, R-09                     | Source-linked numbers, unavailable-AI fallback, refresh/idempotency/recovery tests                                            | Local console + fallback implemented; live AI/hosting pending  |
+| R-11 / P0     | Freeze, adversarial regression, repeatable demo                    | R-09, R-10                     | Three successful complete runs; stale/version/epoch, timeout, duplicate, bad payload, policy-denial, receipt-failure coverage | Pending                                                        |
+| R-12 / P0     | Submission artifacts and demo video                                | R-11                           | All actual specs/prompts/plans, AI/human contribution log; reproducible setup; real narration, 2–4min, ≥720p                  | Pending                                                        |
+| R-13 / P0     | Submit daytime, reserve evening buffer                             | R-12                           | Dashboard submission confirmed before official deadline                                                                       | Pending                                                        |
 
 ## Critical path
 
@@ -64,9 +64,9 @@ when v2 is deployed; reject a manifest/ABI/snapshot version mismatch.
   [The v1 record](evidence/graph-studio-deployment-2026-09-08.json) is separate
   from the still-valid `graph-local` fallback. Both remain non-executable v1
   data-readiness evidence. The Studio development endpoint is rate-limited and
-  has not been published to The Graph Network. New-event-to-analysis, hosted v2
-  and sponsor qualification are still separate gates; no alternate provider
-  account has been created.
+  has not been published to The Graph Network. Hosted v2 was separately verified
+  on September 9. New-event-to-analysis and sponsor qualification remain
+  separate gates; no alternate provider account has been created.
 - CRE private-beta network access is optional for the selected CLI lane; record
   simulation honestly. A mock result or isolated template is not product
   integration.
@@ -166,3 +166,48 @@ material out of public artifacts.
 - The post-deployment Privy read confirmed the unchanged wildcard DENY policy.
   No operator funding, policy activation or propose/decision/execute transaction
   occurred; v1 artifacts remain unchanged.
+
+## September 9 implementation and verification
+
+Exact checks, corrected failures and remaining coverage are recorded in the
+[September 9 validation record](evidence/local-verification-2026-09-09.md).
+
+1. **Hosted v2 data:** independent Studio subgraph `paramshield-sepolia-v-2`,
+   version `v0.2.1`, CID and source hashes in
+   [its manifest](../deployments/graph-sepolia-v2.json). The previous `v0.2.0`
+   revision is retained there. Formatting was followed by an actual redeploy,
+   not an invented source-to-deployment match. Same-block RPC corroboration
+   includes all five positions plus indexed executor/epoch/allowlist.
+2. **Actual CRE on hosted v2:**
+   [BLOCK and fresh ALLOW evidence](evidence/cre-hosted-v2-2026-09-09.json). No
+   human-review or execution claim; no hardware TEE claim.
+3. **Controlled lifecycle:** local token/Origin protected console; strict
+   request fields; exact propose and execute policy; default DENY restored
+   before broadcast; pending/unknown signing and nonce reservations held
+   durably; full mined transaction, two confirmations, semantic events and
+   receipt-block state required.
+   [Owned Anvil](evidence/receipt-anvil-only-2026-09-09.json) exercised all
+   three lifecycle transactions; mocked provider tests are labeled.
+4. **Evidence-first console:** four-cell comparison, source/hash/version/epoch,
+   human review entry, transaction timeline, read-only receipt recovery,
+   redacted evidence download and a post-execution Graph check. The latter must
+   observe the new LT/stateVersion events and changed computed health before
+   marking the new-event demonstration complete.
+5. **AI:** a bounded, optional Responses API evidence selector can only return
+   existing fact IDs; all rendered numbers/text are deterministic. No provider
+   is configured yet. Fallback is explicitly non-AI and cannot authorize writes.
+
+### Remaining ordered actions
+
+- Prepare dedicated operator Sepolia gas; use no mainnet assets.
+- User performs a fresh exact EIP-712 review, then the independent authority
+  transaction. Chat confirmation and agent-operated signing are not evidence of
+  substantive human risk review.
+- Execute one fresh ALLOW through the exact Privy gate and verify real Sepolia
+  receipt/state, then verify its newly indexed Graph events affect analysis.
+- Configure and verify a real runtime AI provider, select a safe public hosting
+  boundary, and complete repeated demo/regression/video gates.
+
+The console runs on one trusted local host, not a public multi-user service. The
+120-second/12-block freshness limits remain unchanged. If a review expires,
+create a new run, intent and signature; never refresh a timestamp in place.

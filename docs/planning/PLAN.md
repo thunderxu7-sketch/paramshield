@@ -952,3 +952,12 @@ evidence-backed, policy-bound execution.”
    gate。Goldsky 只是条件性备选，未创建新账号，也未确认其奖项适用性。
 6. 下一执行入口：审阅 v2 部署与角色/资金/字节码清单，接 hosted
    Graph，补真实审核/RPC 适配和最终 Privy 控制后，才进入首次受控执行。不得把纯校验函数和模拟结果描述为已经完成组织审批或真实交易。
+
+## 25. 2026-09-09 执行状态
+
+- 独立 hosted v2 子图 v0.2.1 已部署；5 个仓位、总额、参数、stateVersion、executor 角色/epoch/allowlist 已按固定区块核验，v1 未变。
+- 实际 hosted v2 数据进入实际 CRE CLI：7000 BLOCK，独立新意图 7942 ALLOW。CLI 不是硬件 TEE，分析不是执行。
+- 本机受保护控制台已实现：真人 EIP-712 审核、Privy 精确 propose/execute、签后恢复 DENY、独立 authority、持久 nonce/交易日志、真实回执与事件核验、Graph 执行后事件检查、脱敏证据和明确标识的非 AI fallback。
+- 本地 Anvil 已验证三段真实合约回执和 LT 8000→7942 / version 7→8；不能将其算作 Sepolia 完整闭环或真人审核。
+- 待用户完成准备与真人签名后，才能运行第一次 Privy 受控 Sepolia 执行，并检验新事件改变分析。当前 operator 仍为 DENY；runtime AI、公共托管、三次复演和视频尚未完成。
+- 入口与恢复边界：docs/console-runbook.md；实际验收与下一步：docs/implementation-plan.md。不得为节约演示时间放宽 freshness 或自动重发未知交易。

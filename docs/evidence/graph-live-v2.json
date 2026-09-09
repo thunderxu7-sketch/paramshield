@@ -1,0 +1,320 @@
+{
+  "checkedAt": "2026-09-09T02:54:21.334Z",
+  "kind": "hosted-graph-v2-rpc-corroboration",
+  "snapshot": {
+    "schemaVersion": "paramshield.snapshot.v1",
+    "chainId": 11155111,
+    "market": "0x9e268e23cb6ecce47e2482d6ce222068b03af35a",
+    "contractVersion": "v2",
+    "stateVersion": "7",
+    "block": {
+      "number": 11665167,
+      "hash": "0x618d8fda72c6e1efa70088cd7f5c4503b667413c60e08791824925481f65959c",
+      "timestamp": 1788922440
+    },
+    "source": {
+      "kind": "graph",
+      "deployment": "QmefV5eQoaRnQpHDzLnTAEkeBo1ZjEPNSYVHad5LojU42s",
+      "queryId": "market-snapshot-v1"
+    },
+    "fetchedAt": 1788922451,
+    "liquidationThresholdBps": 8000,
+    "collateralPriceUsdE18": "2000000000000000000000",
+    "collateralDecimals": 18,
+    "debtDecimals": 6,
+    "totalCollateral": "55000000000000000000",
+    "totalDebt": "68300000000",
+    "positionCount": 5,
+    "positions": [
+      {
+        "account": "0x0000000000000000000000000000000000001001",
+        "collateralAmount": "10000000000000000000",
+        "debtAmount": "12000000000"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001002",
+        "collateralAmount": "10000000000000000000",
+        "debtAmount": "15000000000"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001003",
+        "collateralAmount": "10000000000000000000",
+        "debtAmount": "13500000000"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001004",
+        "collateralAmount": "5000000000000000000",
+        "debtAmount": "7800000000"
+      },
+      {
+        "account": "0x0000000000000000000000000000000000001005",
+        "collateralAmount": "20000000000000000000",
+        "debtAmount": "20000000000"
+      }
+    ]
+  },
+  "validation": {
+    "validatedAt": 1788922456,
+    "headBlock": 11665168
+  },
+  "snapshotHash": "0xabf135a1e57bcc33f61c296cf7051449a6d4be1bc9c4a458b38dd0eb691512c4",
+  "simulation": {
+    "algorithmVersion": "reference-lending-v2",
+    "proposedValueBps": 7000,
+    "decreaseBps": 1000,
+    "stressBps": 1500,
+    "stressedPriceUsdE18": "1700000000000000000000",
+    "totalDebtUsdE18": "68300000000000000000000",
+    "currentNormal": {
+      "positions": [
+        {
+          "account": "0x0000000000000000000000000000000000001001",
+          "healthFactorE18": "1333333333333333333",
+          "collateralValueUsdE18": "20000000000000000000000",
+          "debtValueUsdE18": "12000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001002",
+          "healthFactorE18": "1066666666666666666",
+          "collateralValueUsdE18": "20000000000000000000000",
+          "debtValueUsdE18": "15000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001003",
+          "healthFactorE18": "1185185185185185185",
+          "collateralValueUsdE18": "20000000000000000000000",
+          "debtValueUsdE18": "13500000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001004",
+          "healthFactorE18": "1025641025641025641",
+          "collateralValueUsdE18": "10000000000000000000000",
+          "debtValueUsdE18": "7800000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001005",
+          "healthFactorE18": "1600000000000000000",
+          "collateralValueUsdE18": "40000000000000000000000",
+          "debtValueUsdE18": "20000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        }
+      ],
+      "liquidatableCount": 0,
+      "liquidatableDebtUsdE18": "0",
+      "collateralShortfallUsdE18": "0",
+      "minFiniteHealthFactorE18": "1025641025641025641",
+      "medianFiniteHealthFactorE18": "1185185185185185185"
+    },
+    "proposedNormal": {
+      "positions": [
+        {
+          "account": "0x0000000000000000000000000000000000001001",
+          "healthFactorE18": "1166666666666666666",
+          "collateralValueUsdE18": "20000000000000000000000",
+          "debtValueUsdE18": "12000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001002",
+          "healthFactorE18": "933333333333333333",
+          "collateralValueUsdE18": "20000000000000000000000",
+          "debtValueUsdE18": "15000000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001003",
+          "healthFactorE18": "1037037037037037037",
+          "collateralValueUsdE18": "20000000000000000000000",
+          "debtValueUsdE18": "13500000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001004",
+          "healthFactorE18": "897435897435897435",
+          "collateralValueUsdE18": "10000000000000000000000",
+          "debtValueUsdE18": "7800000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001005",
+          "healthFactorE18": "1400000000000000000",
+          "collateralValueUsdE18": "40000000000000000000000",
+          "debtValueUsdE18": "20000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        }
+      ],
+      "liquidatableCount": 2,
+      "liquidatableDebtUsdE18": "22800000000000000000000",
+      "collateralShortfallUsdE18": "0",
+      "minFiniteHealthFactorE18": "897435897435897435",
+      "medianFiniteHealthFactorE18": "1037037037037037037"
+    },
+    "currentStress": {
+      "positions": [
+        {
+          "account": "0x0000000000000000000000000000000000001001",
+          "healthFactorE18": "1133333333333333333",
+          "collateralValueUsdE18": "17000000000000000000000",
+          "debtValueUsdE18": "12000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001002",
+          "healthFactorE18": "906666666666666666",
+          "collateralValueUsdE18": "17000000000000000000000",
+          "debtValueUsdE18": "15000000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001003",
+          "healthFactorE18": "1007407407407407407",
+          "collateralValueUsdE18": "17000000000000000000000",
+          "debtValueUsdE18": "13500000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001004",
+          "healthFactorE18": "871794871794871794",
+          "collateralValueUsdE18": "8500000000000000000000",
+          "debtValueUsdE18": "7800000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001005",
+          "healthFactorE18": "1360000000000000000",
+          "collateralValueUsdE18": "34000000000000000000000",
+          "debtValueUsdE18": "20000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        }
+      ],
+      "liquidatableCount": 2,
+      "liquidatableDebtUsdE18": "22800000000000000000000",
+      "collateralShortfallUsdE18": "0",
+      "minFiniteHealthFactorE18": "871794871794871794",
+      "medianFiniteHealthFactorE18": "1007407407407407407"
+    },
+    "proposedStress": {
+      "positions": [
+        {
+          "account": "0x0000000000000000000000000000000000001001",
+          "healthFactorE18": "991666666666666666",
+          "collateralValueUsdE18": "17000000000000000000000",
+          "debtValueUsdE18": "12000000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001002",
+          "healthFactorE18": "793333333333333333",
+          "collateralValueUsdE18": "17000000000000000000000",
+          "debtValueUsdE18": "15000000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001003",
+          "healthFactorE18": "881481481481481481",
+          "collateralValueUsdE18": "17000000000000000000000",
+          "debtValueUsdE18": "13500000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001004",
+          "healthFactorE18": "762820512820512820",
+          "collateralValueUsdE18": "8500000000000000000000",
+          "debtValueUsdE18": "7800000000000000000000",
+          "liquidatable": true,
+          "collateralShortfallUsdE18": "0"
+        },
+        {
+          "account": "0x0000000000000000000000000000000000001005",
+          "healthFactorE18": "1190000000000000000",
+          "collateralValueUsdE18": "34000000000000000000000",
+          "debtValueUsdE18": "20000000000000000000000",
+          "liquidatable": false,
+          "collateralShortfallUsdE18": "0"
+        }
+      ],
+      "liquidatableCount": 4,
+      "liquidatableDebtUsdE18": "48300000000000000000000",
+      "collateralShortfallUsdE18": "0",
+      "minFiniteHealthFactorE18": "762820512820512820",
+      "medianFiniteHealthFactorE18": "881481481481481481"
+    },
+    "newlyLiquidatableAccounts": [
+      "0x0000000000000000000000000000000000001002",
+      "0x0000000000000000000000000000000000001004"
+    ],
+    "newlyLiquidatableDebtUsdE18": "22800000000000000000000",
+    "additionalStressedDebtUsdE18": "25500000000000000000000"
+  },
+  "liveControls": {
+    "chainId": 11155111,
+    "block": {
+      "number": 11665168,
+      "hash": "0xd755cc8e2ea86d9efe4eafe9043616127ccda27aaf6206eaa2a1cba06ca1373c",
+      "timestamp": 1788922452
+    },
+    "executorCodeHash": "0xdceecaf1fcc7b23d56351cf734d45cc6b7ff51263481358bd7450dbc0ea11799",
+    "marketCodeHash": "0xbcf8d3d4b86a8c0f92c5e127d02e2120277c5184e51183b9d62579c7a9c8b469",
+    "operator": "0x2801d0FbD05972D40aF0ace94413364f6aE2A3E1",
+    "decisionAuthority": "0x24bd7DFeF1f99Bad775698bb0D8F662fb4C1FC22",
+    "marketOwner": "0xD971505e814235b668fB56d7000492a9c68D9749",
+    "stateVersion": "7",
+    "authorizationEpoch": "1",
+    "allowedCall": true,
+    "proposal": {
+      "state": 0,
+      "decisionHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "indexedControls": {
+    "executor": {
+      "admin": "0x5be049630a2c8b18f1b6bf53be95120a3f982fcc",
+      "operator": "0x2801d0fbd05972d40af0ace94413364f6ae2a3e1",
+      "decisionAuthority": "0x24bd7dfef1f99bad775698bb0d8f662fb4c1fc22",
+      "authorizationEpoch": "1"
+    },
+    "allowedCall": {
+      "executor": "0xd971505e814235b668fb56d7000492a9c68d9749",
+      "target": "0x9e268e23cb6ecce47e2482d6ce222068b03af35a",
+      "selector": "0x4d5bcf96",
+      "allowed": true
+    },
+    "change": null,
+    "marketEvents": [],
+    "_meta": {
+      "deployment": "QmefV5eQoaRnQpHDzLnTAEkeBo1ZjEPNSYVHad5LojU42s",
+      "hasIndexingErrors": false,
+      "block": {
+        "number": 11665167,
+        "hash": "0x618d8fda72c6e1efa70088cd7f5c4503b667413c60e08791824925481f65959c"
+      }
+    },
+    "snapshotHash": "0xabf135a1e57bcc33f61c296cf7051449a6d4be1bc9c4a458b38dd0eb691512c4",
+    "checkedAt": "2026-09-09T02:54:21.332Z"
+  },
+  "rpcCorroborated": true,
+  "executionPerformed": false,
+  "sponsorQualificationClaimed": false
+}

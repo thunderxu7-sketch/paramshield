@@ -18,7 +18,9 @@ export function executionPolicyFingerprint(
         if (
           (c.field_source === "ethereum_transaction" && c.field === "to") ||
           (c.field_source === "ethereum_calldata" &&
-            c.field === "execute.intent.target")
+            ["execute.intent.target", "propose.intent.target"].includes(
+              c.field,
+            ))
         ) {
           if (
             typeof c.value !== "string" ||
@@ -37,16 +39,27 @@ export function executionPolicyFingerprint(
  * Tuple path support must be verified with the actual provider control spike.
  * This is not quorum, human authentication, attestation or an admin-proof policy. */
 export function exactExecutionPolicy(target: Hex, data: Hex): Policy {
+  return exactIntentPolicy(target, data, "execute");
+}
+
+/** One lifecycle method and one canonical intent. Never allow both methods by
+ * selector alone, arbitrary targets, raw messages, or private-key export. */
+export function exactIntentPolicy(
+  target: Hex,
+  data: Hex,
+  method: "propose" | "execute",
+): Policy {
   const call = decodeFunctionData({ abi: EXECUTOR_ABI, data });
   if (
-    call.functionName !== "execute" ||
+    (call.functionName !== "execute" && call.functionName !== "propose") ||
+    call.functionName !== method ||
     encodeFunctionData({
       abi: EXECUTOR_ABI,
-      functionName: "execute",
+      functionName: call.functionName,
       args: call.args,
     }) !== data
   )
-    throw new Error("Canonical v2 execute calldata required");
+    throw new Error("Canonical v2 intent calldata required");
   if (!/^0x[0-9a-fA-F]{40}$/.test(target) || BigInt(target) === 0n)
     throw new Error("Invalid execution target");
   const intent = call.args[0];
@@ -54,11 +67,11 @@ export function exactExecutionPolicy(target: Hex, data: Hex): Policy {
     throw new Error("Zero-value Sepolia intent required");
   return {
     version: "1.0",
-    name: "ParamShield exact v2 intent sign-only control",
+    name: `ParamShield exact ${method} sign-only`,
     chain_type: "ethereum",
     rules: [
       {
-        name: "Exact reviewed execute intent only",
+        name: `Exact reviewed ${method} intent only`,
         action: "ALLOW",
         method: "eth_signTransaction",
         conditions: [
@@ -85,11 +98,11 @@ export function exactExecutionPolicy(target: Hex, data: Hex): Policy {
             field: "function_name",
             abi: EXECUTOR_ABI,
             operator: "eq",
-            value: "execute",
+            value: method,
           },
           ...Object.entries(intent).map(([name, value]) => ({
             field_source: "ethereum_calldata" as const,
-            field: `execute.intent.${name}`,
+            field: `${method}.intent.${name}`,
             abi: EXECUTOR_ABI,
             operator: "eq" as const,
             value: value.toString(),

@@ -123,3 +123,14 @@ reviewer address and funding records stay local. Only contract-role addresses
 necessarily made public by the deployment and sanitized verification records are
 published. No product execution, reviewer signature, TEE or organization quorum
 is claimed.
+
+## September 9 implementation direction
+
+The user requested: “依次执行今天的任务”. The assistant continued the recorded
+sequence of v2 hosted Graph, real approval and controlled execution, then one
+minimal console and grounded explanation. It preserved the v1 deployment and
+account identity, kept the dedicated operator locked, and did not turn an Anvil
+signature or an agent click into a human-review claim. Exact runtime AI
+instructions live in the implementation linked from the AI disclosure. The
+remaining gas, human signature, live execution, runtime model and hosting gates
+are documented rather than marked complete from code/tests.

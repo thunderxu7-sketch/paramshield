@@ -49,37 +49,27 @@ an ornamental login or badge.
 
 ## Repository status
 
-This repository is being built from scratch during ETHOnline 2026. The reference
-market, seeded positions, and initial executor were deployed to Sepolia on
-September 6. The September 7 revision targets risk/evidence invariants and a v2
-execution gate. A separately reviewed v2 deployment was completed on September 8
-with the Privy operator still locked. Live sponsor integrations, the console,
-and runtime AI have separate gates in the
-[implementation plan](docs/implementation-plan.md). Local tests do not prove a
-live integration is complete.
+**September 9:** the separate v2 contracts remain deployed and verified; v1 is
+unchanged. Hosted v2 Graph `v0.2.1` now supplies RPC-corroborated positions,
+market stateVersion, executor roles, authorization epoch and allowlist. Actual
+product CRE CLI runs on this hosted input returned **7000 BLOCK → fresh 7942
+ALLOW**. These are real live-data analyses, not completed transactions or a TEE.
 
-Verified next milestone: a local Graph Node indexed the real v1 Sepolia market,
-and the product CRE CLI workflow returned BLOCK (7000) and an independently
-reviewed ALLOW (7942). Both are explicitly non-executable previews. See the
-[evidence and remaining gates](docs/sponsor-readiness.md); v2 rollout and final
-Privy-controlled execution are not yet complete.
+A local authenticated [operation console](docs/console-runbook.md) now connects
+analysis, EIP-712 review, exact Privy propose/execute policies, independent
+MetaMask authority, durable sign/broadcast coordination, receipt verification,
+redacted evidence, and post-execution Graph checks. Owned Anvil verified the
+three real contract lifecycle receipts, including LT 8000 → 7942 and version 7
+→ 8. This is **not** public Sepolia execution or a human-review certificate.
 
-The September 8 [hosted Studio v1 deployment](subgraph/README.md) is now synced.
-All five indexed positions, totals and config were independently reconciled
-against Sepolia RPC at the same block/hash, and the live input fed the risk
-calculation. This is a rate-limited development endpoint, **not** a v2 index,
-new-event-to-analysis proof, or publication to The Graph Network.
-
-September 8 adds real RPC and EIP-712 review adapters, an owned CRE execution
-runner, and durable sign-only coordination. Actual CRE → local Anvil signing
-checks and a **separate real Privy** exact-v2-policy proof passed (13 denied
-mutations). These are not a hosted-Graph → Privy → public-Sepolia E2E. See
-[execution service status](docs/execution-service.md) and the
-[separate v2 deployment](deployments/v2/README.md). Its five contracts were
-created in block 11660450 with distinct admin/operator/authority addresses,
-exact bytecode/source verification and the canonical seed. The Privy policy
-remains DENY; v2 indexing and controlled execution are still pending. Existing
-v1 addresses and ABIs were not replaced.
+**Still gated:** operator test gas, actual human review/authority signatures,
+first full Privy-controlled Sepolia execution, the subsequent live indexed-event
+demonstration, runtime AI provider verification, public hosting and demo video.
+The operator remains under verified wildcard DENY. The optional AI evidence
+selector is implemented but no runtime model/key is configured; the UI labels
+its deterministic fallback as **non-AI**. See the
+[implementation plan](docs/implementation-plan.md) and
+[sponsor readiness](docs/sponsor-readiness.md).
 
 ## Planned workspace
 

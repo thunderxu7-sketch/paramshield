@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "paramshield.graph-deployment.v2",
+  "deployedAt": "2026-09-09T02:48:48.726487+00:00",
+  "chainId": 11155111,
+  "contractVersion": "v2",
+  "slug": "paramshield-sepolia-v-2",
+  "version": "v0.2.1",
+  "deployment": "QmefV5eQoaRnQpHDzLnTAEkeBo1ZjEPNSYVHad5LojU42s",
+  "studioUrl": "https://thegraph.com/studio/subgraph/paramshield-sepolia-v-2/",
+  "startBlock": 11660450,
+  "market": "0x9e268E23cb6ecce47E2482D6Ce222068b03Af35a",
+  "executor": "0xD971505e814235b668fB56d7000492a9c68D9749",
+  "networkPublished": false,
+  "status": "DEPLOYED_RPC_VERIFIED",
+  "sourceSha256": {
+    "subgraph/v2/subgraph.yaml": "451c68bfc3c63a31664b538624e603a3f11d4afd0bd0fee03b9974de5786bda6",
+    "subgraph/v2/schema.graphql": "ad5298c092dad87ece9f089de18698ff76a0ba4b755f98a6acd0927ba2a03a94",
+    "subgraph/v2/src/market.ts": "0700fdf8f9332e59b0973306b2dad958c687cdc907b7d981762cb212583cc06b",
+    "subgraph/v2/src/executor.ts": "1237d8c864820728ffcc5377519fe870741b26b513324cde74a9004d7ea236f2",
+    "deployments/v2/abi/ReferenceLendingMarket.json": "e6c276469b3e74700a8e555aa60a00b8068bb33b5884c085e8172b529d2f9219",
+    "deployments/v2/abi/ParamShieldExecutor.json": "939687db7bd7f542af9c0d206543119ab88c76967a5874b439fa060f366ba164"
+  },
+  "previousVersions": [
+    {
+      "version": "v0.2.0",
+      "deployment": "QmUTW8n4YQp8WLDXoVuq1bjT3erTWcyMhJ65Wk2pYc1bcs",
+      "deployedAt": "2026-09-09T02:07:08.347Z",
+      "sourceSha256": {
+        "subgraph/v2/subgraph.yaml": "451c68bfc3c63a31664b538624e603a3f11d4afd0bd0fee03b9974de5786bda6",
+        "subgraph/v2/schema.graphql": "ad5298c092dad87ece9f089de18698ff76a0ba4b755f98a6acd0927ba2a03a94",
+        "subgraph/v2/src/market.ts": "0700fdf8f9332e59b0973306b2dad958c687cdc907b7d981762cb212583cc06b",
+        "subgraph/v2/src/executor.ts": "28a9dba4e3db9391ff833dfcab41dd228ef284d6cdacb6c731bfce07db401cdc",
+        "deployments/v2/abi/ReferenceLendingMarket.json": "e6c276469b3e74700a8e555aa60a00b8068bb33b5884c085e8172b529d2f9219",
+        "deployments/v2/abi/ParamShieldExecutor.json": "939687db7bd7f542af9c0d206543119ab88c76967a5874b439fa060f366ba164"
+      }
+    }
+  ],
+  "verifiedAt": "2026-09-09T02:54:21.334Z",
+  "indexedBlock": 11665167,
+  "snapshotHash": "0xabf135a1e57bcc33f61c296cf7051449a6d4be1bc9c4a458b38dd0eb691512c4"
+}

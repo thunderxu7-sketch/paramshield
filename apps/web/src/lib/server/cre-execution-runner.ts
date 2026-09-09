@@ -105,6 +105,15 @@ export class CreExecutionRunner {
         "apps/web/src/lib/server/review-store.ts",
         "apps/web/src/lib/server/transaction-signing.ts",
         "apps/web/src/lib/server/execution-policy.ts",
+        "apps/web/src/lib/server/operator-control.ts",
+        "apps/web/src/lib/server/transaction-broadcast.ts",
+        "apps/web/src/lib/server/lifecycle-preflight.ts",
+        "apps/web/src/lib/server/lifecycle-receipt.ts",
+        "apps/web/src/lib/server/v2-context.ts",
+        "apps/web/src/lib/server/graph-v2-state.ts",
+        "apps/web/src/lib/server/console-auth.ts",
+        "apps/web/src/lib/server/console-service.ts",
+        "apps/web/src/app/api/console/route.ts",
         "apps/web/src/lib/server/durable-store.ts",
         "apps/web/src/lib/execution-preflight.ts",
         "apps/web/src/lib/bounded-process.ts",
@@ -115,7 +124,17 @@ export class CreExecutionRunner {
         await Promise.all(
           sourcePaths.map(async (p) => [
             p,
-            sha(await readFile(join(this.root, p))),
+            // Runtime-only, allowlisted source paths on the trusted local host.
+            // Do not trace/copy the workspace (including private journals) into
+            // a deployable Next server artifact.
+            sha(
+              await readFile(
+                /* turbopackIgnore: true */ join(
+                  /* turbopackIgnore: true */ this.root,
+                  p,
+                ),
+              ),
+            ),
           ]),
         ),
       );

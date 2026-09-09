@@ -11,7 +11,7 @@ import { hashCanonical } from "@paramshield/evidence";
 import { PrivyClient } from "@privy-io/node";
 import { DurableStore } from "./durable-store";
 import {
-  exactExecutionPolicy,
+  exactIntentPolicy,
   executionPolicyFingerprint,
 } from "./execution-policy";
 
@@ -105,6 +105,7 @@ export function privySigner(
   client: PrivyClient,
   walletId: string,
   policyId: string,
+  method: "propose" | "execute" = "execute",
 ): TransactionSigner {
   return {
     async sign(plan, idempotencyKey) {
@@ -119,7 +120,7 @@ export function privySigner(
       const policy = await client.policies().get(policyId);
       if (
         executionPolicyFingerprint(policy) !==
-        executionPolicyFingerprint(exactExecutionPolicy(p.to, p.data))
+        executionPolicyFingerprint(exactIntentPolicy(p.to, p.data, method))
       )
         throw new Error(
           "Privy policy no longer matches the exact reviewed intent",

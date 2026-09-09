@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-09-09T02:43:03.728Z",
+  "kind": "owned-anvil-lifecycle-receipts",
+  "publicSepolia": false,
+  "hostedGraph": false,
+  "realPrivy": false,
+  "humanReview": false,
+  "checks": [
+    "propose: exact envelope, canonical receipt, events, proposal tuple and receipt-block state",
+    "propose: altered transaction plan rejected",
+    "decision: exact envelope, canonical receipt, events, proposal tuple and receipt-block state",
+    "decision: altered transaction plan rejected",
+    "execute: exact envelope, canonical receipt, events, proposal tuple and receipt-block state",
+    "execute: altered transaction plan rejected"
+  ],
+  "finalState": {
+    "market": "0xeebe00ac0756308ac4aabfd76c05c4f3088b8883",
+    "blockNumber": 6,
+    "blockHash": "0xec15cae5c6ea67fb06b3d7c62cf1b613e364f448786b728743babb25563f9635",
+    "liquidationThresholdBps": 7942,
+    "stateVersion": "8"
+  }
+}

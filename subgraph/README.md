@@ -81,3 +81,20 @@ alone guarantees sponsor qualification.
 References:
 [manifest](https://thegraph.com/docs/en/subgraphs/developing/creating/subgraph-manifest/),
 [block-pinned queries and metadata](https://thegraph.com/docs/en/subgraphs/querying/graphql-api/).
+
+## Independent hosted v2 — September 9
+
+The new `v2/` mapping and schema preserve all v1 source/ABI/deployment
+artifacts. `pnpm build` builds both versions; `pnpm build:v2` selects the new
+mapping. See [the v2 manifest](../deployments/graph-sepolia-v2.json) for
+addresses, start block, actual Studio version/CID and source hashes. The query
+URL and account identifier remain server-only in `GRAPH_V2_QUERY_URL`.
+
+V2 indexes exact emitted market state versions, executor role/authorization
+epoch changes, allowlist, proposal preconditions and lifecycle events. Solidity
+emits `ProposalPreconditions` **before** `ProposalCreated`; the mapping
+preserves it independently and binds it on creation. Position event health
+factors are not cached as current risk after a parameter/price change. Live
+indexed roles, allowlist and five-position state are RPC-corroborated in
+[the v2 evidence](../docs/evidence/graph-live-v2.json). Actual new execution
+events are a separate gate, not inferred from the initial seed or an Anvil test.

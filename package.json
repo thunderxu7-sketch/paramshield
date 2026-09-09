@@ -25,7 +25,10 @@
     "spike:cre-local": "pnpm --dir apps/web spike:cre-local",
     "deployment:v2:prepare": "pnpm --dir apps/web exec tsx scripts/prepare-v2-deployment.ts",
     "spike:relay-anvil": "pnpm --dir apps/web exec tsx scripts/relay-anvil-spike.ts --anvil-only",
-    "spike:privy-v2": "pnpm --dir apps/web exec tsx scripts/privy-v2-control-spike.ts"
+    "spike:privy-v2": "pnpm --dir apps/web exec tsx scripts/privy-v2-control-spike.ts",
+    "console:start": "pnpm --dir apps/web exec tsx scripts/start-console.ts",
+    "graph:v2:verify": "node --env-file=.env.local --import ./apps/web/node_modules/tsx/dist/loader.mjs apps/web/scripts/graph-v2-live.ts",
+    "cre:v2:verify": "node --env-file=.env.local --import ./apps/web/node_modules/tsx/dist/loader.mjs apps/web/scripts/cre-v2-live.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

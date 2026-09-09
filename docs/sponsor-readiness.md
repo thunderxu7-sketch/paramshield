@@ -1,15 +1,15 @@
 # Sponsor Integration Readiness
 
-**Updated:** 2026-09-08. Account, local build, live read, control proof, and
+**Updated:** 2026-09-09. Account, local build, live read, control proof, and
 final product integration are different gates. No credentials are included here.
 
 ## Matrix
 
-| Sponsor       | Verified evidence                                                                                                                                                                   | Still missing                                                                                                        |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| The Graph     | Studio v1 DEPLOYED/SYNCED; five positions/config/totals from the official hosted endpoint independently RPC-corroborated at a fresh pinned block; separate local fallback preserved | Hosted v2 index, new-event-to-analysis demonstration, runtime grounded AI and sponsor qualification                  |
-| Chainlink CRE | Actual product handler on local live Graph; 7000 BLOCK and fresh 7942 ALLOW; actual CLI/Anvil trusted-relay proof with RPC and review adapters                                      | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                           |
-| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately                  | Exact operator policy activation, authenticated human review, controlled execution broadcast and receipt/state proof |
+| Sponsor       | Verified evidence                                                                                                                                                  | Still missing                                                                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| The Graph     | Hosted v1 and independent v2; five positions/config/totals plus v2 roles/epoch/allowlist RPC-corroborated; hosted v2 actual CRE input                              | New-event-to-analysis after real execution, live runtime AI and sponsor qualification                                |
+| Chainlink CRE | Actual product handler on local live Graph; 7000 BLOCK and fresh 7942 ALLOW; actual CLI/Anvil trusted-relay proof with RPC and review adapters                     | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                           |
+| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately | Exact operator policy activation, authenticated human review, controlled execution broadcast and receipt/state proof |
 
 ## Exact partner positioning
 
@@ -118,3 +118,17 @@ all roles and canonical seeded state. The dedicated Privy operator is assigned
 onchain but still bound to wildcard DENY; the original isolated proof wallets
 remain separate. This advances deployment readiness, not sponsor eligibility,
 real human approval, independent governance or a complete execution E2E.
+
+## September 9 boundary update
+
+The [local console](console-runbook.md) is implemented and uses actual hosted v2
+Graph and actual CRE CLI. Broadcast, receipt recovery and exact propose/execute
+policy adapters exist, but the dedicated operator has not yet completed the real
+human-approved Sepolia flow. Anvil lifecycle evidence is explicitly local;
+mocked provider regression is not a new real-provider claim. The original
+isolated Privy provider evidence remains separately valid.
+
+AI evidence selection and deterministic rendering are implemented. No runtime
+model/key has been configured, so the current explanation is labeled non-AI.
+This does **not** satisfy the runtime AI sponsor gate. No new prize eligibility
+or network-publication claim is made from the code alone.

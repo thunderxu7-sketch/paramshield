@@ -132,3 +132,18 @@ remains unchanged.
   remain ignored; this is not a full security audit.
 - Remote CI runs the normal repository verification on the pushed revision; its
   result must be checked separately, not inferred from local success.
+
+## September 9 local console and lifecycle
+
+The sign-only primitives are now connected through the local authenticated
+[console runbook](console-runbook.md). New modules enforce exact propose as well
+as execute policy, restoration to DENY, durable single-attempt broadcast,
+complete receipt envelopes, semantic contract events and receipt-block state.
+Anvil lifecycle verification exercised all three actual v2 transactions. This
+supersedes the earlier **implementation** gap in broadcasting, not the pending
+**live Sepolia/human review** gate.
+
+Runtime AI evidence selection is implemented but not configured; no real AI
+provider result is claimed. No public API/tunnel or network TEE was deployed.
+The operator remains locked and the public Sepolia controlled lifecycle remains
+pending actual review/gas/authority steps. Two confirmations are not finality.

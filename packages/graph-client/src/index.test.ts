@@ -52,6 +52,38 @@ const opts = {
   headBlock: s.block.number + 1,
 };
 describe("complete pinned Graph snapshot", () => {
+  it("rejects a consistent but unapproved deployment before reading positions", async () => {
+    const mock = stub([{ data: { _meta: meta } }, { data: page() }]);
+    await expect(
+      fetchGraphSnapshot({
+        ...opts,
+        ...mock,
+        expectedDeployment: "another-deployment",
+      }),
+    ).rejects.toThrow("pinned configuration");
+    expect(mock.requests).toHaveLength(1);
+  });
+  it("does not relabel a v1 endpoint as v2", async () => {
+    const p = structuredClone(page());
+    p.market.contractVersion = "v1";
+    p.market.stateVersion = null;
+    await expect(
+      fetchGraphSnapshot({
+        ...opts,
+        ...stub([{ data: { _meta: meta } }, { data: p }]),
+        expectedContractVersion: "v2",
+      }),
+    ).rejects.toThrow("contract version");
+  });
+  it("accepts the explicitly pinned index and version", async () => {
+    const result = await fetchGraphSnapshot({
+      ...opts,
+      ...stub([{ data: { _meta: meta } }, { data: page() }]),
+      expectedDeployment: meta.deployment,
+      expectedContractVersion: market.contractVersion,
+    });
+    expect(result.source.deployment).toBe(meta.deployment);
+  });
   it("pins every page by block hash and preserves live provenance", async () => {
     const mock = stub([{ data: { _meta: meta } }, { data: page() }]);
     const result = await fetchGraphSnapshot({ ...opts, ...mock });

@@ -59,6 +59,8 @@ type Options = {
   headBlock: number;
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
+  expectedDeployment?: string;
+  expectedContractVersion?: "v1" | "v2";
 };
 
 /** Server-side configured endpoint only. Never supply arbitrary browser URLs or log keys. */
@@ -128,6 +130,11 @@ async function fetchIndexedSnapshot(
     .object({ _meta: metaSchema })
     .strict()
     .parse(await query(META_QUERY))._meta;
+  if (
+    options.expectedDeployment &&
+    head.deployment !== options.expectedDeployment
+  )
+    throw new Error("Graph deployment does not match pinned configuration");
   const positions: MarketSnapshot["positions"] = [];
   let cursor = "",
     initialMarket: z.infer<typeof marketSchema> | undefined;
@@ -164,6 +171,13 @@ async function fetchIndexedSnapshot(
     if (pageNumber === 100) throw new Error("Unbounded pagination");
   }
   if (!initialMarket) throw new Error("Missing market");
+  if (
+    options.expectedContractVersion &&
+    initialMarket.contractVersion !== options.expectedContractVersion
+  )
+    throw new Error(
+      "Graph contract version does not match pinned configuration",
+    );
   const { id: _id, ...state } = initialMarket;
   const snapshot = snapshotSchema.parse({
     schemaVersion: "paramshield.snapshot.v1",
