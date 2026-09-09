@@ -578,6 +578,29 @@ export default function ConsolePage() {
               先准备好钱包账号，再开始新一轮分析。过期不会自动续期；BLOCK
               没有签名入口。
             </p>
+            <p className="ps-caption">
+              倒计时仅显示时间预算；服务端还会核验区块、钱包签名和版本。
+              只有显示「审核签名已验证」才算审核成功。
+            </p>
+            {flow?.lastReviewAttempt && (
+              <div className="ps-sidebar-note" aria-live="polite">
+                <strong>
+                  最近审核请求 ·{" "}
+                  {flow.lastReviewAttempt.phase === "prepare"
+                    ? "内容准备"
+                    : "签名核验"}
+                </strong>
+                <p>{flow.lastReviewAttempt.message}</p>
+                <small>
+                  {new Date(
+                    flow.lastReviewAttempt.completedAt * 1000,
+                  ).toLocaleTimeString("zh-CN", { hour12: false })}
+                  {" · "}记录代码：{flow.lastReviewAttempt.code}
+                  {flow.lastReviewAttempt.secondsRemaining !== null &&
+                    ` · 核验时数据时间预算 ${flow.lastReviewAttempt.secondsRemaining} 秒`}
+                </small>
+              </div>
+            )}
             <div className="ps-actions">
               <div>
                 <b>1. 人工证据审核</b>

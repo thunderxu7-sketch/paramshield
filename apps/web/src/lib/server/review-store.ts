@@ -2,7 +2,31 @@ import { recoverTypedDataAddress, type Address, type Hex } from "viem";
 import { hashCanonical, bindDecision } from "@paramshield/evidence";
 import type { ExecutionApprovalStore } from "../execution-preflight";
 import { DurableStore } from "./durable-store";
+
+export class ReviewValidationError extends Error {
+  constructor(
+    readonly code:
+      "REVIEW_SIGNER_MISMATCH" | "REVIEW_TIME_IN_FUTURE" | "REVIEW_EXPIRED",
+  ) {
+    super(
+      code === "REVIEW_SIGNER_MISMATCH"
+        ? "Unauthorized review signer"
+        : code === "REVIEW_TIME_IN_FUTURE"
+          ? "Unauthorized future review timestamp"
+          : "Review expired",
+    );
+  }
+}
 const TYPES = {
+  // The console sends raw eth_signTypedData_v4 JSON. Unlike viem's wallet
+  // helper, that path does not infer the domain type. Include it explicitly
+  // so MetaMask and server recovery hash the same domain-bound message.
+  EIP712Domain: [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "verifyingContract", type: "address" },
+  ],
   ParamShieldReview: [
     { name: "changeHash", type: "bytes32" },
     { name: "preflightHash", type: "bytes32" },
@@ -28,7 +52,7 @@ export function reviewTypedData(
     domain: {
       name: "ParamShield review",
       version: "2",
-      chainId: b.intent.chainId,
+      chainId: BigInt(b.intent.chainId),
       verifyingContract: b.intent.executor,
     },
     types: TYPES,
@@ -96,11 +120,14 @@ export class SignedReviewStore implements ExecutionApprovalStore {
     });
     if (
       !this.reviewers.some((a) => a.toLowerCase() === reviewer.toLowerCase()) ||
-      reviewer.toLowerCase() !== record.reviewer.toLowerCase() ||
-      record.approvedAt > this.now() ||
-      Number(typed.message.expiresAt) <= this.now()
+      reviewer.toLowerCase() !== record.reviewer.toLowerCase()
     )
-      throw new Error("Unauthorized or expired review");
+      throw new ReviewValidationError("REVIEW_SIGNER_MISMATCH");
+    const now = this.now();
+    if (record.approvedAt > now)
+      throw new ReviewValidationError("REVIEW_TIME_IN_FUTURE");
+    if (Number(typed.message.expiresAt) <= now)
+      throw new ReviewValidationError("REVIEW_EXPIRED");
     const b = bindDecision(record.preflight, record.decision);
     if (reviewer.toLowerCase() === b.intent.operator.toLowerCase())
       throw new Error("Operator cannot self-review");

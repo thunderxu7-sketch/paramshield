@@ -37,6 +37,16 @@ export type FlowView = {
   authorizationEpoch?: string;
   timeline: TimelineItem[];
   error?: string;
+  lastReviewAttempt?: {
+    phase: "prepare" | "submit";
+    outcome: "ISSUED" | "ACCEPTED" | "REJECTED";
+    startedAt: number;
+    completedAt: number;
+    issuedAt?: number;
+    secondsRemaining: number | null;
+    code: string;
+    message: string;
+  };
   proof?: unknown;
   explanation?: {
     mode: "ai" | "deterministic-fallback";

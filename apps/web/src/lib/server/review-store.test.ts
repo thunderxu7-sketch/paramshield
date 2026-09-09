@@ -95,7 +95,7 @@ describe("authenticated EIP-712 human reviews", () => {
       await stranger.signTypedData(f.typed),
       await reviewer.signTypedData({
         ...f.typed,
-        domain: { ...f.typed.domain, chainId: 1 },
+        domain: { ...f.typed.domain, chainId: 1n },
       }),
     ])
       await expect(

@@ -128,6 +128,13 @@ human-approved Sepolia flow. Anvil lifecycle evidence is explicitly local;
 mocked provider regression is not a new real-provider claim. The original
 isolated Privy provider evidence remains separately valid.
 
+The dedicated operator's
+[0.01 Sepolia ETH funding](evidence/operator-gas-2026-09-09.json) is now
+confirmed by its canonical receipt. This is only gas preparation, not a Privy
+execution or human approval. The
+[MetaMask review compatibility fix](evidence/review-rejection-2026-09-09.md) is
+verified with test-only signatures; a new real human review remains required.
+
 AI evidence selection and deterministic rendering are implemented. No runtime
 model/key has been configured, so the current explanation is labeled non-AI.
 This does **not** satisfy the runtime AI sponsor gate. No new prize eligibility

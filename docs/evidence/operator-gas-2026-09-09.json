@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-09-09T03:56:30.171Z",
+  "kind": "sepolia-operator-gas-funding",
+  "chainId": 11155111,
+  "transactionHash": "0x083e846df83874bf28e6271eecfd96ef971e28bbc80a7ea2f2a06ec857c7537d",
+  "blockNumber": 11665366,
+  "blockHash": "0xd2f5935845cdae89e8b98fb7893ccc8287f598e1f8cbf83baab968b6fea09b7c",
+  "blockTimestamp": 1788924912,
+  "confirmationsAtCheck": 102,
+  "from": "0x5be049630a2c8b18f1b6bf53be95120a3f982fcc",
+  "to": "0x2801d0fbd05972d40af0ace94413364f6ae2a3e1",
+  "valueWei": "10000000000000000",
+  "receiptStatus": "success",
+  "canonicalReceiptVerified": true,
+  "humanRiskReview": false,
+  "parameterExecution": false
+}

@@ -85,6 +85,16 @@ configuration disables the API; it never silently substitutes demo accounts.
   expiry. Compilation occurs before reading the fresh input. Human delay,
   provider delay, version/epoch changes or a reorg can invalidate a run. A new
   run requires a new human signature; there is no automatic extension.
+- Raw MetaMask V4 payloads explicitly include `types.EIP712Domain`; otherwise
+  wallet hashing can differ from viem's inferred domain. The backend never
+  accepts legacy domain-omitting signatures as a fallback.
+- The countdown is only the time budget, not proof of valid block distance,
+  signer, code or market state. `ISSUED` means review content was prepared; only
+  `ACCEPTED` / “审核签名已验证” means the configured signer was authenticated.
+  Rejected attempts persist phase, issue/completion times, remaining time and a
+  fixed reason code, but never rejected signatures or raw provider payloads.
+  `REVIEW_SIGNER_MISMATCH` is not reported as expiry. Inspect the code before
+  retrying; a fresh run still requires substantive human review.
 - Every operation uses a single-host durable lock. Signing reserves the wallet
   nonce before calling a provider; ambiguous, timed-out or quarantined jobs keep
   that reservation. Do not delete lock files or release a nonce blindly.

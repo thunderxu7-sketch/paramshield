@@ -62,8 +62,15 @@ redacted evidence, and post-execution Graph checks. Owned Anvil verified the
 three real contract lifecycle receipts, including LT 8000 → 7942 and version 7
 → 8. This is **not** public Sepolia execution or a human-review certificate.
 
-**Still gated:** operator test gas, actual human review/authority signatures,
-first full Privy-controlled Sepolia execution, the subsequent live indexed-event
+The operator's
+[0.01 Sepolia ETH funding](docs/evidence/operator-gas-2026-09-09.json) is now
+receipt-verified; do not repeat that transfer. A rejected review exposed a
+[MetaMask EIP-712 serialization defect](docs/evidence/review-rejection-2026-09-09.md),
+now corrected and covered by independent codec regression tests. A real human
+review is still pending; wallet signing alone was not accepted as approval.
+
+**Still gated:** actual human review/authority signatures, first full
+Privy-controlled Sepolia execution, the subsequent live indexed-event
 demonstration, runtime AI provider verification, public hosting and demo video.
 The operator remains under verified wildcard DENY. The optional AI evidence
 selector is implemented but no runtime model/key is configured; the UI labels

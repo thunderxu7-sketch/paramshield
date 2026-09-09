@@ -95,7 +95,11 @@ certificate, runtime AI demonstration or public deployment.
 
 ## Not completed
 
-- Dedicated operator test gas and actual human EIP-712 review.
+- Actual human EIP-712 review. The earlier pending gas request above was later
+  [receipt-verified](operator-gas-2026-09-09.json) at block 11665366; no repeat
+  transfer is needed. See the subsequent
+  [review compatibility and diagnostics record](review-rejection-2026-09-09.md)
+  for the rejected review and additional regression checks.
 - Operator-specific live Privy policy activation/signing, independent authority
   transaction, public Sepolia propose/decision/execute receipt verification, and
   resulting new Graph events changing analysis.

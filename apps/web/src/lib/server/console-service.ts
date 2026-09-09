@@ -8,7 +8,11 @@ import {
   CreExecutionRunner,
   type CreExecutionRun,
 } from "./cre-execution-runner";
-import { SignedReviewStore, reviewTypedData } from "./review-store";
+import {
+  SignedReviewStore,
+  reviewTypedData,
+  ReviewValidationError,
+} from "./review-store";
 import { OperatorControl } from "./operator-control";
 import {
   DurableSigningService,
@@ -42,6 +46,17 @@ type Flow = {
 };
 export function safeConsoleError(error: unknown): string {
   const text = error instanceof Error ? error.message : "";
+  if (error instanceof ReviewValidationError) {
+    if (error.code === "REVIEW_SIGNER_MISMATCH")
+      return "审核签名未匹配指定钱包或本次签名内容；未批准，不是数据倒计时到期。";
+    if (error.code === "REVIEW_TIME_IN_FUTURE")
+      return "审核时间晚于服务器时间；未批准，请核查时钟，不要重复签名。";
+    return "审核签名绑定的意图已过期；请重新分析并重新审核。";
+  }
+  if (text === "Stale or future snapshot")
+    return "数据新鲜度校验未通过（时间、区块距离或区块顺序）；页面倒计时不代表完整授权。";
+  if (text === "Expired intent or stale RPC state")
+    return "意图有效期或实时 RPC 区块时间校验未通过；未批准，请检查审核记录。";
   if (/stale|expired|future snapshot/i.test(text))
     return "数据或审核已过期；请重新分析并重新审核，不复用旧签名。";
   if (/balance|gas budget/i.test(text))
@@ -156,6 +171,55 @@ export class ConsoleService {
     });
     await this.save(f);
   }
+  private async recordReviewAttempt(
+    f: Flow,
+    phase: "prepare" | "submit",
+    startedAt: number,
+    outcome: "ISSUED" | "ACCEPTED" | "REJECTED",
+    error?: unknown,
+  ) {
+    const completedAt = this.c.now();
+    const text = error instanceof Error ? error.message : "";
+    // Only fixed reason codes and sanitized text go into the user-facing log.
+    // Never persist rejected signatures, provider payloads or credentials here.
+    const code =
+      error instanceof ReviewValidationError
+        ? error.code
+        : text === "Stale or future snapshot"
+          ? "SNAPSHOT_FRESHNESS"
+          : text === "Expired intent or stale RPC state"
+            ? "RPC_OR_INTENT_FRESHNESS"
+            : text === "Untrusted or expired workflow result binding"
+              ? "CRE_RESULT_BINDING"
+              : outcome === "REJECTED"
+                ? "REVIEW_CHECK_FAILED"
+                : outcome;
+    const message =
+      outcome === "REJECTED"
+        ? safeConsoleError(error)
+        : outcome === "ISSUED"
+          ? "已生成本次审核内容，尚未收到有效审核签名。"
+          : "指定审核人的签名已验证并绑定本次证据。";
+    f.view.lastReviewAttempt = {
+      phase,
+      outcome,
+      startedAt,
+      completedAt,
+      ...(f.approvedAt === undefined ? {} : { issuedAt: f.approvedAt }),
+      secondsRemaining:
+        f.view.freshUntil === undefined
+          ? null
+          : f.view.freshUntil - completedAt,
+      code,
+      message,
+    };
+    if (outcome === "REJECTED") f.view.error = message;
+    else delete f.view.error;
+    await this.event(
+      f,
+      `${phase === "prepare" ? "审核内容准备" : "审核签名核验"}：${message}`,
+    );
+  }
   async status(): Promise<ConsoleStatus> {
     const [policy, balance, live] = await Promise.all([
       this.control.assertPolicy(),
@@ -253,18 +317,31 @@ export class ConsoleService {
   async reviewPayload(id: string) {
     return this.disk.exclusive("operation", async () => {
       const f = await this.flow(id);
-      if (f.view.stage !== "ALLOW")
-        throw new Error("Review is unavailable at this stage");
-      const b = await checkLifecycle(
-        this.run(f),
-        this.c,
-        this.reviews,
-        0,
-        false,
-      );
-      f.approvedAt ??= this.c.now();
-      const typed = reviewTypedData(b.preflight, b.decision, f.approvedAt);
-      await this.save(f);
+      const startedAt = this.c.now();
+      let typed: ReturnType<typeof reviewTypedData>;
+      try {
+        if (f.view.stage !== "ALLOW")
+          throw new Error("Review is unavailable at this stage");
+        const b = await checkLifecycle(
+          this.run(f),
+          this.c,
+          this.reviews,
+          0,
+          false,
+        );
+        f.approvedAt ??= this.c.now();
+        typed = reviewTypedData(b.preflight, b.decision, f.approvedAt);
+      } catch (error) {
+        await this.recordReviewAttempt(
+          f,
+          "prepare",
+          startedAt,
+          "REJECTED",
+          error,
+        );
+        throw error;
+      }
+      await this.recordReviewAttempt(f, "prepare", startedAt, "ISSUED");
       return {
         reviewer: this.reviewer,
         typedData: JSON.parse(
@@ -278,23 +355,35 @@ export class ConsoleService {
   async approve(id: string, signature: Hex) {
     return this.disk.exclusive("operation", async () => {
       const f = await this.flow(id);
-      if (f.view.stage !== "ALLOW" || f.approvedAt === undefined)
-        throw new Error("Issued review required");
-      const b = await checkLifecycle(
-        this.run(f),
-        this.c,
-        this.reviews,
-        0,
-        false,
-      );
-      await this.reviews.record(
-        b.preflight,
-        b.decision,
-        f.approvedAt,
-        signature,
-      );
+      const startedAt = this.c.now();
+      try {
+        if (f.view.stage !== "ALLOW" || f.approvedAt === undefined)
+          throw new Error("Issued review required");
+        const b = await checkLifecycle(
+          this.run(f),
+          this.c,
+          this.reviews,
+          0,
+          false,
+        );
+        await this.reviews.record(
+          b.preflight,
+          b.decision,
+          f.approvedAt,
+          signature,
+        );
+      } catch (error) {
+        await this.recordReviewAttempt(
+          f,
+          "submit",
+          startedAt,
+          "REJECTED",
+          error,
+        );
+        throw error;
+      }
       f.view.stage = "REVIEWED";
-      await this.event(f, "指定审核人 EIP-712 签名已恢复并绑定本次证据");
+      await this.recordReviewAttempt(f, "submit", startedAt, "ACCEPTED");
       return f.view;
     });
   }
