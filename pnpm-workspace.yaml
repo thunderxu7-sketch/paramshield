@@ -8,3 +8,8 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - sharp
+
+# CRE SDK pins viem 2.34.0, whose ws pin predates both 2026 security fixes.
+# Keep the SDK/viem APIs unchanged; override only this transitive patch line.
+overrides:
+  "viem@2.34.0>ws": 8.21.0
