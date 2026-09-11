@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "paramshield.local-rehearsal-summary.v1",
+  "checkedAt": "2026-09-10T14:54:13.289Z",
+  "localOnly": true,
+  "expectedRuns": 3,
+  "completedRuns": 3,
+  "liveAcceptance": false,
+  "publicSepolia": false,
+  "hostedGraph": false,
+  "privyUsed": false,
+  "humanReview": false,
+  "hardwareTeeAttested": false,
+  "resetMode": "new owned Anvil process and deployment per run; no existing state reset",
+  "sourceFileCount": 180,
+  "sourceManifestSha256": "31c31f847599e51c49fe6a8669de138f0e82ba9b5dd7462b44ea23d1acc1e7d4",
+  "lockfileSha256": "7b82fe94f9e2c2cc01f705a208473f893fc78f494395c1cb6e1fbd05f8763c76",
+  "protectedRecordCount": 154,
+  "protectedRecordsUnchanged": true,
+  "unitAndContractTests": {
+    "web": 256,
+    "shared": 8,
+    "riskEngine": 17,
+    "evidence": 9,
+    "graphClient": 22,
+    "cre": 14,
+    "contracts": 32,
+    "total": 358
+  },
+  "productionDependencyAdvisories": 0,
+  "results": [
+    {
+      "run": 1,
+      "baseline": {
+        "liquidationThresholdBps": 8000,
+        "stateVersion": "7",
+        "authorizationEpoch": "1"
+      },
+      "blockedRunId": "46cf1f1d-4615-44d2-af65-205e7ee4ccde",
+      "allowRunId": "d1356b72-9a67-44b9-be38-b030be921282",
+      "unsafeThresholdBps": 7000,
+      "recommendedValueBps": 7942,
+      "finalLTBps": 7942,
+      "finalStateVersion": "8",
+      "receipts": {
+        "propose": {
+          "transactionHash": "0xe672fc7194041d4512fe7a39605d90a8c318e539bf562980735b31720f6bc165",
+          "blockNumber": "14",
+          "blockHash": "0x1c8125c3dabd8edafea369648fefbd15dea074a27cebd1a4b09ae124f8763f63",
+          "stateVersion": "7",
+          "liquidationThresholdBps": 8000
+        },
+        "decision": {
+          "transactionHash": "0x15395d17430972d2d05efe1f240bd517deabaa07bdefed888e2fbfdf3350f503",
+          "blockNumber": "17",
+          "blockHash": "0x3deba19bc5e84cacdee890d53ddb53bebac84106f381b0bfba1dfdf48d55b281",
+          "stateVersion": "7",
+          "liquidationThresholdBps": 8000
+        },
+        "execute": {
+          "transactionHash": "0xae898e901e81f42b8b154f12520697d61d0f394327e96ca87d10cf15ea720dba",
+          "blockNumber": "20",
+          "blockHash": "0xb4f0b5b74b001c300edb14d20eee98b57de01e452f1f4a66f705a8e7acd21f8d",
+          "stateVersion": "8",
+          "liquidationThresholdBps": 7942
+        }
+      },
+      "actualCreCli": true,
+      "epochRaceBlocked": true,
+      "replayBlocked": true,
+      "restartRecoveryVerified": true,
+      "duplicateBroadcasts": 0
+    },
+    {
+      "run": 2,
+      "baseline": {
+        "liquidationThresholdBps": 8000,
+        "stateVersion": "7",
+        "authorizationEpoch": "1"
+      },
+      "blockedRunId": "ea64fe98-c8f9-4519-9a2f-6cb467a1c2f2",
+      "allowRunId": "3913142a-2f75-465b-9c97-1ab8b2aa6056",
+      "unsafeThresholdBps": 7000,
+      "recommendedValueBps": 7942,
+      "finalLTBps": 7942,
+      "finalStateVersion": "8",
+      "receipts": {
+        "propose": {
+          "transactionHash": "0xbfb2687f85fd08d70c26cdab9f0720ff3eae1e11071379aa3f60fee77a91a716",
+          "blockNumber": "10",
+          "blockHash": "0x8afad26fe8c4858501577271bc83435a35516e1516e016eed3d62d7c8dedfb6c",
+          "stateVersion": "7",
+          "liquidationThresholdBps": 8000
+        },
+        "decision": {
+          "transactionHash": "0x837bf772a2a8de49c028cba2fc17d72b78d8b5d7d047354a60290153d36ba99c",
+          "blockNumber": "13",
+          "blockHash": "0x436c13bba560c0b9715834cd780fe89cc9f54e96353f198c54ecd13128985b70",
+          "stateVersion": "7",
+          "liquidationThresholdBps": 8000
+        },
+        "execute": {
+          "transactionHash": "0x41247f73b86a9ea0c06a3d04e2da370dd8d17ff5d5d5a7aa5fd48af142c7f89d",
+          "blockNumber": "16",
+          "blockHash": "0xa189d82b294c0a9f90228bed9a81d604c7b062efe189b801667eab191b6324ec",
+          "stateVersion": "8",
+          "liquidationThresholdBps": 7942
+        }
+      },
+      "actualCreCli": true,
+      "epochRaceBlocked": true,
+      "replayBlocked": true,
+      "restartRecoveryVerified": true,
+      "duplicateBroadcasts": 0
+    },
+    {
+      "run": 3,
+      "baseline": {
+        "liquidationThresholdBps": 8000,
+        "stateVersion": "7",
+        "authorizationEpoch": "1"
+      },
+      "blockedRunId": "ea43d775-7ca5-4c27-9150-edb12187d1e3",
+      "allowRunId": "dc7c0dfd-12ef-44bf-b3ae-57fc850cc559",
+      "unsafeThresholdBps": 7000,
+      "recommendedValueBps": 7942,
+      "finalLTBps": 7942,
+      "finalStateVersion": "8",
+      "receipts": {
+        "propose": {
+          "transactionHash": "0xf66c094168b6085505972a700cc907b8761ea39b8ee0ad93650fdbdfdcb3b564",
+          "blockNumber": "9",
+          "blockHash": "0x8478bcb100cdba628fa5c4f8a8f23adcc9b69beb830b033f2493e7f8e866262f",
+          "stateVersion": "7",
+          "liquidationThresholdBps": 8000
+        },
+        "decision": {
+          "transactionHash": "0xd78b0499826a70d482fc20f2afc5236dc694da0ab74c37d0abebdc2200b36f92",
+          "blockNumber": "12",
+          "blockHash": "0x42878eb28f929a5143164471ba3caa2efa562b1840dab1ea90c319545429e094",
+          "stateVersion": "7",
+          "liquidationThresholdBps": 8000
+        },
+        "execute": {
+          "transactionHash": "0x0a5c35e07288506d54e2da0d90708455fa1073607be9fa4d052e486a72d2445b",
+          "blockNumber": "15",
+          "blockHash": "0x85b3f81c3576a30bc2fd7a55e607dafa2e343a9c1a7331f751e64cde7847d04e",
+          "stateVersion": "8",
+          "liquidationThresholdBps": 7942
+        }
+      },
+      "actualCreCli": true,
+      "epochRaceBlocked": true,
+      "replayBlocked": true,
+      "restartRecoveryVerified": true,
+      "duplicateBroadcasts": 0
+    }
+  ]
+}
