@@ -110,4 +110,14 @@ describe("local console boundary", () => {
       "12345678",
     );
   });
+  it("requires the same authentication for the local-only journal query", () => {
+    const get = request({}, "GET");
+    get.headers.delete("origin");
+    const journal = new Request(`${origin}/api/console?view=journal`, {
+      headers: get.headers,
+    });
+    expect(() => authenticateConsole(journal, env)).not.toThrow();
+    journal.headers.delete("authorization");
+    expect(() => authenticateConsole(journal, env)).toThrow();
+  });
 });

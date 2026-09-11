@@ -1,3 +1,5 @@
+import { createAnalysisReport } from "./analysis-report";
+import { MinedTransactionValidationError } from "./decision-7702";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { toHex, type Address, type Hex } from "viem";
@@ -31,21 +33,57 @@ import {
 } from "./lifecycle-preflight";
 import { verifyLifecycleReceipt } from "./lifecycle-receipt";
 import { prepareRelaySigning } from "./execution-relay";
-import type { ConsoleStatus, FlowView } from "../console-types";
+import type { ConsoleJournal, ConsoleStatus, FlowView } from "../console-types";
 import { explainEvidence } from "./evidence-explanation";
 import { readGraphV2State } from "./graph-v2-state";
 import { simulate } from "@paramshield/risk-engine";
+import {
+  AUTHORIZATION_MODE,
+  authorizationTypedData,
+} from "./authorization-scope";
+import { ScopedReviewStore } from "./scoped-review-store";
+import {
+  bindScopedRun,
+  checkScopedAuthorization,
+  isScopedRun,
+  type FreshCheckpoint,
+} from "./scoped-authorization";
+import { authorizationDeadline, unfinishedTransaction } from "../console-state";
 
 type Flow = {
   view: FlowView;
   run?: CreExecutionRun;
   bound?: BoundRun;
   approvedAt?: number;
+  freshnessChecks?: FreshCheckpoint[];
   plans: Partial<Record<"propose" | "decision" | "execute", SigningPlan>>;
   hashes: Partial<Record<"propose" | "decision" | "execute", Hex>>;
 };
 export function safeConsoleError(error: unknown): string {
   const text = error instanceof Error ? error.message : "";
+  if (
+    /Scoped market state changed|Scoped live state, permissions or proposal changed/.test(
+      text,
+    )
+  )
+    return "市场数据或权限已变化；本次授权不再适用。已完成的交易保留，必须重新分析和审核，不能只刷新时间戳。";
+  if (/Scoped authorization expired/.test(text))
+    return "本次精确授权已到期，不能续期或复用签名。请核对已有交易，再创建新的分析。";
+  if (/Scoped runner capability/.test(text))
+    return "当前策略或可信运行能力不匹配；旧审核不会自动升级为新授权。";
+  if (/unfinished flow|Unknown transaction|Retirement requires/.test(text))
+    return "先核对已有交易。仅已确认且链上意图已到期的提案可以结束；未知钱包请求不能跳过。";
+  if (
+    /historical state.+not available|missing trie node|state.+pruned/is.test(
+      text,
+    )
+  )
+    return "RPC 不提供该回执区块的历史状态，暂不能完成重新核验。原交易和已保存进度仍保留；需要支持历史状态的 RPC，不要重发。";
+  if (
+    error instanceof MinedTransactionValidationError ||
+    /^(Mined|Signed) transaction does not match reviewed plan$/.test(text)
+  )
+    return "钱包交易格式或执行内容与已审阅计划不匹配，暂不能完成回执核验。这不代表审核签名无效或链上交易失败；保留已有哈希，只读核对，不要重签或重发。";
   if (error instanceof ReviewValidationError) {
     if (error.code === "REVIEW_SIGNER_MISMATCH")
       return "审核签名未匹配指定钱包或本次签名内容；未批准，不是数据倒计时到期。";
@@ -80,6 +118,7 @@ export class ConsoleService {
   readonly disk: DurableStore;
   readonly signing: DurableSigningService;
   readonly broadcast: DurableBroadcastService;
+  readonly scopedReviews: ScopedReviewStore;
   readonly flows = new Map<string, Flow>();
   private constructor(
     readonly root: string,
@@ -90,6 +129,11 @@ export class ConsoleService {
     readonly reviewer: Address,
   ) {
     this.disk = new DurableStore(join(root, ".local/console/flows"));
+    this.scopedReviews = new ScopedReviewStore(
+      new DurableStore(join(root, ".local/console/scoped-reviews")),
+      [reviewer],
+      c.now,
+    );
     this.signing = new DurableSigningService(
       new DurableStore(join(root, ".local/console/signing")),
       c.now,
@@ -137,10 +181,14 @@ export class ConsoleService {
   }
   private async save(f: Flow) {
     // Do not serialize an owned-run object as a future authorization capability.
+    f.view.revision = (f.view.revision ?? 0) + 1;
+    f.view.updatedAt = this.c.now();
+    this.projectTransactions(f);
     await this.disk.write(`flow-${f.view.id}`, {
       view: f.view,
       bound: f.bound,
       approvedAt: f.approvedAt,
+      ...(f.freshnessChecks ? { freshnessChecks: f.freshnessChecks } : {}),
       plans: f.plans,
       hashes: f.hashes,
     });
@@ -156,12 +204,52 @@ export class ConsoleService {
     const stored = (await this.disk.read(`flow-${id}`)) as Flow | null;
     if (!stored) throw new Error("Unknown flow");
     stored.view.active = false;
+    this.projectTransactions(stored);
     return stored;
   }
+  private projectTransactions(f: Flow) {
+    // Public hashes only. Never expose plans, raw transactions or signatures.
+    f.view.transactions = { ...f.hashes };
+    f.view.preparedLegs = Object.keys(f.plans) as (keyof Flow["plans"])[];
+  }
   private run(f: Flow) {
-    if (!f.run || !f.view.active)
+    if (!f.run || !f.view.active || f.view.retired)
       throw new Error("Restarted or expired flow; fresh analysis required");
     return f.run;
+  }
+  private async check(f: Flow, expectedState: 0 | 1 | 2, requireReview = true) {
+    const run = this.run(f);
+    if (!isScopedRun(run)) {
+      if (expectedState === 2)
+        throw new Error("Legacy execution uses its original gate");
+      return checkLifecycle(
+        run,
+        this.c,
+        this.reviews,
+        expectedState,
+        requireReview,
+      );
+    }
+    const { bound, checkpoint } = await checkScopedAuthorization(
+      run,
+      this.c,
+      this.scopedReviews,
+      expectedState,
+      requireReview,
+    );
+    f.freshnessChecks ??= [];
+    f.freshnessChecks.push(checkpoint);
+    f.view.lastFreshCheck = {
+      checkedAt: checkpoint.checkedAt,
+      freshUntil: checkpoint.freshUntil,
+      blockNumber: checkpoint.snapshotBlock.number,
+    };
+    await this.save(f);
+    if (this.c.now() >= checkpoint.freshUntil)
+      throw new Error(
+        "Fresh checkpoint expired while persisting; no signing allowed",
+      );
+    return bound;
   }
   private async event(f: Flow, label: string, hash?: Hex) {
     f.view.timeline.push({
@@ -207,9 +295,9 @@ export class ConsoleService {
       completedAt,
       ...(f.approvedAt === undefined ? {} : { issuedAt: f.approvedAt }),
       secondsRemaining:
-        f.view.freshUntil === undefined
+        authorizationDeadline(f.view) === undefined
           ? null
-          : f.view.freshUntil - completedAt,
+          : authorizationDeadline(f.view)! - completedAt,
       code,
       message,
     };
@@ -220,18 +308,18 @@ export class ConsoleService {
       `${phase === "prepare" ? "审核内容准备" : "审核签名核验"}：${message}`,
     );
   }
-  async status(): Promise<ConsoleStatus> {
-    const [policy, balance, live] = await Promise.all([
-      this.control.assertPolicy(),
-      this.c.client.getBalance({
-        address: this.c.target.operator,
-        blockTag: "pending",
-      }),
-      this.c.live(),
-    ]);
+  async journal(): Promise<ConsoleJournal> {
+    // Recovery must not depend on Privy/RPC availability. Read committed disk
+    // records, not a mutable in-flight view that may not have been saved yet.
     const ids = ((await this.disk.read("index")) as string[] | null) ?? [];
     const history = await Promise.all(
-      ids.map(async (id) => (await this.flow(id)).view),
+      ids.map(async (id) => {
+        const stored = (await this.disk.read(`flow-${id}`)) as Flow | null;
+        if (!stored) throw new Error("Missing durable history record");
+        stored.view.active = Boolean(this.flows.get(id)?.view.active);
+        this.projectTransactions(stored);
+        return stored.view;
+      }),
     );
     return {
       chainId: 11155111,
@@ -241,15 +329,31 @@ export class ConsoleService {
       authority: this.c.target.decisionAuthority,
       reviewer: this.reviewer,
       admin: this.admin,
-      operatorBalanceWei: balance.toString(),
-      locked: policy.locked,
       graphDeployment: this.c.graphDeployment,
       aiConfigured: Boolean(
-        process.env.OPENAI_API_KEY && process.env.PARAMSHIELD_EXPLANATION_MODEL,
+        process.env.OPENAI_API_KEY?.trim() &&
+        process.env.PARAMSHIELD_EXPLANATION_MODEL?.trim(),
       ),
+      readAt: this.c.now(),
+      history,
+    };
+  }
+  async status(): Promise<ConsoleStatus> {
+    const [policy, balance, live] = await Promise.all([
+      this.control.assertPolicy(),
+      this.c.client.getBalance({
+        address: this.c.target.operator,
+        blockTag: "pending",
+      }),
+      this.c.live(),
+    ]);
+    return {
+      ...(await this.journal()),
+      checkedAt: this.c.now(),
+      operatorBalanceWei: balance.toString(),
+      locked: policy.locked,
       stateVersion: live.stateVersion,
       authorizationEpoch: live.authorizationEpoch,
-      history,
     };
   }
   async analyze(id: string, threshold: number) {
@@ -262,6 +366,13 @@ export class ConsoleService {
           throw new Error("Analysis request ID binding mismatch");
         return existing;
       }
+      // Browser-side disabling is not authority. Do not orphan an outstanding
+      // chain action by creating another flow through a direct API request.
+      const journal = await this.journal();
+      if (journal.history.some(unfinishedTransaction))
+        throw new Error(
+          "Existing unfinished flow must be recovered or retired first",
+        );
       const f: Flow = {
         view: {
           id,
@@ -277,11 +388,14 @@ export class ConsoleService {
       this.flows.set(id, f);
       await this.event(f, "读取独立 v2 Graph，并在同一区块与 RPC 核对");
       try {
-        f.run = await new CreExecutionRunner(this.root, this.c.now).run(() =>
-          this.c.preflight(
-            threshold,
-            "ParamShield local console: reviewed LT decrease",
-          ),
+        f.run = await new CreExecutionRunner(this.root, this.c.now).run(
+          () =>
+            this.c.preflight(
+              threshold,
+              "ParamShield local console: reviewed LT decrease",
+              AUTHORIZATION_MODE,
+            ),
+          { authorizationMode: AUTHORIZATION_MODE },
         );
         f.bound = bindRun(f.run, this.c);
         const b = f.bound;
@@ -302,6 +416,16 @@ export class ConsoleService {
           expectedStateVersion: b.intent.expectedStateVersion,
           authorizationEpoch: b.intent.expectedAuthorizationEpoch,
         });
+        if (b.decision.verdict === "ALLOW") {
+          const { scope } = bindScopedRun(f.run, this.c);
+          f.view.authorization = {
+            mode: scope.mode,
+            expiresAt: scope.expiresAt,
+            scopeHash: scope.scopeHash,
+            marketStateHash: scope.marketStateHash,
+            policyHash: scope.policyHash,
+          };
+        }
         await this.event(
           f,
           `实际 CRE CLI：${b.decision.verdict}；无硬件 TEE 声明`,
@@ -318,19 +442,22 @@ export class ConsoleService {
     return this.disk.exclusive("operation", async () => {
       const f = await this.flow(id);
       const startedAt = this.c.now();
-      let typed: ReturnType<typeof reviewTypedData>;
+      let typed:
+        | ReturnType<typeof reviewTypedData>
+        | ReturnType<typeof authorizationTypedData>;
       try {
         if (f.view.stage !== "ALLOW")
           throw new Error("Review is unavailable at this stage");
-        const b = await checkLifecycle(
-          this.run(f),
-          this.c,
-          this.reviews,
-          0,
-          false,
-        );
+        const b = await this.check(f, 0, false);
         f.approvedAt ??= this.c.now();
-        typed = reviewTypedData(b.preflight, b.decision, f.approvedAt);
+        typed = isScopedRun(this.run(f))
+          ? authorizationTypedData(
+              b.preflight,
+              b.decision,
+              bindScopedRun(this.run(f), this.c).scope.policyHash,
+              f.approvedAt,
+            )
+          : reviewTypedData(b.preflight, b.decision, f.approvedAt);
       } catch (error) {
         await this.recordReviewAttempt(
           f,
@@ -359,19 +486,23 @@ export class ConsoleService {
       try {
         if (f.view.stage !== "ALLOW" || f.approvedAt === undefined)
           throw new Error("Issued review required");
-        const b = await checkLifecycle(
-          this.run(f),
-          this.c,
-          this.reviews,
-          0,
-          false,
-        );
-        await this.reviews.record(
-          b.preflight,
-          b.decision,
-          f.approvedAt,
-          signature,
-        );
+        const b = await this.check(f, 0, false);
+        if (isScopedRun(this.run(f))) {
+          await this.scopedReviews.record(
+            b.preflight,
+            b.decision,
+            bindScopedRun(this.run(f), this.c).scope.policyHash,
+            f.approvedAt,
+            signature,
+          );
+          await this.check(f, 0);
+        } else
+          await this.reviews.record(
+            b.preflight,
+            b.decision,
+            f.approvedAt,
+            signature,
+          );
       } catch (error) {
         await this.recordReviewAttempt(
           f,
@@ -391,8 +522,7 @@ export class ConsoleService {
     return this.operation(id, async (f) => {
       if (f.view.stage !== "REVIEWED")
         throw new Error("Matching human review required before proposal");
-      const run = this.run(f),
-        check = () => checkLifecycle(run, this.c, this.reviews, 0);
+      const check = () => this.check(f, 0);
       const b = await check();
       const ready = await prepareLifecyclePlan({
         client: this.c.client,
@@ -411,8 +541,7 @@ export class ConsoleService {
   async decisionPayload(id: string) {
     return this.disk.exclusive("operation", async () => {
       const f = await this.flow(id),
-        run = this.run(f),
-        check = () => checkLifecycle(run, this.c, this.reviews, 1);
+        check = () => this.check(f, 1);
       if (!["PROPOSED", "DECISION_READY"].includes(f.view.stage))
         throw new Error("Confirmed proposal required");
       const b = await check();
@@ -480,13 +609,23 @@ export class ConsoleService {
     return this.operation(id, async (f) => {
       if (f.view.stage !== "DECIDED")
         throw new Error("Confirmed on-chain decision required");
-      const ready = await prepareRelaySigning({
-        run: this.run(f),
-        client: this.c.client,
-        target: this.c.target,
-        approvals: this.reviews,
-        now: this.c.now,
-      });
+      const run = this.run(f);
+      const ready = isScopedRun(run)
+        ? await prepareLifecyclePlan({
+            client: this.c.client,
+            from: this.c.target.operator,
+            to: this.c.target.executor,
+            data: lifecycleData(await this.check(f, 2), "execute"),
+            expiresAt: f.bound!.intent.expiresAt,
+            revalidate: () => this.check(f, 2),
+          })
+        : await prepareRelaySigning({
+            run,
+            client: this.c.client,
+            target: this.c.target,
+            approvals: this.reviews,
+            now: this.c.now,
+          });
       f.plans.execute = ready.plan;
       f.view.stage = "EXECUTING";
       await this.event(
@@ -601,6 +740,14 @@ export class ConsoleService {
         confirmationsChecked: 2,
         finalityClaimed: false,
         source: "canonical RPC receipt + receipt-block reads",
+        ...(f.view.authorization
+          ? {
+              scopedAuthorization: f.view.authorization,
+              freshnessChecks: f.freshnessChecks ?? [],
+              renewalRule:
+                "New observations of exactly the reviewed state; original evidence and signatures unchanged",
+            }
+          : {}),
       };
       // This is a separately hashed redacted proof, not the original bundle hash.
       f.view.proof = { proof, publicProofHash: hashCanonical(proof) };
@@ -609,15 +756,15 @@ export class ConsoleService {
     delete f.view.error;
     await this.event(
       f,
-      `${leg}：两次确认、完整交易字段、合约事件和同区块回读全部核对`,
+      `${leg}：两次确认、交易意图与钱包格式、合约事件和同区块回读全部核对`,
       hash,
     );
   }
   async recover(id: string, leg: "propose" | "decision" | "execute") {
     return this.operation(id, async (f) => {
       const stages = {
-        propose: ["PROPOSING"],
-        decision: ["DECISION_READY", "DECISION_PENDING"],
+        propose: ["PROPOSING", "PROPOSED"],
+        decision: ["DECISION_READY", "DECISION_PENDING", "DECIDED"],
         execute: ["EXECUTING"],
       };
       if (!stages[leg].includes(f.view.stage))
@@ -634,8 +781,66 @@ export class ConsoleService {
           "No recorded transaction; inspect signing/policy recovery manually",
         );
       // Read-only: never sign, resend, release a nonce, or rehydrate CRE trust.
+      // Only the matching current leg can be rechecked; an earlier leg must
+      // never downgrade a later confirmed stage.
+      f.hashes[leg] = hash;
       await this.confirm(f, leg, hash);
     });
+  }
+  async retireExpired(id: string) {
+    return this.operation(id, async (f) => {
+      if (f.view.retired) return; // Idempotent, no repeated network or writes.
+      // NEVER infer failure from a UI timer or from a missing hash. Issued or
+      // unknown wallet/signing jobs must first obtain a verified receipt.
+      if (!f.bound || !["PROPOSED", "DECIDED"].includes(f.view.stage))
+        throw new Error("Retirement requires a confirmed proposal or decision");
+      const leg = f.view.stage === "PROPOSED" ? "propose" : "decision";
+      if (
+        !f.hashes[leg] ||
+        !f.plans[leg] ||
+        (leg === "propose" && f.plans.decision) ||
+        f.plans.execute
+      )
+        throw new Error(
+          "Unknown transaction must be resolved before retirement",
+        );
+      await verifyLifecycleReceipt(
+        this.c.client,
+        f.plans[leg],
+        f.hashes[leg],
+        f.bound,
+        leg,
+      );
+      const live = await this.c.live(f.bound.changeHash);
+      if (
+        live.block.timestamp <= f.bound.intent.expiresAt ||
+        this.c.now() <= f.bound.intent.expiresAt ||
+        ![leg === "propose" ? 1 : 2, 6].includes(live.proposal.state) ||
+        (leg === "decision" &&
+          live.proposal.decisionHash !== f.bound.decisionHash) ||
+        live.block.hash !==
+          (await this.c.state.canonicalBlockHash(live.block.number))
+      )
+        throw new Error(
+          "Retirement requires canonical on-chain expiry and matching state",
+        );
+      f.view.retired = {
+        checkedAt: this.c.now(),
+        blockNumber: live.block.number,
+        blockTimestamp: live.block.timestamp,
+      };
+      f.view.active = false;
+      delete f.view.error;
+      await this.event(
+        f,
+        "只读核验：链上意图已到期，结束本机授权；保留提案、回执和全部证据，没有发送交易",
+      );
+    });
+  }
+  async analysisReport(id: string) {
+    const f = await this.flow(id);
+    if (!f.bound) throw new Error("Analysis evidence required");
+    return createAnalysisReport(f.bound);
   }
   async explain(id: string, question: string) {
     return this.disk.exclusive("operation", async () => {

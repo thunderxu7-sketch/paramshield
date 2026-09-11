@@ -16,7 +16,8 @@ import {
 } from "./execution-policy";
 
 /** Internal server plan. Never accept this object as an unauthenticated HTTP body.
- * Production plans come ONLY from prepareExecutionCall + live nonce/gas reads. */
+ * Production plans come ONLY from the legacy/scoped lifecycle preflight gates
+ * plus live nonce/gas reads. A stored/UI plan is never sufficient authority. */
 export interface SigningPlan {
   chainId: 11155111;
   from: Address;

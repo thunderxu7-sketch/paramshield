@@ -144,3 +144,58 @@ describe("indexed v2 controls and post-execution events", () => {
     );
   });
 });
+
+describe("R-11 Graph transport and evidence regressions", () => {
+  it("pins query variables and every RPC read to the same observation block", async () => {
+    const f = setup();
+    await readGraphV2State(f.c, f.snapshot, f.expected);
+    const [url, init] = f.fetcher.mock.calls[0] as unknown as [
+      string,
+      RequestInit,
+    ];
+    expect(url).toBe("https://graph.example.test/v2");
+    expect(init.redirect).toBe("error");
+    expect(JSON.parse(init.body as string).variables).toMatchObject({
+      blockHash: f.snapshot.block.hash,
+      tx: f.expected.transactionHash,
+      change: f.b.changeHash,
+    });
+    for (const [args] of vi.mocked(f.c.client.readContract).mock.calls)
+      expect(args).toMatchObject({
+        blockNumber: BigInt(f.snapshot.block.number),
+      });
+  });
+  it.each(["preflight", "decision", "eventMarket"])(
+    "rejects a different %s binding even when the transaction matches",
+    async (field) => {
+      const f = setup();
+      if (field === "preflight") f.data.change.preflightHash = hash("9");
+      if (field === "decision") f.data.change.decisionHash = hash("9");
+      if (field === "eventMarket")
+        f.data.marketEvents[0]!.market.id = `0x${"9".repeat(40)}`;
+      await expect(
+        readGraphV2State(f.c, f.snapshot, f.expected),
+      ).rejects.toThrow(/Graph v2 execution events/);
+    },
+  );
+  it("bounds provider output and propagates failure without a fixture fallback", async () => {
+    const f = setup();
+    f.fetcher.mockResolvedValue(new Response("x".repeat(64001)));
+    await expect(readGraphV2State(f.c, f.snapshot, f.expected)).rejects.toThrow(
+      /too large/,
+    );
+    f.fetcher.mockRejectedValue(new Error("timeout"));
+    await expect(readGraphV2State(f.c, f.snapshot, f.expected)).rejects.toThrow(
+      "timeout",
+    );
+    expect(f.c.client.readContract).not.toHaveBeenCalled();
+  });
+  it("rejects non-HTTPS endpoints before sending a request", async () => {
+    const f = setup();
+    vi.stubEnv("GRAPH_V2_QUERY_URL", "http://127.0.0.1/private");
+    await expect(readGraphV2State(f.c, f.snapshot, f.expected)).rejects.toThrow(
+      /hosted Graph required/,
+    );
+    expect(f.fetcher).not.toHaveBeenCalled();
+  });
+});

@@ -19,6 +19,9 @@ vi.mock("./lifecycle-preflight", async (original) => ({
   ...(await original<typeof import("./lifecycle-preflight")>()),
   checkLifecycle: lifecycle.check,
 }));
+// This suite exercises legacy diagnostics, not runner provenance. Scoped
+// authorization has a separate suite with explicit owned-run boundary tests.
+vi.mock("./scoped-authorization", () => ({ isScopedRun: () => false }));
 
 let root: string;
 beforeEach(async () => {

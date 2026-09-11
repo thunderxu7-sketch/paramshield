@@ -19,14 +19,35 @@ export type TimelineItem = {
   label: string;
   transactionHash?: string;
 };
+export type FlowLeg = "propose" | "decision" | "execute";
 export type FlowView = {
   id: string;
   stage: FlowStage;
   createdAt: number;
   active: boolean;
   proposedValueBps: number;
+  /** Monotonic durable revision; older journals predate this field. */
+  revision?: number;
+  updatedAt?: number;
+  transactions?: Partial<Record<FlowLeg, string>>;
+  preparedLegs?: FlowLeg[];
   expiresAt?: number;
   freshUntil?: number;
+  /** Absent means legacy snapshot-bound review. Never infer from expiry alone. */
+  authorization?: {
+    mode: "exact-state-v1";
+    expiresAt: number;
+    scopeHash: string;
+    marketStateHash: string;
+    policyHash: string;
+  };
+  lastFreshCheck?: {
+    checkedAt: number;
+    freshUntil: number;
+    blockNumber: number;
+  };
+  /** Explicit read-only retirement, only after canonical on-chain expiry. */
+  retired?: { checkedAt: number; blockNumber: number; blockTimestamp: number };
   snapshot?: MarketSnapshot;
   simulation?: Simulation;
   decision?: Verdict;
@@ -53,9 +74,19 @@ export type FlowView = {
     text: string;
     sources: string[];
     reason?: string;
+    question?: string;
+    generatedAt?: number;
+    model?: string;
+    promptVersion?: string;
+    evidence?: {
+      preflightHash: string;
+      decisionHash: string;
+      snapshotBlock: number;
+    };
+    citations?: { id: string; text: string; href: string }[];
   };
 };
-export type ConsoleStatus = {
+export type ConsoleJournal = {
   chainId: 11155111;
   market: string;
   executor: string;
@@ -63,11 +94,15 @@ export type ConsoleStatus = {
   authority: string;
   reviewer: string;
   admin: string;
-  operatorBalanceWei: string;
-  locked: boolean;
   graphDeployment: string;
   aiConfigured: boolean;
+  readAt: number;
+  history: FlowView[];
+};
+export type ConsoleStatus = ConsoleJournal & {
+  checkedAt: number;
+  operatorBalanceWei: string;
+  locked: boolean;
   stateVersion: string;
   authorizationEpoch: string;
-  history: FlowView[];
 };

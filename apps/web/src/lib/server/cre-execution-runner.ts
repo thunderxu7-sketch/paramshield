@@ -7,6 +7,7 @@ import { hashCanonical, verifyPreflight } from "@paramshield/evidence";
 import { validateExecutionResult } from "@paramshield/chainlink-cre/protocol";
 import { parseCreOutput, runBoundedProcess } from "../bounded-process";
 import { DurableStore } from "./durable-store";
+import { AUTHORIZATION_MODE } from "./authorization-scope";
 
 // Deliberately PUBLIC demo policy; local CLI simulation is not a hardware TEE.
 export const DEMO_POLICY = Object.freeze({
@@ -27,7 +28,13 @@ export type CreExecutionRun = Readonly<{
 }>;
 const ownedRuns = new WeakMap<
   CreExecutionRun,
-  { request: unknown; result: unknown }
+  {
+    request: unknown;
+    result: unknown;
+    acceptedAt: number;
+    policyHash: `0x${string}`;
+    authorizationMode?: typeof AUTHORIZATION_MODE;
+  }
 >();
 /** A browser-supplied result JSON cannot create this in-process runner capability.
  * Do not expose the factory/callback/CLI paths as request parameters. Restart
@@ -45,6 +52,7 @@ export class CreExecutionRunner {
   ) {}
   async run(
     buildFreshPreflight: () => Promise<unknown>,
+    authorizationOptions?: { authorizationMode: typeof AUTHORIZATION_MODE },
   ): Promise<CreExecutionRun> {
     const local = join(this.root, ".local/cre-execution"),
       disk = new DurableStore(local);
@@ -103,10 +111,14 @@ export class CreExecutionRunner {
         "apps/web/src/lib/server/execution-relay.ts",
         "apps/web/src/lib/server/rpc-adapter.ts",
         "apps/web/src/lib/server/review-store.ts",
+        "apps/web/src/lib/server/authorization-scope.ts",
+        "apps/web/src/lib/server/scoped-review-store.ts",
+        "apps/web/src/lib/server/scoped-authorization.ts",
         "apps/web/src/lib/server/transaction-signing.ts",
         "apps/web/src/lib/server/execution-policy.ts",
         "apps/web/src/lib/server/operator-control.ts",
         "apps/web/src/lib/server/transaction-broadcast.ts",
+        "apps/web/src/lib/server/decision-7702.ts",
         "apps/web/src/lib/server/lifecycle-preflight.ts",
         "apps/web/src/lib/server/lifecycle-receipt.ts",
         "apps/web/src/lib/server/v2-context.ts",
@@ -118,6 +130,7 @@ export class CreExecutionRunner {
         "apps/web/src/lib/execution-preflight.ts",
         "apps/web/src/lib/bounded-process.ts",
         "apps/web/scripts/relay-anvil-spike.ts",
+        "apps/web/scripts/scoped-authorization-anvil.ts",
         "pnpm-lock.yaml",
       ];
       const sourceHashes = Object.fromEntries(
@@ -212,10 +225,11 @@ export class CreExecutionRunner {
           { ...options, cwd: workflow, timeoutMs: 90_000 },
         );
         const result = parseCreOutput(output.stdout);
+        const acceptedAt = this.now();
         const bound = validateExecutionResult(result, request, {
           runId,
           policyVersion: DEMO_POLICY.version,
-          now: this.now(),
+          now: acceptedAt,
         });
         const run: CreExecutionRun = Object.freeze({
           runId,
@@ -233,7 +247,18 @@ export class CreExecutionRunner {
           sourceHashes,
           hardwareTeeAttested: false,
         });
-        ownedRuns.set(run, structuredClone({ request, result }));
+        ownedRuns.set(
+          run,
+          structuredClone({
+            request,
+            result,
+            acceptedAt,
+            policyHash: hashCanonical(DEMO_POLICY),
+            ...(authorizationOptions?.authorizationMode === AUTHORIZATION_MODE
+              ? { authorizationMode: AUTHORIZATION_MODE }
+              : {}),
+          }),
+        );
         return run;
       } catch {
         await disk.write(`run-${runId}`, {

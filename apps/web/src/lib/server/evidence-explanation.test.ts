@@ -83,3 +83,48 @@ describe("grounded explanation", () => {
     expect(JSON.stringify(result)).not.toContain("secret");
   });
 });
+
+describe("source-bound explanation metadata", () => {
+  it("binds the exact question, version and citation text to original evidence without claiming a model call on fallback", async () => {
+    const b = executionFixture().bound;
+    const result = await explainEvidence(b, "  风险来源？  ");
+    expect(result.question).toBe("风险来源？");
+    expect(result.promptVersion).toBe("evidence-selector-v2");
+    expect(result.model).toBeUndefined();
+    expect(result.evidence).toEqual({
+      preflightHash: b.preflightHash,
+      decisionHash: b.decisionHash,
+      snapshotBlock: b.preflight.snapshot.block.number,
+    });
+    for (const citation of result.citations!) {
+      expect(citation.text).toBe(
+        explanationFacts(b)[
+          citation.id as keyof ReturnType<typeof explanationFacts>
+        ],
+      );
+      expect(citation.href).toBe(`#source-${citation.id}`);
+    }
+  });
+  it("treats whitespace-only provider config as unavailable and never calls a provider", async () => {
+    const fetcher = vi.fn();
+    const result = await explainEvidence(executionFixture().bound, "解释", {
+      key: "  ",
+      model: "test",
+      fetcher,
+    });
+    expect(result.mode).toBe("deterministic-fallback");
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+  it("rejects an oversized response without exposing provider output", async () => {
+    const fetcher = vi.fn(
+      async () => new Response("x".repeat(128001), { status: 200 }),
+    );
+    const result = await explainEvidence(executionFixture().bound, "解释", {
+      key: "test",
+      model: "test",
+      fetcher,
+    });
+    expect(result.mode).toBe("deterministic-fallback");
+    expect(result.text).not.toContain("xxx");
+  });
+});

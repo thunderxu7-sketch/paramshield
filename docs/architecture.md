@@ -1,5 +1,9 @@
 # ParamShield Architecture
 
+> Authorization update (2026-09-09): new console flows use the bounded
+> [exact-state grant and fresh-observation design](decisions/0002-exact-state-authorization.md).
+> Legacy snapshot-bound approvals keep their original semantics.
+
 **Revision:** 2026-09-07. See
 [ADR 0001](decisions/0001-risk-and-execution-boundaries.md) and
 [implementation status](implementation-plan.md); this describes the target.

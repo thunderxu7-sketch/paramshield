@@ -39,6 +39,14 @@ configuration disables the API; it never silently substitutes demo accounts.
 
 ## Ordered workflow
 
+The console first restores the local durable journal independently of live
+Privy/RPC checks. A slow or unavailable provider must not erase history or reset
+the selected run to READY. Selection, draft and pending-request metadata survive
+reload; credentials remain in sessionStorage and signatures/raw transactions are
+never browser recovery data. Wallet account/network changes update passively.
+Only the current next action is shown; completed steps remain completed even
+when their evidence can no longer authorize another step.
+
 1. **Prepare gas.** Read the operator balance/policy. If needed, the console
    prepares a 0.01 Sepolia ETH funding transfer from the approved admin. Review
    the destination and network in MetaMask. This is test gas, not a role grant,
@@ -51,12 +59,15 @@ configuration disables the API; it never silently substitutes demo accounts.
    search inside the handler. Click the candidate to create a **new** snapshot,
    intent nonce, preflight and CRE decision. Never modify the old BLOCK record.
    The verdict names its bound threshold. Editing the draft without recomputing
-   disables authorization; loading/selecting history restores that run's input.
-4. **Human review.** Prepare the reviewer wallet before the new analysis. Read
-   the four-cell comparison and evidence fields, then the user clicks the
-   EIP-712 review button and signs with the designated offchain reviewer. A chat
-   “confirmed,” a test signature or an agent click is not a certificate of human
-   risk review. The server recovers and verifies the real signer.
+   disables authorization. Selecting history deliberately restores that run's
+   input; reloading the page preserves an edited draft separately from evidence.
+4. **Human review.** Read the four-cell comparison and evidence fields, then the
+   user clicks the EIP-712 authorization button and signs with the designated
+   offchain reviewer. New runs use a fixed ten-minute maximum from analysis and
+   explicitly require refreshed data to remain identical. The server refreshes
+   Graph/RPC before issuing and accepting this signature. A chat “confirmed,” a
+   test signature or an agent click is not a certificate of human risk review.
+   The server recovers and verifies the real signer.
 5. **Propose.** Privy gets one exact `propose` intent policy. The server
    verifies the complete signed EIP-1559 transaction, restores and reads back
    wildcard DENY, revalidates state, then broadcasts. Two confirmations, the
@@ -81,10 +92,12 @@ configuration disables the API; it never silently substitutes demo accounts.
 
 ## Failure, expiry and recovery
 
-- Keep the **120 seconds / 12 blocks** snapshot freshness limits and intent
-  expiry. Compilation occurs before reading the fresh input. Human delay,
-  provider delay, version/epoch changes or a reorg can invalidate a run. A new
-  run requires a new human signature; there is no automatic extension.
+- Keep the **120 seconds / 12 blocks** snapshot freshness limits. NEW
+  `exact-state-v1` grants acquire fresh observations of the identical reviewed
+  state at every step. Human authorization has a separate ten-minute maximum.
+  Legacy reviews keep the old snapshot-bound window. Neither mode extends intent
+  expiry. Changed inputs/permissions or reorgs require a new review. Compilation
+  still precedes snapshot acquisition.
 - Raw MetaMask V4 payloads explicitly include `types.EIP712Domain`; otherwise
   wallet hashing can differ from viem's inferred domain. The backend never
   accepts legacy domain-omitting signatures as a fallback.
@@ -104,14 +117,40 @@ configuration disables the API; it never silently substitutes demo accounts.
   transaction/event/state verification. If the browser lost an authority hash
   before persisting it, inspect MetaMask/RPC and the private journal manually.
   Do not invent a replacement hash or resend to make the UI green.
+- Historical receipt rechecks require RPC access to the **receipt block's
+  historical state**, not merely its transaction/receipt. A pruned-state error
+  leaves recorded progress intact but is not a successful recheck. Configure and
+  verify an archive-capable read endpoint separately; never remove same-block
+  state/event checks to hide a provider failure.
 - A process restart can display durable history and inspect receipts, but it
-  **cannot restore an owned CRE authorization from old JSON**. Start a fresh
-  analysis for further signing. Do not rebuild/restart during an active review.
+  **cannot restore an owned CRE authorization from old JSON**. An existing
+  unfinished on-chain flow must be inspected first; do not create a duplicate
+  proposal just to get fresh evidence. Do not rebuild/restart during a review.
 - Policy cleanup runs in `finally` and refuses to overwrite an unexpected
   external policy. A process crash during temporary activation cannot guarantee
   automatic DENY restoration: the remaining policy is still exact-intent-bound,
   and its durable recovery journal must be inspected before proceeding. The
   trusted app administrator can edit policies; this is not admin-proof quorum.
+
+### Two clocks, no migration of old signatures
+
+The console displays the **authorization deadline** separately from the last
+fresh observation. Aging of the original report does not reset completed steps
+or invalidate a new exact-state grant by itself. The next action automatically
+verifies NEW data; there is no “make old data fresh” button. Changed state stays
+blocked, even if a new simulation would ALLOW it.
+
+Old flows are not migrated. For a confirmed proposal/decision whose actual
+intent has expired, use **核验链上到期并结束旧授权（不发交易）**. It rechecks
+the receipt, canonical state and contract deadline and retires the LOCAL grant.
+It preserves the proposal/hash and sends no transaction. Unknown/issued wallet
+requests and unavailable historical RPC must be reconciled first. Then create a
+NEW analysis, nonce and scoped signature.
+
+See [ADR 0002](decisions/0002-exact-state-authorization.md) for exact bindings,
+the reference-market assumption, direct-wallet authority limitation, restart
+behavior and local tests. No new contract deployment is required. Public Sepolia
+acceptance is a separate user-authorized step.
 
 ## Optional grounded AI
 
@@ -148,3 +187,13 @@ hash-selected queries preserve the existing provenance checks rather than
 relaxing them.
 [The Graph's query documentation](https://thegraph.com/docs/en/subgraphs/querying/graphql-api/#time-travel-queries-example)
 also notes reorg limitations; no indexer response by itself proves finality.
+
+### MetaMask EIP-7702 decision receipts (2026-09-10)
+
+If a decision has a hash but the UI reported a missing reviewer signature, do
+not re-sign or re-send it. The narrow MetaMask v1.3.0 wrapper verifier described
+in [ADR 0003](decisions/0003-metamask-decision-receipts.md) can recognize the
+exact inner decision and recover its existing receipt. Unknown formats still
+block. Use **只读检查已记录交易（不重发）**. Successful recovery restores
+**链上决策已确认**; it does not mean the parameter was executed or an expired
+authorization renewed.

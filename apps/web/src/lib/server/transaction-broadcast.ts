@@ -7,6 +7,11 @@ import {
   type SigningPlan,
 } from "./transaction-signing";
 import type { SepoliaClient } from "./rpc-adapter";
+import {
+  MinedTransactionValidationError,
+  verifyDecisionWalletWrapper,
+  MM_MANAGER,
+} from "./decision-7702";
 
 /** An RPC hash or a UI "success" is insufficient. Compare the complete mined
  * envelope and canonical receipt before any lifecycle/evidence progression. */
@@ -14,6 +19,7 @@ export async function verifyMinedTransaction(
   client: SepoliaClient,
   plan: SigningPlan,
   hash: Hex,
+  options: { decisionWallet?: boolean } = {},
 ) {
   const [tx, receipt] = await Promise.all([
     client.getTransaction({ hash }),
@@ -23,23 +29,32 @@ export async function verifyMinedTransaction(
     receipt.status !== "success" ||
     tx.hash !== hash ||
     receipt.transactionHash !== hash ||
-    tx.type !== "eip1559" ||
     tx.chainId !== plan.chainId ||
     tx.from.toLowerCase() !== plan.from.toLowerCase() ||
-    tx.to?.toLowerCase() !== plan.to.toLowerCase() ||
-    tx.input !== plan.data ||
     tx.value !== 0n ||
     tx.nonce !== plan.nonce ||
-    tx.gas !== BigInt(plan.gas) ||
     tx.maxFeePerGas !== BigInt(plan.maxFeePerGas) ||
     tx.maxPriorityFeePerGas !== BigInt(plan.maxPriorityFeePerGas) ||
     (tx.accessList?.length ?? 0) !== 0 ||
     receipt.from.toLowerCase() !== plan.from.toLowerCase() ||
-    receipt.to?.toLowerCase() !== plan.to.toLowerCase() ||
+    receipt.to?.toLowerCase() !== tx.to?.toLowerCase() ||
     tx.blockHash !== receipt.blockHash ||
     tx.blockNumber !== receipt.blockNumber
   )
-    throw new Error("Mined transaction does not match reviewed plan");
+    throw new MinedTransactionValidationError("ENVELOPE_MISMATCH");
+  if (
+    options.decisionWallet &&
+    (tx.type === "eip7702" ||
+      (tx.type === "eip1559" && tx.to?.toLowerCase() === MM_MANAGER))
+  ) {
+    await verifyDecisionWalletWrapper(client, plan, tx, receipt.blockNumber);
+  } else if (
+    tx.type !== "eip1559" ||
+    tx.to?.toLowerCase() !== plan.to.toLowerCase() ||
+    tx.input !== plan.data ||
+    tx.gas !== BigInt(plan.gas)
+  )
+    throw new MinedTransactionValidationError("ENVELOPE_MISMATCH");
   if (
     (await client.getChainId()) !== 11155111 ||
     (await client.getBlock({ blockNumber: receipt.blockNumber })).hash !==

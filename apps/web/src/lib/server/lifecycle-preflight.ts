@@ -88,11 +88,14 @@ export function intentTuple(b: BoundRun) {
     expiresAt: BigInt(i.expiresAt),
   };
 }
-export function lifecycleData(b: BoundRun, method: "propose" | "decision") {
-  return method === "propose"
+export function lifecycleData(
+  b: BoundRun,
+  method: "propose" | "decision" | "execute",
+) {
+  return method !== "decision"
     ? encodeFunctionData({
         abi: EXECUTOR_ABI,
-        functionName: "propose",
+        functionName: method,
         args: [intentTuple(b)],
       })
     : encodeFunctionData({

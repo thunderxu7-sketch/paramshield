@@ -19,6 +19,10 @@ import {
   EXECUTOR_ABI,
 } from "./rpc-adapter";
 import { DEMO_POLICY } from "./cre-execution-runner";
+import {
+  AUTHORIZATION_MODE,
+  AUTHORIZATION_SECONDS,
+} from "./authorization-scope";
 
 type Manifest = {
   schemaVersion: string;
@@ -120,7 +124,11 @@ export async function v2Context(root: string) {
       throw new Error("V2 code, ownership or roles changed");
     return live;
   }
-  async function preflight(threshold: number, reason: string) {
+  async function preflight(
+    threshold: number,
+    reason: string,
+    mode?: typeof AUTHORIZATION_MODE,
+  ) {
     const data = await snapshot();
     const current = await live();
     const nonce = BigInt(`0x${randomBytes(16).toString("hex")}`);
@@ -133,12 +141,14 @@ export async function v2Context(root: string) {
       })
     )
       throw new Error("Intent nonce already used");
+    const headBlock = Number(await client.getBlockNumber());
+    const validatedAt = now();
     return createPreflight({
       snapshot: data.snapshot,
       stressBps: 1500,
       validation: {
-        validatedAt: now(),
-        headBlock: Number(await client.getBlockNumber()),
+        validatedAt,
+        headBlock,
       },
       intentCore: {
         schemaVersion: "paramshield.intent.v2",
@@ -153,7 +163,11 @@ export async function v2Context(root: string) {
         nonce: nonce.toString(),
         expectedStateVersion: current.stateVersion,
         expectedAuthorizationEpoch: current.authorizationEpoch,
-        expiresAt: now() + 240,
+        // Snapshot age stays 120s. Only NEW explicitly scoped grants may use
+        // the existing protocol's ten-minute maximum authorization window.
+        expiresAt:
+          validatedAt +
+          (mode === AUTHORIZATION_MODE ? AUTHORIZATION_SECONDS : 240),
         reason,
       },
     }).preflight;

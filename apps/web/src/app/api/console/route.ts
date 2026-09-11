@@ -25,9 +25,14 @@ export async function GET(req: Request) {
   }
   try {
     const service = await consoleService(),
-      id = new URL(req.url).searchParams.get("id");
+      params = new URL(req.url).searchParams,
+      id = params.get("id");
     return json(
-      id ? (await service.flow(flowId(id))).view : await service.status(),
+      id
+        ? (await service.flow(flowId(id))).view
+        : params.get("view") === "journal"
+          ? await service.journal()
+          : await service.status(),
     );
   } catch (e) {
     return json({ error: safeConsoleError(e) }, 409);
@@ -82,6 +87,12 @@ export async function POST(req: Request) {
         if (b.leg !== "propose" && b.leg !== "decision" && b.leg !== "execute")
           throw new Error("Invalid recovery leg");
         return json(await service.recover(id, b.leg));
+      case "retire-expired":
+        exactFields(b, ["action", "id"]);
+        return json(await service.retireExpired(id));
+      case "analysis-report":
+        exactFields(b, ["action", "id"]);
+        return json(await service.analysisReport(id));
       case "explain":
         exactFields(b, ["action", "id", "question"]);
         if (typeof b.question !== "string")

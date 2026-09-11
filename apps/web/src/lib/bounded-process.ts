@@ -74,7 +74,6 @@ export function parseCreOutput(stdout: string): unknown {
   // Require exactly one result; never parse a log line into an ALLOW fallback.
   const marker = "Workflow Simulation Result:";
   // Strip ANSI color escapes from the CLI framing, not from policy data.
-  // eslint-disable-next-line no-control-regex
   const clean = stdout.replace(/\x1b\[[0-9;]*[A-Za-z]/g, "");
   const at = clean.indexOf(marker);
   if (at < 0 || clean.indexOf(marker, at + marker.length) >= 0)

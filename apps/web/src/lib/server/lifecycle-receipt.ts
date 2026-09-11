@@ -20,7 +20,9 @@ export async function verifyLifecycleReceipt(
   b: BoundRun,
   leg: "propose" | "decision" | "execute",
 ) {
-  const receipt = await verifyMinedTransaction(client, plan, hash),
+  const receipt = await verifyMinedTransaction(client, plan, hash, {
+      decisionWallet: leg === "decision",
+    }),
     i = b.intent;
   if ((await client.getBlockNumber()) < receipt.blockNumber + 1n)
     throw new Error("Two confirmations required");
