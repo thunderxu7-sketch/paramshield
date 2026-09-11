@@ -1,15 +1,15 @@
 # Sponsor Integration Readiness
 
-**Updated:** 2026-09-09. Account, local build, live read, control proof, and
+**Updated:** 2026-09-11. Account, local build, live read, control proof, and
 final product integration are different gates. No credentials are included here.
 
 ## Matrix
 
-| Sponsor       | Verified evidence                                                                                                                                                  | Still missing                                                                                                        |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| The Graph     | Hosted v1 and independent v2; five positions/config/totals plus v2 roles/epoch/allowlist RPC-corroborated; hosted v2 actual CRE input                              | New-event-to-analysis after real execution, live runtime AI and sponsor qualification                                |
-| Chainlink CRE | Actual product handler on local live Graph; 7000 BLOCK and fresh 7942 ALLOW; actual CLI/Anvil trusted-relay proof with RPC and review adapters                     | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                           |
-| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately | Exact operator policy activation, authenticated human review, controlled execution broadcast and receipt/state proof |
+| Sponsor       | Verified evidence                                                                                                                                                  | Still missing                                                                                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| The Graph     | Hosted v1 and independent v2; five positions/config/totals plus v2 roles/epoch/allowlist RPC-corroborated; hosted v2 actual CRE input                              | New-event-to-analysis after real execution, live runtime AI and sponsor qualification                                            |
+| Chainlink CRE | Actual hosted-v2 product CLI: 7000 BLOCK and fresh 7942 ALLOW; three isolated Anvil/CRE lifecycle rehearsals; explicit simulated trust mode                        | Full hosted-v2 execution chain; no hardware TEE/network deployment claimed                                                       |
+| Privy         | Separate real isolated exact-v2-tuple signature and 13 provider policy denials; RPC/review/signing adapters and durable sign-only coordination verified separately | Fresh complete human-reviewed operator execution and canonical final receipt/state proof; partial historical flows remain paused |
 
 ## Exact partner positioning
 
@@ -139,3 +139,17 @@ AI evidence selection and deterministic rendering are implemented. No runtime
 model/key has been configured, so the current explanation is labeled non-AI.
 This does **not** satisfy the runtime AI sponsor gate. No new prize eligibility
 or network-publication claim is made from the code alone.
+
+## September 11 submission-material reconciliation
+
+The [partner drafts](submission/sponsor-applications.md) map each selected
+integration to exact code and dated evidence. The
+[official rules](submission/rules-and-gates.md) were rechecked September 11.
+These are prepared materials, not completed partner forms. Earlier dated
+sections above preserve the actual progression and must not be read as fresh
+provider observations.
+
+Current gaps remain full fresh human-reviewed Sepolia execution, hosted Graph
+AFTER, runtime AI, safe hosting, three live runs and human recording. Existing
+local/hosted/isolated provider observations are not interchangeable. R-12 work
+made no new provider calls, permission changes or chain transactions.

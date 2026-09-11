@@ -2,6 +2,9 @@
 
 **Revision:** 2026-09-07, incremental-exposure-v2
 
+**Clarification (2026-09-11):** the registered confidential handler is exercised
+through the CLI simulation lane specified in FR-05, not hardware attestation.
+
 **Mode:** ETHOnline 2026, Building from Scratch
 
 **Status:** Specification, not a claim that every integration is complete.
@@ -51,7 +54,8 @@ oracle dynamics, and recovery. The fixture's simple shortfall is zero.
    stress.
 2. Live The Graph Subgraph data that directly changes the analysis.
 3. Bigint simulation of current/proposed LT × normal/stressed price.
-4. Confidential policy evaluation **and candidate search** in a CRE TEE handler.
+4. Confidential policy evaluation **and candidate search** in a registered CRE
+   confidential handler; P0 uses CLI simulation, not hardware TEE execution.
 5. `ALLOW`, `BLOCK`, `ESCALATE`; missing/invalid/late data fails closed.
 6. Privy-controlled operator wallet with a verified, enforceable control.
 7. Independent decision authority, exact-calldata gate, and real Sepolia

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "paramshield.submission-package.v1",
+  "project": "ParamShield",
+  "repositoryUrl": "https://github.com/thunderxu7-sketch/paramshield",
+  "demoUrl": null,
+  "videoUrl": null,
+  "artifacts": [
+    "README.md",
+    "LICENSE",
+    "docs/product-spec.md",
+    "docs/architecture.md",
+    "docs/threat-model.md",
+    "docs/ai-usage.md",
+    "docs/implementation-plan.md",
+    "docs/planning/README.md",
+    "docs/planning/PLAN.md",
+    "docs/submission/README.md",
+    "docs/submission/project-description.md",
+    "docs/submission/sponsor-applications.md",
+    "docs/submission/demo-script.md",
+    "docs/submission/judge-quickstart.md",
+    "docs/submission/rules-and-gates.md",
+    "docs/sponsor-readiness.md",
+    "docs/console-runbook.md",
+    "docs/decisions/0001-risk-and-execution-boundaries.md",
+    "docs/decisions/0002-exact-state-authorization.md",
+    "docs/decisions/0003-metamask-decision-receipts.md",
+    "docs/evidence/graph-live-v2.json",
+    "docs/evidence/cre-hosted-v2-2026-09-09.json",
+    "docs/evidence/privy-v2-control-2026-09-08.json",
+    "docs/evidence/local-rehearsal-2026-09-10.json",
+    "deployments/sepolia-v2.json",
+    "deployments/graph-sepolia-v2.json",
+    "workflows/chainlink-cre/README.md",
+    "workflows/chainlink-cre/src/main.ts",
+    "workflows/chainlink-cre/src/workflow.ts",
+    "apps/web/src/lib/server/evidence-explanation.ts"
+  ],
+  "gates": [
+    {
+      "id": "public-source",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "human-contribution",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "prompt-reconciliation",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "sepolia-execution",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "graph-after",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "runtime-ai",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "three-live-runs",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "public-demo",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "human-video",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

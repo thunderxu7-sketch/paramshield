@@ -1,6 +1,6 @@
 # ParamShield Implementation Plan
 
-**Updated:** 2026-09-09 (Asia/Shanghai). Public execution plan; full planning
+**Updated:** 2026-09-11 (Asia/Shanghai). Public execution plan; full planning
 artifact and material prompt record are in [planning](planning/README.md).
 
 ## Scope and status rules
@@ -15,21 +15,21 @@ packages and `--passWithNoTests` do not count as tested implementations.
 
 ## Ordered execution queue
 
-| ID / priority | Task                                                               | Depends on                     | Acceptance                                                                                                                    | Status                                                        |
-| ------------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| R-01 / P0     | Correct policy, privacy, trust, evidence and schedule specs        | Review approved                | Public complete plan, ADR, prompt record; no stale 78% promise                                                                | Complete                                                      |
-| R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                              |
-| R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                            |
-| R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (deployed as separate v2)                            |
-| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 + v2 verified; post-execution event proof pending   |
-| R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)                   |
-| R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual hosted-v2 CLI + local lifecycle verified               |
-| R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Complete (v2 deployed/verified; operator locked)              |
-| R-09 / P0     | First full controlled execution                                    | R-05 through R-08              | BLOCK old intent; new nonce/review; Privy-controlled real Sepolia update; exact receipt/state/evidence                        | Gas funded; real human approval/Sepolia execution pending     |
-| R-10 / P0     | One console, durable timeline, grounded risk Q&A                   | R-03, R-09                     | Source-linked numbers, unavailable-AI fallback, refresh/idempotency/recovery tests                                            | Local console + fallback implemented; live AI/hosting pending |
-| R-11 / P0     | Freeze, adversarial regression, repeatable demo                    | R-09, R-10                     | Three successful complete runs; stale/version/epoch, timeout, duplicate, bad payload, policy-denial, receipt-failure coverage | Pending                                                       |
-| R-12 / P0     | Submission artifacts and demo video                                | R-11                           | All actual specs/prompts/plans, AI/human contribution log; reproducible setup; real narration, 2–4min, ≥720p                  | Pending                                                       |
-| R-13 / P0     | Submit daytime, reserve evening buffer                             | R-12                           | Dashboard submission confirmed before official deadline                                                                       | Pending                                                       |
+| ID / priority | Task                                                               | Depends on                     | Acceptance                                                                                                                    | Status                                                                                            |
+| ------------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| R-01 / P0     | Correct policy, privacy, trust, evidence and schedule specs        | Review approved                | Public complete plan, ADR, prompt record; no stale 78% promise                                                                | Complete                                                                                          |
+| R-02 / P0     | Implement bigint risk engine and bounded private search            | R-01                           | Four-cell metrics; 7942 passes/7941 fails; absolute cap has no solution; rounding/boundary/invalid tests                      | Complete (local)                                                                                  |
+| R-03 / P0     | Implement versioned acyclic evidence and exact intent hash         | R-01                           | Deterministic serialization; tamper/privacy rejection; TS/Solidity hash parity                                                | Complete (structural verification)                                                                |
+| R-04 / P0     | Harden local v2 contracts                                          | R-03                           | Any risk-state change or authorization rotation invalidates old intent; separate roles; replay/hold tests                     | Complete (deployed as separate v2)                                                                |
+| R-05 / P0     | Index existing Sepolia v1 and consume complete live Graph snapshot | Deployed v1, R-02              | Pinned block/hash, all pages/totals, live query changes input, freshness failures tested                                      | Hosted v1 + v2 verified; post-execution event proof pending                                       |
+| R-06 / P0     | Verify actual Privy wallet and enforceable control                 | Existing account/SDK           | Isolated test wallet; allowed request and denied request with sanitized evidence, no signing keys in output                   | Complete (isolated sign-only control proof)                                                       |
+| R-07 / P0     | Product CRE handler and trusted relay                              | R-02, R-03, R-05               | Secret loaded inside handler, recomputation/search there; real CLI run; validated relay bindings, timeout/tamper rejection    | Actual hosted-v2 CLI + local lifecycle verified                                                   |
+| R-08 / P0     | Review and deploy v2, connect distinct roles                       | R-04, R-06, transaction review | New manifest/ABIs, explorer verification, public source revision; old v1 artifacts preserved                                  | Complete (v2 deployed/verified; operator locked)                                                  |
+| R-09 / P0     | First full controlled execution                                    | R-05 through R-08              | BLOCK old intent; new nonce/review; Privy-controlled real Sepolia update; exact receipt/state/evidence                        | Propose + decision confirmed; final execute / Graph proof paused by user                          |
+| R-10 / P0     | One console, durable timeline, grounded risk Q&A                   | R-03, R-09                     | Source-linked numbers, unavailable-AI fallback, refresh/idempotency/recovery tests                                            | Loading/source/report/Q&A developed; live AI/hosting gates pending                                |
+| R-11 / P0     | Freeze, adversarial regression, repeatable demo                    | R-09, R-10                     | Three successful complete runs; stale/version/epoch, timeout, duplicate, bad payload, policy-denial, receipt-failure coverage | Local development complete Sep 10: 358 tests and 3/3 isolated rehearsals; live acceptance pending |
+| R-12 / P0     | Submission artifacts and demo video                                | R-11                           | All actual specs/prompts/plans, AI/human contribution log; reproducible setup; real narration, 2–4min, ≥720p                  | Local material/tooling complete Sep 11; live evidence, human video and publication pending        |
+| R-13 / P0     | Submit daytime, reserve evening buffer                             | R-12                           | Dashboard submission confirmed before official deadline                                                                       | Pending                                                                                           |
 
 ## Critical path
 
@@ -49,10 +49,12 @@ when v2 is deployed; reject a manifest/ABI/snapshot version mismatch.
 - **Sep 9–10:** R-07–R-10 first complete BLOCK → new review → real execution;
   minimal console and grounded AI. Host the runner with bounded concurrency,
   durable records, explicit simulator status, and no arbitrary shell payloads.
-- **Sep 11:** feature freeze; R-11 regression, approved reset/re-provisioning,
-  recovery and repeated demo. No new historical replay or second scenario.
-- **Sep 12:** docs, final sponsor evidence, real-narrated video, submission
-  ready.
+- **Sep 11 (local development brought forward to Sep 10):** feature freeze; R-11
+  regression, approved reset/re-provisioning, recovery and repeated demo. No new
+  historical replay or second scenario.
+- **Sep 12 (material development brought forward to Sep 11):** docs, sponsor
+  drafts, reproducible preview and recording plan; actual live evidence, human
+  recording and final submission readiness remain separate gates.
 - **Sep 13 daytime:** submit; evening is only recovery buffer.
 - **Hard deadline:** Sep 14 00:00 Asia/Shanghai = Sep 13 12:00 EDT.
 
@@ -217,3 +219,43 @@ Exact checks, corrected failures and remaining coverage are recorded in the
 The console runs on one trusted local host, not a public multi-user service. The
 120-second/12-block freshness limits remain unchanged. If a review expires,
 create a new run, intent and signature; never refresh a timestamp in place.
+
+## September 10 loading and evidence development
+
+See [the scoped development record](loading-and-evidence-2026-09-10.md). User
+asked to pause unfinished verification and proceed with this day’s development.
+This is not an R-09 completion claim. The first three lifecycle steps were
+confirmed before the pause; final execution remains incomplete. No private AI
+configuration was available, so live AI is still a separate gate.
+
+## September 11 work brought forward
+
+At the user's request, R-11 local freeze/regression/rehearsal development moved
+to September 10.
+[Execution and acceptance boundaries](release-rehearsal-2026-09-10.md) and the
+[September 11 external checklist](todo-2026-09-11.md) distinguish local
+completion from the still-paused live gates. No automatic reminder, chain reset,
+new wallet permission or public publication is implied.
+
+## September 12 material development brought forward
+
+At the user's request, R-12 development was completed locally on September 11:
+[submission kit](submission/README.md), factual project/partner drafts,
+credential-free judge preview, human recording plan and a fail-closed offline
+artifact checker. Public planning and available prompts are reconciled without
+publishing personal account/funding records or inventing missing history.
+
+Validation: 24 submission-tool tests and the quickstart's 26 risk/evidence tests
+passed; the preview computed BLOCK → 7942 → ALLOW with every live/executable
+flag false. The 30-artifact inventory has no detected local-link or targeted
+privacy-pattern issues; its stricter evidence mode correctly exits 2 because
+nine external/human gates remain pending. Web types/lint passed. These are
+focused tooling/documentation checks, not a new full product E2E certification.
+
+All 180 existing files from the September 10 source freeze and 154 protected
+console/session records remain unchanged. Four new offline tooling/test files
+are a source delta, not covered by the earlier 3/3 rehearsal claim. Product
+runtime, contracts, lockfile and authorization behavior were not changed, so
+public-chain/provider tests and the full build/rehearsal were not repeated.
+Final working-tree format/diff checks and a new source inventory close this
+material hand-off; nothing was committed, pushed, hosted, uploaded or submitted.

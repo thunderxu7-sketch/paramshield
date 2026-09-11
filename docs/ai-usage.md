@@ -1,6 +1,6 @@
 # AI Usage Disclosure
 
-**Updated:** 2026-09-09. Living factual disclosure, not a human-review
+**Updated:** 2026-09-11. Living factual disclosure, not a human-review
 certificate.
 
 ## Development assistance
@@ -66,3 +66,42 @@ This deliberately narrower implementation is not unrestricted generative Q&A. No
 AI provider was called during the September 9 implementation verification:
 provider-response tests are mocked, and the real UI displays the non-AI
 fallback. No runtime model name is claimed without an actual provider run.
+
+## September 10 development disclosure
+
+AI-assisted work added loading feedback, source-field navigation, redacted
+analysis summaries, grounded Q&A citations/version metadata and tests. The user
+explicitly paused unfinished chain verification. No new wallet signature,
+transaction, public hosting or live AI success is claimed. Provider
+configuration was checked by presence only and is absent. The runtime prompt is
+`EXPLANATION_INSTRUCTIONS`, version `evidence-selector-v2`; the optional
+readiness CLI distinguishes configuration from an actual provider response.
+
+## September 10 — R-11 brought forward
+
+The human requested advancing September 11 development while keeping unfinished
+chain verification paused. AI implemented source-freeze/diff tooling, isolated
+three-run Anvil rehearsal, additive Graph transport/evidence and workspace
+isolation tests, plus a scoped transitive ws security patch. All original Graph
+regressions are retained. Local node-managed signatures are synthetic, not human
+risk review or real Privy approval. No live transaction, public reset, public
+hosting or video narration is attributed to this work. Detailed evidence and
+remaining human/provider gates are in the R-11 execution record.
+
+## September 11 — R-12 brought forward
+
+Actual user direction: “先把 9.12 开发的内容提前到今天完成,”. AI assisted the
+README/current-status corrections, reproducible judge preview, offline artifact
+inventory and tests, partner form drafts, recording plan and English narration
+script. The public plan is reconciled with the ignored working plan after
+removing the personal-account/funding section; redaction categories and the
+available September 9–11 material prompts are recorded in the planning index.
+The original private plan remains ignored.
+
+No image, synthesized voice, recorded video, live AI response, wallet signature,
+public upload or dashboard submission was created for this material work. The
+runtime AI source/prompt and product transaction logic were not changed. The
+actual assistant model identifier is not reliably available in this task's
+record and is not guessed. Earlier AI-assisted work is disclosed above; a human
+must reconcile other tools/sessions and perform meaningful review before final
+submission. A drafted script is not human narration or human verification.

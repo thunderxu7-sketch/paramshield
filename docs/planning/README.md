@@ -2,7 +2,8 @@
 
 This directory is a public, sanitized planning record. The local working
 `PLAN.md` stays ignored as requested; [its full public copy](PLAN.md) is
-committed here, not replaced with a short summary.
+maintained here, not replaced with a short summary. The September 11 update is
+prepared locally; it is not a claim that the latest changes have been pushed.
 [The execution checklist](../implementation-plan.md) and
 [accepted ADR](../decisions/0001-risk-and-execution-boundaries.md) govern the
 September 7 revision. Earlier committed specs remain available in git history.
@@ -134,3 +135,37 @@ signature or an agent click into a human-review claim. Exact runtime AI
 instructions live in the implementation linked from the AI disclosure. The
 remaining gas, human signature, live execution, runtime model and hosting gates
 are documented rather than marked complete from code/tests.
+
+## September 9–11 material directions (available exact excerpts)
+
+- “乱乱的, 状态很容易丢失, 一点也不顺畅”
+- “调整授权流程”
+- “修复交易格式核验和错误提示，再通过已有交易哈希恢复进度”
+- “没验证完成的先搁置, 先优化一下 loading 状态, 现在的 loading 仍然不明显, 可以在提示的所有地方加一些动效. 然后开始依次开发原定于 9.10 的所有任务”
+- “好的, 先把 9.11 开发的内容提前到今天完成, 明天我要集中处理代办”
+- “先把 9.12 开发的内容提前到今天完成,”
+
+These directions led to the exact-state authorization and MetaMask receipt ADRs,
+durable/loading/source/report improvements, R-11 freeze/regression and isolated
+rehearsals, and R-12 submission material development. The substantive design
+instructions are retained in those documents and the full plan, not recreated as
+invented assistant quotations. Human instructions to continue do not certify
+human risk review, real AI use, media recording or publication.
+
+### Reconciliation on September 11
+
+- The full working plan was copied after excluding the section explicitly marked
+  personal-account/test-gas records. The exclusion covers reviewer address,
+  personal funding hashes/balances, wallet lookup details and private resource
+  paths; it does not remove product specs or architectural decisions.
+- The public copy retains all product/architecture/task sections and adds the
+  actual R-10/R-11/R-12 status updates. Dated old entries are history, not
+  current acceptance. The ignored root plan stays ignored.
+- Runtime instructions are checked in verbatim as `EXPLANATION_INSTRUCTIONS` in
+  [the selector source](../../apps/web/src/lib/server/evidence-explanation.ts),
+  version `evidence-selector-v2`. Workflow registration and configs are checked
+  in under `workflows/chainlink-cre`; private secret values are excluded.
+- Additional actual tool/session prompts not available in this record must still
+  be reconciled by the participant. No claim is made that all historical
+  exchanges were recovered. No personal browser export or private unrelated
+  project source is included in the submission kit.

@@ -1,9 +1,9 @@
 # ParamShield — 完整产品与实施计划
 
-> - 状态：本地工作计划完整公开副本；本地工作原件继续被忽略。
-> - 更新时间：2026-09-08（Asia/Shanghai）
-> - ETHOnline 2026 提交截止：2026-09-14 00:00（北京时间）
-> - 当前模式：Building from Scratch
+> - 状态：完整规划的公开脱敏副本；原始工作计划继续 ignored。历史条目不代表当前验收。
+> - 更新时间：2026-09-11（Asia/Shanghai）；最新分层状态见 docs/implementation-plan.md。
+> - ETHOnline 2026 提交截止：2026-09-14 00:00（北京时间）。
+> - 当前模式：Building from Scratch。
 
 ## 0. 执行状态
 
@@ -67,12 +67,6 @@
 - [x] **R-08 已部署**：用户明确批准分工 → 预演 → 审阅并发送 v2。32 项合约测试与 Sepolia
       dry-run 通过；MetaMask 单笔创建，区块 11660450，交易
       `0x94bc330ac8eb839bd2eabb8ff907143a169f567b9c9fdbfb48b82d17f08233a6`。新 manifest：`deployments/sepolia-v2.json`，同块角色/epoch/stateVersion/5 仓位/余额/字节码已核验；v1 不变，Privy 保持 DENY。
-- [x] **Privy 候选初始准备（部署前）**：另建独立、未入金的 operator 候选钱包，初始 wildcard
-      DENY；provider 实际读回绑定并拒绝 Sepolia 签名请求。该初始证据尚无链上角色；后续已在 v2 部署中分配 operator，仍保持锁定。没有复用隔离 proof 钱包或导入 MetaMask 私钥。历史证据见
-      `docs/evidence/privy-operator-candidate-2026-09-08.json`。
-- [ ] **角色剩余 gate**：已确认分工并完成 v2 部署；authority /
-      reviewer 身份与签名能力、最终 operator 精确策略和 hosted
-      v2 仍待完成，不能将锁定部署标为完整受控执行。
 - [x] **Studio 恢复与 hosted
       v1**：用户确认连接条款后，使用原参赛钱包登录，创建并部署
       `paramshield-sepolia-v-1` / `v0.1.0`。Studio 显示 DEPLOYED / SYNCED /
@@ -100,6 +94,10 @@
       build 通过；并行测试的两项默认超时在串行全量回归中消除，保持默认测试时限，共 150 项通过。Privy
       / Anvil 证据与源码哈希核对通过。
 - 验证结果见 `docs/execution-service.md` 和 `docs/implementation-plan.md`。
+
+#### 私有操作记录已脱敏
+
+本节原文为个人账户、测试币收款/转账、钱包查询与本地资源记录，按原有隐私约定不公开。产品方案、角色分离设计、部署 manifest 与公开证据保留在其他章节。
 
 ## 1. 产品定义
 
@@ -840,6 +838,10 @@ T-101 Market
 
 ## 18. Demo 视频脚本
 
+> 此节为早期设计稿，保留用于规划披露。当前录制方案以
+> `docs/submission/demo-script.md`
+> 为准；不得把早期文案当作已完成执行，或让 BLOCK 进入待签流程。
+
 ### 0:00–0:20 — 问题
 
 协议参数通常由运营团队直接进入多签；权限验证了“谁能改”，却没有验证“现在这样改是否安全”。
@@ -955,9 +957,63 @@ evidence-backed, policy-bound execution.”
 
 ## 25. 2026-09-09 执行状态
 
-- 独立 hosted v2 子图 v0.2.1 已部署；5 个仓位、总额、参数、stateVersion、executor 角色/epoch/allowlist 已按固定区块核验，v1 未变。
-- 实际 hosted v2 数据进入实际 CRE CLI：7000 BLOCK，独立新意图 7942 ALLOW。CLI 不是硬件 TEE，分析不是执行。
-- 本机受保护控制台已实现：真人 EIP-712 审核、Privy 精确 propose/execute、签后恢复 DENY、独立 authority、持久 nonce/交易日志、真实回执与事件核验、Graph 执行后事件检查、脱敏证据和明确标识的非 AI fallback。
-- 本地 Anvil 已验证三段真实合约回执和 LT 8000→7942 / version 7→8；不能将其算作 Sepolia 完整闭环或真人审核。
-- 待用户完成准备与真人签名后，才能运行第一次 Privy 受控 Sepolia 执行，并检验新事件改变分析。当前 operator 仍为 DENY；runtime AI、公共托管、三次复演和视频尚未完成。
+- 独立 hosted
+  v2 子图 v0.2.1 已部署；5 个仓位、总额、参数、stateVersion、executor 角色/epoch/allowlist 已按固定区块核验，v1 未变。
+- 实际 hosted v2 数据进入实际 CRE CLI：7000 BLOCK，独立新意图 7942
+  ALLOW。CLI 不是硬件 TEE，分析不是执行。
+- 本机受保护控制台已实现：真人 EIP-712 审核、Privy 精确 propose/execute、签后恢复 DENY、独立 authority、持久 nonce/交易日志、真实回执与事件核验、Graph 执行后事件检查、脱敏证据和明确标识的非 AI
+  fallback。
+- 本地 Anvil 已验证三段真实合约回执和 LT 8000→7942 / version
+  7→8；不能将其算作 Sepolia 完整闭环或真人审核。
+- 待用户完成准备与真人签名后，才能运行第一次 Privy 受控 Sepolia 执行，并检验新事件改变分析。当前 operator 仍为 DENY；runtime
+  AI、公共托管、三次复演和视频尚未完成。
 - 入口与恢复边界：docs/console-runbook.md；实际验收与下一步：docs/implementation-plan.md。不得为节约演示时间放宽 freshness 或自动重发未知交易。
+
+### 25.1 2026-09-09 钱包审核修复与当前交接
+
+- 专用 operator 已收到 0.01 Sepolia
+  ETH：交易 0x083e846df83874bf28e6271eecfd96ef971e28bbc80a7ea2f2a06ec857c7537d，区块 11665366；已核对成功回执和规范区块，不再重复转账。
+- 11:43 这轮真人签名未被服务端接受，不能把“已签名”视为审核通过。原日志缺少具体拒绝原因；已独立复现原 raw
+  MetaMask
+  V4 内容遗漏 EIP712Domain 导致与 viem 验签不一致，且错误被笼统显示为过期。
+- 修复 292726a 已推送并在 Xu Chrome 生效：显式 domain 类型、独立 MetaMask
+  codec 回归、审核准备/接收/拒绝日志与脱敏原因码。120 项 web 测试、类型检查、lint 和生产构建通过。
+- Account
+  2 保持连接。下一步由用户在准备好时重新分析 79.42%、审阅新证据并签名，以“审核签名已验证”/ACCEPTED 为通过标准。不在等待用户时自动消耗新一轮 120 秒窗口。
+- 真实 human approval / propose / authority / execute /
+  Graph 新事件尚未完成；Privy 仍 DENY，stateVersion 7 / epoch
+  1。仅测试签名兼容性，不读取或导出真人私钥。
+
+## 26. 2026-09-10 晚间执行调整（用户明确要求）
+
+- 未验证完的 Sepolia execute /
+  Graph 后置验证先搁置；不结束旧授权、不新建 intent、不发交易。
+- 优先统一 loading：明显的按钮转圈、吸顶操作提示、真实耗时、等待钱包文案、区域动效与骨架屏；未知请求不伪装成持续执行，支持 reduced
+  motion。
+- 按 9–10 日联合计划依次补齐 T-502 来源展开、T-504 非执行型脱敏分析报告、T-505 有来源引用的 AI 问答与模型/版本披露。
+- 实时 AI 验收依赖本地 OPENAI_API_KEY 与 PARAMSHIELD_EXPLANATION_MODEL；当前均未配置，不能将 fallback 当作 AI 成功。
+- 托管仍以本机受保护 runner 为已实现边界；公共发布需要独立部署方案，不公开管理控制台。
+- 实施与检查记录：docs/loading-and-evidence-2026-09-10.md。本地 PLAN.md 仍保持忽略。
+
+## 27. 2026-09-10 提前执行 9.11（用户明确要求）
+
+- 范围：R-11 功能冻结、失败回归、Demo
+  reset/三次复演的可独立本地开发；不扩展历史回放或第二场景。
+- 新增源码冻结/校验 CLI，覆盖未提交文件和锁文件；新增隔离复演工具，每轮新建本机 Anvil/部署/运行目录，不重置现有 Sepolia 或删旧记录。
+- 补齐 Graph-after 来源/事件与复演隔离测试；生产依赖审查结果及最小补丁升级分别记录，不把依赖审查视为完整安全审计。
+- 原有链上回执/execute/Graph 验收仍暂停；真实 AI、公开托管与真人三轮完整演示留到明日集中处理。
+- 详细任务与最终证据：docs/release-rehearsal-2026-09-10.md；中文明日清单：docs/todo-2026-09-11.md。
+- 最终验证：358 项单元/合约用例通过；依赖补丁后冻结的 180 个源码/配置/测试文件完成 3/3 隔离 Anvil +
+  actual CRE
+  CLI 复演，重复广播为 0；154 份现有控制台记录保持原样。生产依赖告警为 0，构建、类型及 lint 通过。以上不替代 hosted
+  Graph / Privy / 真人钱包 / Sepolia 三轮验收，真实链上验证仍按用户要求搁置。
+
+## 28. 2026-09-11 提前执行 9.12（用户明确要求）
+
+- 范围：R-12 完整公开规划/AI 披露校对、README/评委复现指南、三个 Sponsor 表单说明草稿、真人 Demo 分镜与英文讲稿、离线材料清单和校验工具。
+- 不扩展产品功能；不恢复搁置的链上流程，不签名/广播，不自动公开托管、推送仓库或提交报名表。
+- 本地入口：docs/submission/README.md。材料结构通过与真实链上/Graph
+  AFTER/AI/三次真人复演/视频验收分开记录。
+- 本地计划原件继续 ignored；完整公开副本只移除标明私密的账户/测试币段落，保留全部产品规格与设计决策；历史缺失的原始 prompt 不伪造。
+
+- 9.11 本地材料验证：新增 24 项工具用例、复现指南的 26 项风险/证据用例与离线预览通过；30 份材料清单无检测到的链接/定向隐私模式问题；9 个外部/真人 gate 仍 pending。原有 180 份源码与 154 份私有控制台记录未改动，不重复执行搁置的链上验证。

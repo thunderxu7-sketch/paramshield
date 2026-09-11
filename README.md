@@ -38,47 +38,54 @@ the reviewed replacement execute on Sepolia.
 
 ## Sponsor integrations
 
-| Integration   | Core responsibility                                                                                      |
-| ------------- | -------------------------------------------------------------------------------------------------------- |
-| The Graph     | Index positions, market parameters, and execution events; live query results feed the simulation.        |
-| Chainlink CRE | Run the confidential policy boundary and return a structured `ALLOW`, `BLOCK`, or `ESCALATE` verdict.    |
-| Privy         | Own or control the execution wallet and enforce a real policy, signer, quorum, or intent-based approval. |
+| Integration   | Core responsibility                                                                                   |
+| ------------- | ----------------------------------------------------------------------------------------------------- |
+| The Graph     | Index positions, market parameters, and execution events; live query results feed the simulation.     |
+| Chainlink CRE | Run the confidential policy boundary and return a structured `ALLOW`, `BLOCK`, or `ESCALATE` verdict. |
+| Privy         | Dedicated operator wallet with exact transaction policies; reviewer and authority remain separate.    |
 
 Removing any of these integrations breaks the primary workflow; none is used as
 an ornamental login or badge.
 
 ## Repository status
 
-**September 9:** the separate v2 contracts remain deployed and verified; v1 is
-unchanged. Hosted v2 Graph `v0.2.1` now supplies RPC-corroborated positions,
-market stateVersion, executor roles, authorization epoch and allowlist. Actual
-product CRE CLI runs on this hosted input returned **7000 BLOCK → fresh 7942
-ALLOW**. These are real live-data analyses, not completed transactions or a TEE.
+**September 11:** documentation/submission development has been brought forward;
+unfinished live-chain verification remains paused. Dated evidence records the
+separate verified v2 deployment, hosted Graph `v0.2.1` input and actual CRE CLI
+**7000 BLOCK → fresh 7942 ALLOW** analyses. These are not a complete
+public-chain execution or hardware-attestation claim; v1 artifacts are
+preserved.
 
-A local authenticated [operation console](docs/console-runbook.md) now connects
-analysis, EIP-712 review, exact Privy propose/execute policies, independent
-MetaMask authority, durable sign/broadcast coordination, receipt verification,
-redacted evidence, and post-execution Graph checks. Owned Anvil verified the
-three real contract lifecycle receipts, including LT 8000 → 7942 and version 7
-→ 8. This is **not** public Sepolia execution or a human-review certificate.
+The [local operation console](docs/console-runbook.md) implements source-linked
+risk evidence, explicit loading/progress, exact-state human review, a dedicated
+Privy operator, independent MetaMask authority, durable recovery and canonical
+receipt/AFTER checks. Optional AI only selects existing facts and renders an
+explicit **non-AI** fallback when unavailable.
 
-The operator's
-[0.01 Sepolia ETH funding](docs/evidence/operator-gas-2026-09-09.json) is now
-receipt-verified; do not repeat that transfer. A rejected review exposed a
-[MetaMask EIP-712 serialization defect](docs/evidence/review-rejection-2026-09-09.md),
-now corrected and covered by independent codec regression tests. A real human
-review is still pending; wallet signing alone was not accepted as approval.
+The [September 10 frozen source](docs/release-rehearsal-2026-09-10.md) passed
+**358 unit/contract tests and 3/3 isolated Anvil/CRE rehearsals**, including
+receipt/state verification, epoch invalidation and zero duplicate broadcasts.
+Those local transactions are not Sepolia transactions or human review.
 
-**Still gated:** actual human review/authority signatures, first full
-Privy-controlled Sepolia execution, the subsequent live indexed-event
-demonstration, runtime AI provider verification, public hosting and demo video.
-The operator remains under verified wildcard DENY. The optional AI evidence
-selector is implemented but no runtime model/key is configured; the UI labels
-its deterministic fallback as **non-AI**. See the
-[implementation plan](docs/implementation-plan.md) and
-[sponsor readiness](docs/sponsor-readiness.md).
+**Still gated:** reconcile preserved pending transactions, finish a fresh
+human-reviewed Privy/Sepolia execution, observe hosted Graph AFTER, verify a
+real AI response, safe public hosting, three live runs and human recording.
+Existing setup/funding does not need to be repeated. Consult the
+[implementation plan](docs/implementation-plan.md) for layered status.
 
-## Planned workspace
+## Start here for judging
+
+- [10-minute inspection and deterministic reproduction](docs/submission/judge-quickstart.md)
+- [Submission kit and current limitations](docs/submission/README.md)
+- [Three sponsor integration answers and evidence](docs/submission/sponsor-applications.md)
+- [Human demo script and shot list](docs/submission/demo-script.md)
+- [Rules and acceptance gates](docs/submission/rules-and-gates.md)
+
+No public live-demo or video URL is claimed yet. The private loopback console is
+not a public demo hosting target. Material development is not a dashboard
+submission or a claim that all local files have been pushed to GitHub.
+
+## Workspace
 
 ```text
 apps/web/                 Next.js operator console
@@ -88,7 +95,7 @@ packages/risk-engine/     Deterministic simulation and parameter search
 packages/evidence/        Canonical evidence bundle and hashing
 subgraph/                 Sepolia indexing schema and mappings
 workflows/chainlink-cre/  Confidential policy workflow
-tests/e2e/                Browser-level critical-path coverage
+tests/e2e/                Local integration coverage and pending browser E2E
 docs/                     Product, architecture, security, and AI disclosure
 ```
 
